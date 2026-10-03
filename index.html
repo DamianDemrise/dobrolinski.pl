@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+
+  <title>Damian Dobroliński</title>
+  <meta
+    name="description"
+    content="Damian Dobroliński — Ludzie, Sprzedaż, Marketing, Technologia."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #080808;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      background: #080808;
+      color: #fff;
+    }
+
+    .identity {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: identity-in 700ms ease-out 900ms forwards;
+    }
+
+    .name {
+      margin: 0;
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+    }
+
+    .areas {
+      margin: 20px 0 0;
+      font-size: clamp(14px, 1.25vw, 18px);
+      line-height: 1.5;
+      font-weight: 400;
+      letter-spacing: 0.025em;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .email {
+      display: inline-block;
+      margin-top: 30px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 400;
+      letter-spacing: 0.015em;
+      transition: opacity 180ms ease;
+    }
+
+    .email:hover {
+      opacity: 0.6;
+    }
+
+    .curtain {
+      position: fixed;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: #fff;
+      z-index: 10;
+      pointer-events: none;
+      animation-duration: 1100ms;
+      animation-delay: 250ms;
+      animation-timing-function: cubic-bezier(.76, 0, .24, 1);
+      animation-fill-mode: forwards;
+    }
+
+    .curtain-top {
+      top: 0;
+      animation-name: open-top;
+    }
+
+    .curtain-bottom {
+      bottom: 0;
+      animation-name: open-bottom;
+    }
+
+    @keyframes open-top {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-100%);
+      }
+    }
+
+    @keyframes open-bottom {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes identity-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 32px 20px;
+      }
+
+      .areas {
+        max-width: 290px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .curtain {
+        display: none;
+      }
+
+      .identity {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="identity" aria-label="Damian Dobroliński">
+      <h1 class="name">Damian Dobroliński</h1>
+
+      <p class="areas">
+        Ludzie · Sprzedaż · Marketing · Technologia
+      </p>
+
+      <a class="email" href="mailto:damian@dobrolinski.pl">
+        damian@dobrolinski.pl
+      </a>
+    </section>
+  </main>
+
+  <div class="curtain curtain-top" aria-hidden="true"></div>
+  <div class="curtain curtain-bottom" aria-hidden="true"></div>
+</body>
+</html>
