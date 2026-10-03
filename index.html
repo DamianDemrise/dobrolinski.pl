@@ -14,6 +14,11 @@
   <meta name="theme-color" content="#080808">
 
   <style>
+
+    /* ========================================
+       RESET
+       ======================================== */
+
     * {
       margin: 0;
       padding: 0;
@@ -29,65 +34,80 @@
     body {
       overflow: hidden;
       background: #080808;
+
       font-family:
         "Helvetica Neue",
         Helvetica,
         Arial,
         sans-serif;
+
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
 
-    /* =========================
-       GŁÓWNA STRONA
-       ========================= */
+
+    /* ========================================
+       STRONA
+       ======================================== */
 
     .page {
       position: relative;
+
       width: 100%;
       height: 100svh;
+
       overflow: hidden;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
+      color: #f7f7f5;
+
       background:
         linear-gradient(
           118deg,
           #070707 0%,
-          #090909 35%,
-          #101010 51%,
-          #090909 67%,
+          #080808 32%,
+          #0d0d0d 48%,
+          #101010 52%,
+          #0b0b0b 68%,
           #070707 100%
         );
-
-      color: #f5f5f3;
     }
 
-    /* bardzo subtelna faktura */
+
+    /* ========================================
+       SUBTELNE TŁO
+       ======================================== */
+
     .page::before {
       content: "";
+
       position: absolute;
       inset: 0;
+
       pointer-events: none;
 
-      background-image:
+      background:
         linear-gradient(
           115deg,
           transparent 0%,
-          rgba(255,255,255,.018) 48%,
-          rgba(255,255,255,.035) 50%,
-          rgba(255,255,255,.018) 52%,
+          transparent 42%,
+          rgba(255, 255, 255, 0.012) 48%,
+          rgba(255, 255, 255, 0.028) 50%,
+          rgba(255, 255, 255, 0.012) 52%,
+          transparent 58%,
           transparent 100%
         );
 
-      opacity: .7;
+      opacity: 0.7;
     }
 
-    /* =========================
-       TREŚĆ
-       ========================= */
+
+    /* ========================================
+       GŁÓWNA TREŚĆ
+       ======================================== */
 
     .identity {
       position: relative;
@@ -104,33 +124,48 @@
 
       animation:
         identity-in
-        1200ms
+        900ms
         cubic-bezier(.22, 1, .36, 1)
-        1850ms
+        1150ms
         forwards;
     }
 
+
+    /* ========================================
+       NAZWISKO
+       ======================================== */
+
     .name {
+      color: #f7f7f5;
+
       font-size: clamp(2.3rem, 5vw, 4.8rem);
-      line-height: .98;
+      line-height: 0.98;
 
       font-weight: 700;
       letter-spacing: -0.045em;
-
-      color: #f7f7f5;
     }
+
+
+    /* ========================================
+       OBSZARY
+       ======================================== */
 
     .areas {
       margin-top: 24px;
+
+      color: rgba(255, 255, 255, 0.58);
 
       font-size: clamp(.9rem, 1.25vw, 1.12rem);
       line-height: 1.5;
 
       font-weight: 400;
       letter-spacing: .01em;
-
-      color: rgba(255,255,255,.62);
     }
+
+
+    /* ========================================
+       KONTAKT
+       ======================================== */
 
     .contact {
       margin-top: 34px;
@@ -148,7 +183,8 @@
     .contact a {
       position: relative;
 
-      color: rgba(255,255,255,.88);
+      color: rgba(255, 255, 255, 0.88);
+
       text-decoration: none;
 
       transition:
@@ -158,6 +194,7 @@
 
     .contact a::after {
       content: "";
+
       position: absolute;
 
       left: 0;
@@ -166,18 +203,19 @@
       width: 100%;
       height: 1px;
 
-      background: rgba(255,255,255,.75);
+      background: rgba(255, 255, 255, 0.75);
 
       transform: scaleX(0);
       transform-origin: right;
 
       transition:
-        transform 300ms
+        transform
+        300ms
         cubic-bezier(.22, 1, .36, 1);
     }
 
     .contact a:hover {
-      color: #fff;
+      color: #ffffff;
     }
 
     .contact a:hover::after {
@@ -186,13 +224,15 @@
     }
 
     .separator {
-      color: rgba(255,255,255,.22);
+      color: rgba(255, 255, 255, 0.22);
+
       user-select: none;
     }
 
-    /* =========================
-       DEMRISE
-       ========================= */
+
+    /* ========================================
+       POWERED BY DEMRISE
+       ======================================== */
 
     .powered {
       position: absolute;
@@ -208,14 +248,15 @@
 
       animation:
         powered-in
-        1000ms
+        800ms
         ease
-        2600ms
+        1800ms
         forwards;
     }
 
     .powered a {
-      color: rgba(255,255,255,.28);
+      color: rgba(255, 255, 255, 0.27);
+
       text-decoration: none;
 
       font-size: .68rem;
@@ -224,21 +265,27 @@
       letter-spacing: .13em;
       text-transform: uppercase;
 
-      transition: color 250ms ease;
+      transition:
+        color 300ms ease,
+        letter-spacing 400ms cubic-bezier(.22, 1, .36, 1);
     }
 
     .powered a:hover {
-      color: rgba(255,255,255,.7);
+      color: rgba(255, 255, 255, 0.68);
+
+      letter-spacing: .17em;
     }
 
     .powered strong {
+      color: rgba(255, 255, 255, 0.44);
+
       font-weight: 700;
-      color: rgba(255,255,255,.43);
     }
 
-    /* =========================
-       BIAŁE OTWARCIE
-       ========================= */
+
+    /* ========================================
+       INTRO
+       ======================================== */
 
     .intro {
       position: fixed;
@@ -248,6 +295,11 @@
 
       pointer-events: none;
     }
+
+
+    /* ========================================
+       BIAŁE PŁASZCZYZNY
+       ======================================== */
 
     .curtain {
       position: absolute;
@@ -261,14 +313,22 @@
 
       will-change: transform;
 
-      animation-duration: 2300ms;
-      animation-delay: 450ms;
+      animation-duration: 2100ms;
+
+      /*
+        Tylko 0,1 sekundy białej planszy.
+        Potem od razu zaczyna się ruch.
+      */
+      animation-delay: 100ms;
 
       animation-timing-function:
-        cubic-bezier(.77, 0, .18, 1);
+        cubic-bezier(.76, 0, .24, 1);
 
       animation-fill-mode: forwards;
     }
+
+
+    /* GÓRNA CZĘŚĆ */
 
     .curtain-top {
       top: -80%;
@@ -280,6 +340,9 @@
       animation-name: curtain-top-out;
     }
 
+
+    /* DOLNA CZĘŚĆ */
+
     .curtain-bottom {
       bottom: -80%;
 
@@ -290,7 +353,11 @@
       animation-name: curtain-bottom-out;
     }
 
-    /* subtelna linia cięcia */
+
+    /* ========================================
+       LINIA CIĘCIA
+       ======================================== */
+
     .cut-line {
       position: absolute;
 
@@ -302,7 +369,7 @@
       width: 120%;
       height: 1px;
 
-      background: rgba(0,0,0,.10);
+      background: rgba(0, 0, 0, 0.10);
 
       transform:
         rotate(-4deg)
@@ -313,24 +380,29 @@
       opacity: 0;
 
       animation:
-        line-in 900ms ease 250ms forwards,
-        line-out 700ms ease 1250ms forwards;
+        line-in
+        350ms
+        ease
+        50ms
+        forwards,
+
+        line-out
+        500ms
+        ease
+        650ms
+        forwards;
     }
 
-    /* =========================
-       ANIMACJE
-       ========================= */
+
+    /* ========================================
+       ANIMACJA OTWARCIA
+       ======================================== */
 
     @keyframes curtain-top-out {
+
       0% {
         transform:
           translateY(0)
-          rotate(-4deg);
-      }
-
-      20% {
-        transform:
-          translateY(-2%)
           rotate(-4deg);
       }
 
@@ -339,18 +411,15 @@
           translateY(-105%)
           rotate(-4deg);
       }
+
     }
 
+
     @keyframes curtain-bottom-out {
+
       0% {
         transform:
           translateY(0)
-          rotate(-4deg);
-      }
-
-      20% {
-        transform:
-          translateY(2%)
           rotate(-4deg);
       }
 
@@ -359,11 +428,19 @@
           translateY(105%)
           rotate(-4deg);
       }
+
     }
 
+
+    /* ========================================
+       ANIMACJA LINII
+       ======================================== */
+
     @keyframes line-in {
+
       0% {
         opacity: 0;
+
         transform:
           rotate(-4deg)
           scaleX(0);
@@ -371,13 +448,17 @@
 
       100% {
         opacity: 1;
+
         transform:
           rotate(-4deg)
           scaleX(1);
       }
+
     }
+
 
     @keyframes line-out {
+
       from {
         opacity: 1;
       }
@@ -385,21 +466,39 @@
       to {
         opacity: 0;
       }
+
     }
+
+
+    /* ========================================
+       POJAWIENIE SIĘ TREŚCI
+       ======================================== */
 
     @keyframes identity-in {
+
       from {
         opacity: 0;
-        transform: translateY(8px);
+
+        transform:
+          translateY(8px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+          translateY(0);
       }
+
     }
+
+
+    /* ========================================
+       DEMRISE
+       ======================================== */
 
     @keyframes powered-in {
+
       from {
         opacity: 0;
       }
@@ -407,11 +506,13 @@
       to {
         opacity: 1;
       }
+
     }
 
-    /* =========================
+
+    /* ========================================
        MOBILE
-       ========================= */
+       ======================================== */
 
     @media (max-width: 640px) {
 
@@ -421,6 +522,8 @@
 
       .name {
         font-size: clamp(2.2rem, 11vw, 3.4rem);
+
+        line-height: 1;
       }
 
       .areas {
@@ -436,6 +539,7 @@
         margin-top: 30px;
 
         flex-direction: column;
+
         gap: 9px;
 
         font-size: .86rem;
@@ -451,13 +555,16 @@
 
       .curtain {
         width: 190%;
+
         left: -45%;
       }
+
     }
 
-    /* =========================
-       ACCESSIBILITY
-       ========================= */
+
+    /* ========================================
+       REDUCED MOTION
+       ======================================== */
 
     @media (prefers-reduced-motion: reduce) {
 
@@ -475,12 +582,15 @@
       .identity,
       .powered {
         opacity: 1;
+
         transform: none;
       }
+
     }
 
   </style>
 </head>
+
 
 <body>
 
@@ -502,7 +612,9 @@
           damian@dobrolinski.pl
         </a>
 
-        <span class="separator">·</span>
+        <span class="separator">
+          ·
+        </span>
 
         <a href="tel:+48538531888">
           538 531 888
@@ -512,7 +624,9 @@
 
     </section>
 
+
     <div class="powered">
+
       <a
         href="https://demrise.pl"
         target="_blank"
@@ -520,11 +634,18 @@
       >
         Powered by <strong>DEMRISE</strong>
       </a>
+
     </div>
 
   </main>
 
-  <div class="intro" aria-hidden="true">
+
+  <!-- BIAŁE OTWARCIE -->
+
+  <div
+    class="intro"
+    aria-hidden="true"
+  >
 
     <div class="curtain curtain-top"></div>
 
