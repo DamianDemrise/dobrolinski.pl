@@ -1,269 +1,300 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0a0b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Damian Dobroliński</title>
+
   <meta
     name="description"
-    content="Damian Dobroliński — Ludzie, Sprzedaż, Marketing, Technologia."
+    content="Damian Dobroliński — Ludzie · Sprzedaż · Marketing · Technologia"
   >
 
-  <style>
-    :root {
-      --bg: #0a0a0b;
-      --text: #f5f5f3;
-      --muted: rgba(245, 245, 243, .58);
-      --soft: rgba(255, 255, 255, .035);
-    }
+  <meta name="theme-color" content="#080808">
 
+  <style>
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
     html,
     body {
-      margin: 0;
       width: 100%;
       height: 100%;
-      background: var(--bg);
-      font-family: Arial, Helvetica, sans-serif;
     }
 
     body {
       overflow: hidden;
+      background: #080808;
+      font-family:
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    /* ===== STRONA ===== */
+    /* =========================
+       GŁÓWNA STRONA
+       ========================= */
 
     .page {
       position: relative;
-      min-height: 100svh;
+      width: 100%;
+      height: 100svh;
+      overflow: hidden;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      padding: 40px 24px;
+
       background:
-        radial-gradient(
-          circle at 50% 48%,
-          rgba(255,255,255,.065) 0%,
-          rgba(255,255,255,.025) 18%,
-          rgba(255,255,255,0) 46%
-        ),
-        radial-gradient(
-          circle at 75% 20%,
-          rgba(255,255,255,.025),
-          transparent 30%
-        ),
-        #0a0a0b;
+        linear-gradient(
+          118deg,
+          #070707 0%,
+          #090909 35%,
+          #101010 51%,
+          #090909 67%,
+          #070707 100%
+        );
+
+      color: #f5f5f3;
     }
 
-    /* ===== SUBTELNE D W TLE ===== */
-
-    .background-mark {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-
-      width: min(72vw, 920px);
-      height: min(72vw, 920px);
-
-      transform:
-        translate(-50%, -50%)
-        rotate(-8deg);
-
-      opacity: .7;
-      pointer-events: none;
-    }
-
-    .background-mark::before {
+    /* bardzo subtelna faktura */
+    .page::before {
       content: "";
-      position: absolute;
-      inset: 8%;
-
-      border: 1px solid rgba(255,255,255,.035);
-      border-radius: 50%;
-    }
-
-    .background-mark::after {
-      content: "";
-      position: absolute;
-
-      width: 42%;
-      height: 78%;
-
-      top: 2%;
-      left: 49%;
-
-      border-left: 1px solid rgba(255,255,255,.04);
-      border-bottom: 1px solid rgba(255,255,255,.025);
-
-      border-bottom-left-radius: 50%;
-
-      transform: rotate(18deg);
-    }
-
-    /* ===== ZIARNO ===== */
-
-    .noise {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      opacity: .022;
-      z-index: 2;
 
       background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+        linear-gradient(
+          115deg,
+          transparent 0%,
+          rgba(255,255,255,.018) 48%,
+          rgba(255,255,255,.035) 50%,
+          rgba(255,255,255,.018) 52%,
+          transparent 100%
+        );
+
+      opacity: .7;
     }
 
-    /* ===== TREŚĆ ===== */
+    /* =========================
+       TREŚĆ
+       ========================= */
 
     .identity {
       position: relative;
-      z-index: 4;
+      z-index: 2;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
       text-align: center;
 
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(8px);
 
       animation:
-        identity-in 900ms
+        identity-in
+        1200ms
         cubic-bezier(.22, 1, .36, 1)
-        1050ms forwards;
+        1850ms
+        forwards;
     }
 
     .name {
-      margin: 0;
-
-      color: var(--text);
-
-      font-size: clamp(34px, 4vw, 58px);
-      font-weight: 700;
+      font-size: clamp(2.3rem, 5vw, 4.8rem);
       line-height: .98;
 
-      letter-spacing: -.045em;
+      font-weight: 700;
+      letter-spacing: -0.045em;
+
+      color: #f7f7f5;
     }
 
     .areas {
-      margin: 22px 0 0;
+      margin-top: 24px;
 
-      color: var(--muted);
-
-      font-size: clamp(13px, 1.2vw, 17px);
-      font-weight: 400;
+      font-size: clamp(.9rem, 1.25vw, 1.12rem);
       line-height: 1.5;
 
-      letter-spacing: .025em;
-    }
-
-    .email {
-      display: inline-block;
-      position: relative;
-
-      margin-top: 32px;
-
-      color: rgba(255,255,255,.88);
-
-      font-size: 14px;
       font-weight: 400;
-      line-height: 1.5;
-
       letter-spacing: .01em;
 
+      color: rgba(255,255,255,.62);
+    }
+
+    .contact {
+      margin-top: 34px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 12px;
+
+      font-size: clamp(.82rem, 1vw, .96rem);
+      font-weight: 500;
+    }
+
+    .contact a {
+      position: relative;
+
+      color: rgba(255,255,255,.88);
       text-decoration: none;
 
       transition:
         color 220ms ease,
-        transform 220ms ease;
+        opacity 220ms ease;
     }
 
-    .email::after {
+    .contact a::after {
       content: "";
-
       position: absolute;
+
       left: 0;
-      right: 100%;
       bottom: -5px;
 
+      width: 100%;
       height: 1px;
 
-      background: rgba(255,255,255,.65);
+      background: rgba(255,255,255,.75);
 
-      transition: right 300ms
+      transform: scaleX(0);
+      transform-origin: right;
+
+      transition:
+        transform 300ms
         cubic-bezier(.22, 1, .36, 1);
     }
 
-    .email:hover {
+    .contact a:hover {
       color: #fff;
-      transform: translateY(-1px);
     }
 
-    .email:hover::after {
-      right: 0;
+    .contact a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
 
-    /* =================================
-       INTRO — UKOŚNE OTWARCIE
-       ================================= */
+    .separator {
+      color: rgba(255,255,255,.22);
+      user-select: none;
+    }
+
+    /* =========================
+       DEMRISE
+       ========================= */
+
+    .powered {
+      position: absolute;
+
+      z-index: 3;
+
+      left: 50%;
+      bottom: 30px;
+
+      transform: translateX(-50%);
+
+      opacity: 0;
+
+      animation:
+        powered-in
+        1000ms
+        ease
+        2600ms
+        forwards;
+    }
+
+    .powered a {
+      color: rgba(255,255,255,.28);
+      text-decoration: none;
+
+      font-size: .68rem;
+      font-weight: 500;
+
+      letter-spacing: .13em;
+      text-transform: uppercase;
+
+      transition: color 250ms ease;
+    }
+
+    .powered a:hover {
+      color: rgba(255,255,255,.7);
+    }
+
+    .powered strong {
+      font-weight: 700;
+      color: rgba(255,255,255,.43);
+    }
+
+    /* =========================
+       BIAŁE OTWARCIE
+       ========================= */
 
     .intro {
       position: fixed;
       inset: 0;
-      z-index: 100;
+
+      z-index: 10;
+
       pointer-events: none;
     }
 
     .curtain {
       position: absolute;
 
-      width: 150%;
-      height: 150%;
+      left: -30%;
 
-      left: -25%;
+      width: 160%;
+      height: 160%;
 
       background: #f7f7f5;
 
       will-change: transform;
 
-      animation-duration: 1250ms;
-      animation-delay: 320ms;
+      animation-duration: 2300ms;
+      animation-delay: 450ms;
 
       animation-timing-function:
-        cubic-bezier(.76, 0, .24, 1);
+        cubic-bezier(.77, 0, .18, 1);
 
       animation-fill-mode: forwards;
     }
 
-    /*
-      Dwie powierzchnie nachodzą na siebie.
-      Dzięki temu przy starcie ekran jest
-      całkowicie biały.
-    */
-
     .curtain-top {
-      top: -75%;
+      top: -80%;
 
-      transform: rotate(-8deg);
+      transform:
+        translateY(0)
+        rotate(-4deg);
 
       animation-name: curtain-top-out;
     }
 
     .curtain-bottom {
-      bottom: -75%;
+      bottom: -80%;
 
-      transform: rotate(-8deg);
+      transform:
+        translateY(0)
+        rotate(-4deg);
 
       animation-name: curtain-bottom-out;
     }
 
-    /* delikatna linia pojawiająca się
-       dokładnie przy otwieraniu */
-
+    /* subtelna linia cięcia */
     .cut-line {
       position: absolute;
+
+      z-index: 12;
 
       top: 50%;
       left: -10%;
@@ -271,10 +302,10 @@
       width: 120%;
       height: 1px;
 
-      background: rgba(0,0,0,.15);
+      background: rgba(0,0,0,.10);
 
       transform:
-        rotate(-8deg)
+        rotate(-4deg)
         scaleX(0);
 
       transform-origin: center;
@@ -282,57 +313,75 @@
       opacity: 0;
 
       animation:
-        line-in 500ms ease 180ms forwards,
-        line-out 400ms ease 750ms forwards;
+        line-in 900ms ease 250ms forwards,
+        line-out 700ms ease 1250ms forwards;
     }
 
-    /* ===== ANIMACJE ===== */
+    /* =========================
+       ANIMACJE
+       ========================= */
 
     @keyframes curtain-top-out {
-      from {
+      0% {
         transform:
           translateY(0)
-          rotate(-8deg);
+          rotate(-4deg);
       }
 
-      to {
+      20% {
+        transform:
+          translateY(-2%)
+          rotate(-4deg);
+      }
+
+      100% {
         transform:
           translateY(-105%)
-          rotate(-8deg);
+          rotate(-4deg);
       }
     }
 
     @keyframes curtain-bottom-out {
-      from {
+      0% {
         transform:
           translateY(0)
-          rotate(-8deg);
+          rotate(-4deg);
       }
 
-      to {
+      20% {
+        transform:
+          translateY(2%)
+          rotate(-4deg);
+      }
+
+      100% {
         transform:
           translateY(105%)
-          rotate(-8deg);
+          rotate(-4deg);
       }
     }
 
     @keyframes line-in {
-      from {
+      0% {
         opacity: 0;
         transform:
-          rotate(-8deg)
+          rotate(-4deg)
           scaleX(0);
       }
 
-      to {
+      100% {
         opacity: 1;
         transform:
-          rotate(-8deg)
+          rotate(-4deg)
           scaleX(1);
       }
     }
 
     @keyframes line-out {
+      from {
+        opacity: 1;
+      }
+
       to {
         opacity: 0;
       }
@@ -341,7 +390,7 @@
     @keyframes identity-in {
       from {
         opacity: 0;
-        transform: translateY(14px);
+        transform: translateY(8px);
       }
 
       to {
@@ -350,82 +399,83 @@
       }
     }
 
-    /* ===== MOBILE ===== */
-
-    @media (max-width: 600px) {
-
-      .page {
-        padding: 32px 22px;
+    @keyframes powered-in {
+      from {
+        opacity: 0;
       }
 
-      .name {
-        font-size: clamp(34px, 10vw, 46px);
-      }
-
-      .areas {
-        max-width: 310px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-
-        line-height: 1.7;
-      }
-
-      .email {
-        margin-top: 28px;
-      }
-
-      .background-mark {
-        width: 120vw;
-        height: 120vw;
-      }
-
-      .curtain-top,
-      .curtain-bottom {
-        transform: rotate(-12deg);
-      }
-
-      @keyframes curtain-top-out {
-        from {
-          transform:
-            translateY(0)
-            rotate(-12deg);
-        }
-
-        to {
-          transform:
-            translateY(-105%)
-            rotate(-12deg);
-        }
-      }
-
-      @keyframes curtain-bottom-out {
-        from {
-          transform:
-            translateY(0)
-            rotate(-12deg);
-        }
-
-        to {
-          transform:
-            translateY(105%)
-            rotate(-12deg);
-        }
+      to {
+        opacity: 1;
       }
     }
 
-    /* ===== ACCESSIBILITY ===== */
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 640px) {
+
+      .identity {
+        width: calc(100% - 40px);
+      }
+
+      .name {
+        font-size: clamp(2.2rem, 11vw, 3.4rem);
+      }
+
+      .areas {
+        margin-top: 20px;
+
+        max-width: 320px;
+
+        font-size: .88rem;
+        line-height: 1.7;
+      }
+
+      .contact {
+        margin-top: 30px;
+
+        flex-direction: column;
+        gap: 9px;
+
+        font-size: .86rem;
+      }
+
+      .separator {
+        display: none;
+      }
+
+      .powered {
+        bottom: 22px;
+      }
+
+      .curtain {
+        width: 190%;
+        left: -45%;
+      }
+    }
+
+    /* =========================
+       ACCESSIBILITY
+       ========================= */
 
     @media (prefers-reduced-motion: reduce) {
+
+      .curtain,
+      .cut-line,
+      .identity,
+      .powered {
+        animation: none !important;
+      }
 
       .intro {
         display: none;
       }
 
-      .identity {
+      .identity,
+      .powered {
         opacity: 1;
         transform: none;
-        animation: none;
       }
     }
 
@@ -436,19 +486,7 @@
 
   <main class="page">
 
-    <div
-      class="background-mark"
-      aria-hidden="true">
-    </div>
-
-    <div
-      class="noise"
-      aria-hidden="true">
-    </div>
-
-    <section
-      class="identity"
-      aria-label="Damian Dobroliński">
+    <section class="identity">
 
       <h1 class="name">
         Damian Dobroliński
@@ -458,23 +496,41 @@
         Ludzie · Sprzedaż · Marketing · Technologia
       </p>
 
-      <a
-        class="email"
-        href="mailto:damian@dobrolinski.pl">
-        damian@dobrolinski.pl
-      </a>
+      <div class="contact">
+
+        <a href="mailto:damian@dobrolinski.pl">
+          damian@dobrolinski.pl
+        </a>
+
+        <span class="separator">·</span>
+
+        <a href="tel:+48538531888">
+          538 531 888
+        </a>
+
+      </div>
 
     </section>
 
+    <div class="powered">
+      <a
+        href="https://demrise.pl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Powered by <strong>DEMRISE</strong>
+      </a>
+    </div>
+
   </main>
 
-  <div
-    class="intro"
-    aria-hidden="true">
+  <div class="intro" aria-hidden="true">
 
     <div class="curtain curtain-top"></div>
-    <div class="curtain curtain-bottom"></div>
+
     <div class="cut-line"></div>
+
+    <div class="curtain curtain-bottom"></div>
 
   </div>
 
