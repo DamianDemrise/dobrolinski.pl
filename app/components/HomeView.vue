@@ -19,10 +19,7 @@ const emit = defineEmits<{
   <section class="view home-view" aria-labelledby="site-title" tabindex="-1">
     <CurrentProjectLink @open="emit('openWorkshop')" />
 
-    <div class="background-statement" aria-hidden="true">
-      <span>Na końcu każdej sprzedaży</span>
-      <strong>jest człowiek</strong>
-    </div>
+  
 
     <div class="identity">
       <h1 id="site-title" class="name">{{ siteContent.name }}</h1>
