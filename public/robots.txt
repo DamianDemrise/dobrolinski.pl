@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dobrolinski.pl/sitemap.xml
