@@ -8,6 +8,20 @@
     transform: translateY(-0.4rem);
   }
 
+  .background-statement {
+    width: 155vw;
+    transform: translate(-50%, -52%) rotate(-4deg);
+  }
+
+  .background-statement span {
+    display: none;
+  }
+
+  .background-statement strong {
+    font-size: 22vw;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.04);
+  }
+
   .name {
     font-size: clamp(2.35rem, 11.5vw, 3.45rem);
     line-height: 0.98;
@@ -130,7 +144,9 @@
 
   .intro { display: none; }
   .identity,
+  .background-statement,
   .current-project,
   .powered { opacity: 1; transform: none; }
+  .background-statement { transform: translate(-50%, -48%) rotate(-2.5deg); }
   .ambient-light { display: none; }
 }
