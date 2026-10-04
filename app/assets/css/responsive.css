@@ -19,7 +19,7 @@
 
   .background-statement strong {
     font-size: 22vw;
-    -webkit-text-stroke-color: rgba(255, 255, 255, 0.04);
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.085);
   }
 
   .name {
