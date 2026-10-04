@@ -39,7 +39,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 </script>
 
 <template>
-  <main
+  <noscript>
+    <iframe
+      src="https://www.googletagmanager.com/ns.html?id=GTM-TR8MDG8W"
+      height="0"
+      width="0"
+      style="display:none;visibility:hidden"
+    />
+  </noscript>
+
     class="site-stage"
     :style="lightStyle"
     @pointermove="onPointerMove"
