@@ -1,0 +1,143 @@
+:root {
+  color-scheme: dark;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body,
+#__nuxt {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: #080808;
+  color: #f7f7f5;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.82);
+  outline-offset: 7px;
+}
+
+.site-stage {
+  --pointer-x: 50%;
+  --pointer-y: 42%;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 34rem;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(118deg, #070707 0%, #080808 32%, #0d0d0d 48%, #101010 52%, #0b0b0b 68%, #070707 100%);
+}
+
+.site-stage:focus {
+  outline: none;
+}
+
+.site-stage::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(255, 255, 255, 0.012) 48%,
+    rgba(255, 255, 255, 0.028) 50%,
+    rgba(255, 255, 255, 0.012) 52%,
+    transparent 58%,
+    transparent 100%
+  );
+  content: '';
+  pointer-events: none;
+}
+
+.ambient-light {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(
+    38rem circle at var(--pointer-x) var(--pointer-y),
+    rgba(255, 255, 255, 0.052),
+    rgba(255, 255, 255, 0.018) 25%,
+    transparent 64%
+  );
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+}
+
+.view:focus {
+  outline: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.error-page {
+  display: grid;
+  place-content: center;
+  min-height: 100svh;
+  padding: 2rem;
+  background: #080808;
+  text-align: center;
+}
+
+.error-page__code {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+}
+
+.error-page h1 {
+  font-size: clamp(2rem, 6vw, 4.4rem);
+  letter-spacing: -0.045em;
+}
+
+.error-page button {
+  margin-top: 2.5rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
