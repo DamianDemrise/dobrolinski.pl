@@ -20,7 +20,6 @@ const emit = defineEmits<{
     <CurrentProjectLink @open="emit('openWorkshop')" />
 
     <div class="identity">
-      <p class="identity__eyebrow" aria-hidden="true">DD / 01</p>
       <h1 id="site-title" class="name">{{ siteContent.name }}</h1>
       <ExpertiseNav
         :active-area="activeArea"

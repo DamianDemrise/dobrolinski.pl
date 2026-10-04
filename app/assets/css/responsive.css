@@ -8,10 +8,6 @@
     transform: translateY(-0.4rem);
   }
 
-  .identity__eyebrow {
-    margin-bottom: 1rem;
-  }
-
   .name {
     font-size: clamp(2.35rem, 11.5vw, 3.45rem);
     line-height: 0.98;
@@ -105,15 +101,10 @@
     left: 1.25rem;
   }
 
-  .curtain {
-    left: -45%;
-    width: 190%;
-  }
 }
 
 @media (max-height: 620px) {
   .site-stage { min-height: 100svh; }
-  .identity__eyebrow { display: none; }
   .thought-wrap { margin-top: 1rem; }
   .contact { margin-top: 0.8rem; }
   .workshop__eyebrow { margin-bottom: 1rem; }

@@ -12,14 +12,6 @@
   text-align: center;
 }
 
-.identity__eyebrow {
-  margin-bottom: 1.25rem;
-  color: rgba(255, 255, 255, 0.28);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-}
-
 .name {
   color: #f7f7f5;
   font-size: clamp(2.7rem, 6vw, 5.4rem);
