@@ -14,7 +14,7 @@ defineEmits<{ close: [] }>()
       <p class="workshop__description">{{ siteContent.workshop.description }}</p>
       <p class="workshop__statement">{{ siteContent.workshop.statement }}</p>
       <a class="workshop__cta" :href="`mailto:${siteContent.email}?subject=Warsztat%20CZŁOWIEK`">
-        Porozmawiajmy <span aria-hidden="true">→</span>
+        {{ siteContent.email }} <span aria-hidden="true">→</span>
       </a>
     </div>
 
