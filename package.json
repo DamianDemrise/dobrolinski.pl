@@ -11,7 +11,10 @@
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
-    "check": "npm run lint && npm run typecheck && npm run test"
+    "check": "npm run lint && npm run typecheck && npm run typecheck:worker && npm run test",
+    "typecheck:worker": "tsc -p offer-worker",
+    "offer:dev": "node offer-worker/scripts/dev-server.ts",
+    "offer:preview": "node offer-worker/scripts/preview-email.ts"
   },
   "dependencies": {
     "nuxt": "4.5.2",

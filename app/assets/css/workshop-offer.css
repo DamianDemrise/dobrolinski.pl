@@ -1,0 +1,177 @@
+/* Formularz oferty: dopowiedzenie do ceny, na tej samej osi, bez karty i bez ramki. */
+
+.workshop-offer {
+  max-width: 34rem;
+  margin-top: clamp(2.6rem, 5vw, 3.8rem);
+  margin-left: var(--workshop-axis);
+}
+
+.workshop-offer__title {
+  color: var(--ink-primary);
+  font-size: var(--type-body-l);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.workshop-offer__title:focus {
+  outline: none;
+}
+
+.workshop-offer__text {
+  margin-top: 0.6rem;
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
+  line-height: 1.6;
+}
+
+.workshop-offer__form {
+  margin-top: 1.6rem;
+}
+
+.workshop-offer__label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--ink-muted);
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.workshop-offer__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.6rem;
+}
+
+.workshop-offer__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.5rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: var(--type-body);
+  transition: border-color 220ms ease;
+}
+
+.workshop-offer__input:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.46);
+}
+
+.workshop-offer__input:focus {
+  border-bottom-color: #fff;
+  outline: none;
+}
+
+.workshop-offer__input:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.82);
+  outline-offset: 7px;
+}
+
+.workshop-offer__input[aria-invalid='true'] {
+  border-bottom-color: rgba(255, 255, 255, 0.9);
+}
+
+.workshop-offer__input:disabled {
+  opacity: 0.6;
+}
+
+/* Przycisk to ta sama strzałka i linia co pozostałe linki warsztatu. */
+.workshop-offer__submit {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0.5rem 0;
+  border: 0;
+  background:
+    linear-gradient(#fff, #fff) left bottom / 3rem 1px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)) left bottom / 100% 1px no-repeat;
+  color: #fff;
+  font: inherit;
+  font-size: var(--type-body-s);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-size 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+}
+
+.workshop-offer__submit:hover:not(:disabled) {
+  background-size: 100% 1px, 100% 1px;
+}
+
+.workshop-offer__submit span {
+  display: inline-block;
+  margin-left: 1rem;
+  transition: transform 250ms ease;
+}
+
+.workshop-offer__submit:hover:not(:disabled) span {
+  transform: translateX(0.3rem);
+}
+
+.workshop-offer__submit:disabled {
+  cursor: progress;
+  opacity: 0.66;
+}
+
+.workshop-offer__note {
+  margin-top: 0.9rem;
+  color: var(--ink-muted);
+  font-size: var(--type-small);
+  line-height: 1.6;
+}
+
+.workshop-offer__done .workshop-offer__text {
+  color: var(--ink-primary);
+  font-size: var(--type-body-l);
+  margin-top: 0.2rem;
+}
+
+.workshop-offer__error {
+  margin-top: 0.9rem;
+  color: var(--ink-primary);
+  font-size: var(--type-small);
+  line-height: 1.6;
+}
+
+.workshop-offer__error a {
+  color: #fff;
+  text-underline-offset: 0.2em;
+}
+
+.workshop-offer__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .workshop-offer {
+    margin-left: clamp(0rem, 20vw, 12rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .workshop-offer {
+    margin-top: 2.2rem;
+    margin-left: 0;
+  }
+
+  /* Telefon: pole i przycisk jeden pod drugim, bez ściskania. */
+  .workshop-offer__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+  }
+
+  .workshop-offer__submit {
+    align-self: flex-start;
+  }
+}

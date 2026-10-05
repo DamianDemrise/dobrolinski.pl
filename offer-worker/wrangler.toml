@@ -1,0 +1,25 @@
+# Endpoint oferty POZNAJ CZŁOWIEKA. Wdrożenie: docs/OFFER-AUTOMATION.md.
+# Tu są tylko wartości jawne. Klucz API: `npx wrangler secret put RESEND_API_KEY`.
+name = "dobrolinski-oferta"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[kv_namespaces]]
+binding = "OFFER_KV"
+# Utworzone 2026-10-05 na koncie Cloudflare damian@demrise.pl.
+id = "6c1831c374e24dd3af93f0c009b1c0c0"
+
+[vars]
+# Bezpieczny start: wszystko idzie na TEST_RECIPIENT. Na "live" dopiero po teście.
+MAIL_MODE = "test"
+TEST_RECIPIENT = "damian@dobrolinski.pl"
+MAIL_FROM = "Damian Dobroliński <oferta@dobrolinski.pl>"
+MAIL_REPLY_TO = "damian@dobrolinski.pl"
+NOTIFICATION_EMAIL = "damian@dobrolinski.pl"
+ALLOWED_ORIGINS = "https://dobrolinski.pl"
+PDF_URL = "https://dobrolinski.pl/oferta/poznaj-czlowieka.pdf"
+DAILY_LIMIT = "40"

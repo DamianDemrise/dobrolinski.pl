@@ -13,6 +13,15 @@ export interface TrackPayload {
   link_url: string
 }
 
+/**
+ * Zdarzenie spoza kliknięcia (formularz oferty) w tym samym kształcie,
+ * więc obecny tag GTM wysyła je do GA4 bez zmian w kontenerze.
+ * Nigdy nie przekazuj tu adresu e-mail ani innych danych osobowych.
+ */
+export function trackEventPayload(name: string, place: string): TrackPayload {
+  return { event: TRACK_EVENT, track_name: name, track_place: place, link_url: '' }
+}
+
 export function trackPayloadFrom(target: EventTarget | null): TrackPayload | null {
   if (!(target instanceof Element)) return null
   const el = target.closest<HTMLElement>('[data-track]')

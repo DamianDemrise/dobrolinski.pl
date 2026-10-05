@@ -7,6 +7,9 @@ export default defineNuxtConfig({
     public: {
       // GTM ładuje się dopiero po zgodzie (app/plugins/analytics.client.ts).
       gtmId: 'GTM-TR8MDG8W',
+      // Endpoint oferty (offer-worker/). Pusty = formularz się nie renderuje.
+      // Lokalnie: NUXT_PUBLIC_OFFER_ENDPOINT=http://localhost:8787 npm run generate
+      offerEndpoint: '',
     },
   },
   app: {
