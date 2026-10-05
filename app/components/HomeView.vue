@@ -10,17 +10,12 @@ defineProps<{
 const emit = defineEmits<{
   activateArea: [slug: AreaSlug]
   leaveArea: []
-  openWorkshop: []
   previewArea: [slug: AreaSlug]
 }>()
 </script>
 
 <template>
   <section class="view home-view" aria-labelledby="site-title" tabindex="-1">
-    <CurrentProjectLink @open="emit('openWorkshop')" />
-
-  
-
     <div class="identity">
       <h1 id="site-title" class="name">{{ siteContent.name }}</h1>
       <ExpertiseNav
@@ -31,6 +26,7 @@ const emit = defineEmits<{
         @preview="emit('previewArea', $event)"
       />
       <ThoughtDisplay :thought="thought" />
+      <CurrentProjectLink />
       <ContactLinks />
     </div>
 

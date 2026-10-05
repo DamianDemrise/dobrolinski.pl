@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { siteContent } from '~/content/site'
+import { workshop } from '~/content/workshop'
 
-const { program } = siteContent.workshop
+const { program } = workshop
 </script>
 
 <template>
@@ -15,7 +15,11 @@ const { program } = siteContent.workshop
             <span class="workshop-line">{{ line }}</span>{{ ' ' }}
           </template>
         </h3>
-        <p class="workshop-topic__text">{{ topic.text }}</p>
+        <p class="workshop-topic__text">
+          <template v-for="line in topic.textLines" :key="line">
+            <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+          </template>
+        </p>
       </li>
     </ol>
   </section>

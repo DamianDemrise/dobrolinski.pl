@@ -51,8 +51,16 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: ['/'],
+      routes: ['/', '/poznaj-czlowieka'],
+      // /poznaj-czlowieka.html zamiast /poznaj-czlowieka/index.html:
+      // GitHub Pages serwuje wtedy adres bez ukośnika i bez przekierowania.
+      autoSubfolderIndex: false,
     },
+  },
+  experimental: {
+    // Strona nie pobiera danych; bez osobnych _payload.json nie powstaje katalog
+    // /poznaj-czlowieka/, który na GitHub Pages przesłaniałby poznaj-czlowieka.html.
+    payloadExtraction: false,
   },
   typescript: {
     strict: true,

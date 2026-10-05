@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { siteContent, workshopMailHref } from '~/content/site'
+import { siteContent } from '~/content/site'
+import { workshop, workshopMailHref } from '~/content/workshop'
 
 defineEmits<{ more: [] }>()
 
-const { workshop } = siteContent
+const { hero } = workshop
 </script>
 
 <template>
@@ -18,14 +19,14 @@ const { workshop } = siteContent
     >
 
     <header class="workshop-topbar">
-      <span class="workshop-topbar__brand">{{ siteContent.name }}</span>
+      <NuxtLink class="workshop-topbar__brand" to="/" data-track="back-home" data-track-place="brand">{{ siteContent.name }}</NuxtLink>
       <ul class="workshop-topbar__areas" aria-label="Obszary">
         <li v-for="area in siteContent.areas" :key="area.slug">{{ area.label }}</li>
       </ul>
       <address class="workshop-topbar__contact">
-        <a :href="`mailto:${siteContent.email}`">{{ siteContent.email }}</a>
+        <a :href="`mailto:${siteContent.email}`" data-track="mail" data-track-place="workshop-topbar">{{ siteContent.email }}</a>
         <span aria-hidden="true">·</span>
-        <a :href="siteContent.phoneHref">{{ siteContent.phoneDisplay }}</a>
+        <a :href="siteContent.phoneHref" data-track="phone" data-track-place="workshop-topbar">{{ siteContent.phoneDisplay }}</a>
       </address>
     </header>
 
@@ -33,23 +34,23 @@ const { workshop } = siteContent
       <p class="workshop-eyebrow">{{ workshop.index }}</p>
 
       <h1 id="workshop-title" class="workshop-hero__title">
-        <template v-for="line in workshop.titleLines" :key="line">
+        <template v-for="line in hero.titleLines" :key="line">
           <span class="workshop-line workshop-line--nowrap">{{ line }}</span>{{ ' ' }}
         </template>
       </h1>
 
-      <p class="workshop-hero__lead">{{ workshop.lead }}</p>
+      <p class="workshop-hero__lead">{{ hero.lead }}</p>
 
       <span class="workshop-rule" aria-hidden="true" />
 
       <p class="workshop-hero__description">
-        <template v-for="line in workshop.descriptionLines" :key="line">
+        <template v-for="line in hero.descriptionLines" :key="line">
           <span class="workshop-line">{{ line }}</span>{{ ' ' }}
         </template>
       </p>
 
       <ul class="workshop-meta" aria-label="Informacje o warsztacie">
-        <li v-for="item in workshop.meta" :key="item.label" class="workshop-meta__item">
+        <li v-for="item in hero.meta" :key="item.label" class="workshop-meta__item">
           <span class="workshop-meta__label">{{ item.label }}</span>
           <span>
             <template v-for="line in item.lines" :key="line">
@@ -59,8 +60,8 @@ const { workshop } = siteContent
         </li>
       </ul>
 
-      <a class="workshop-link" :href="workshopMailHref">
-        {{ workshop.cta }}
+      <a class="workshop-link" :href="workshopMailHref" data-track="workshop-cta" data-track-place="hero">
+        {{ hero.cta }}
         <span aria-hidden="true">→</span>
       </a>
     </div>
@@ -70,7 +71,7 @@ const { workshop } = siteContent
     </ul>
 
     <button class="workshop-more" type="button" @click="$emit('more')">
-      {{ workshop.more }}
+      {{ hero.more }}
       <span aria-hidden="true">↓</span>
     </button>
   </div>

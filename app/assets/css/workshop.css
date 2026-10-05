@@ -48,7 +48,14 @@
 }
 
 .workshop-topbar__brand {
+  color: #f7f7f5;
   font-weight: 650;
+  text-decoration: none;
+  transition: color 220ms ease;
+}
+
+.workshop-topbar__brand:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .workshop-topbar__areas {
@@ -267,6 +274,7 @@
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 500;
+  text-decoration: none;
   transition: color 240ms ease;
 }
 

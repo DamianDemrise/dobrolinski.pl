@@ -9,7 +9,9 @@
   padding-block: clamp(5rem, 11vw, 10rem);
 }
 
-.workshop-section + .workshop-section {
+.workshop-split,
+.workshop-program,
+.workshop-closing {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -21,37 +23,58 @@
   text-wrap: balance;
 }
 
-/* 2. Podejście */
+/* Manifest i „o mnie”: duże momenty typograficzne */
 
-.workshop-approach {
+.workshop-manifest {
   padding-top: clamp(4rem, 9vw, 8rem);
 }
 
-.workshop-approach__title {
-  font-size: clamp(2.3rem, 5.6vw, 6.2rem);
+.workshop-manifest__title,
+.workshop-about__title {
+  font-size: clamp(2.3rem, 5.8vw, 6.4rem);
   font-weight: 650;
   letter-spacing: -0.05em;
   line-height: 1.02;
 }
 
-.workshop-approach__follow {
+.workshop-manifest__quiet {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.workshop-manifest__title .reveal + .reveal {
+  transition-delay: 140ms;
+}
+
+.workshop-manifest__follow,
+.workshop-about__body {
   margin-top: clamp(2rem, 4vw, 3.5rem);
   margin-left: clamp(0rem, 24vw, 22rem);
   color: rgba(255, 255, 255, 0.6);
-  font-size: clamp(1.15rem, 2vw, 2.1rem);
-  line-height: 1.35;
+  font-size: clamp(1.15rem, 1.9vw, 1.9rem);
+  line-height: 1.38;
 }
 
-/* 3 i 5. Nagłówek po lewej, treść po prawej */
+.workshop-about__title {
+  font-size: clamp(2rem, 4.6vw, 5rem);
+}
 
-.workshop-difference,
-.workshop-audience {
+.workshop-about__body {
+  display: grid;
+  max-width: 44rem;
+  font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+  line-height: 1.55;
+  gap: 1.4rem;
+}
+
+/* Sekcje dzielone: nagłówek po lewej, treść po prawej */
+
+.workshop-split {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(2rem, 6vw, 7rem);
 }
 
-.workshop-difference__list {
+.workshop-quiet-list {
   padding: 0;
   color: rgba(255, 255, 255, 0.5);
   font-size: clamp(1rem, 1.25vw, 1.2rem);
@@ -59,26 +82,35 @@
   list-style: none;
 }
 
-.workshop-difference__text,
-.workshop-audience__lead {
-  margin-top: clamp(1.6rem, 3vw, 2.6rem);
-  color: rgba(255, 255, 255, 0.9);
+.workshop-body-strong {
+  margin-top: clamp(1.4rem, 2.6vw, 2.2rem);
+  color: rgba(255, 255, 255, 0.88);
   font-size: clamp(1.15rem, 1.8vw, 1.7rem);
   line-height: 1.45;
 }
 
-.workshop-audience__lead {
-  margin-top: 0;
+.workshop-statement {
+  margin-top: clamp(2rem, 4vw, 3.4rem);
+  font-size: clamp(2.1rem, 4.6vw, 4.8rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 1;
 }
 
-.workshop-audience__text {
-  margin-top: 1.4rem;
-  color: rgba(255, 255, 255, 0.58);
-  font-size: clamp(1rem, 1.25vw, 1.2rem);
-  line-height: 1.7;
+.workshop-people {
+  padding: 0;
+  font-size: clamp(1.35rem, 2.3vw, 2.3rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+  list-style: none;
 }
 
-/* 4. Program */
+.workshop-audience__details {
+  margin-top: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+/* Program */
 
 .workshop-program .workshop-eyebrow {
   margin-bottom: clamp(2rem, 4vw, 3.5rem);
@@ -122,7 +154,7 @@
   line-height: 1.65;
 }
 
-/* 6. Finał */
+/* Finał */
 
 .workshop-closing__title {
   font-size: clamp(2.6rem, 7.4vw, 8rem);
@@ -132,11 +164,13 @@
 }
 
 .workshop-closing__text {
+  display: grid;
   max-width: 40rem;
   margin-top: clamp(1.6rem, 3vw, 2.6rem);
   color: rgba(255, 255, 255, 0.62);
   font-size: clamp(1.05rem, 1.5vw, 1.4rem);
   line-height: 1.55;
+  gap: 1rem;
 }
 
 .workshop-closing__actions {
@@ -152,28 +186,34 @@
   font-size: clamp(1.05rem, 1.5vw, 1.4rem);
 }
 
-.workshop-closing__contact {
-  font-size: clamp(0.85rem, 1vw, 0.95rem);
+.workshop-closing__mail {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  text-decoration: none;
+  transition: color 220ms ease;
 }
 
-/* Wejście sekcji */
+.workshop-closing__mail:hover {
+  color: #fff;
+}
 
-.reveal {
+/* Wejście sekcji: ukryte dopiero, gdy działa JS (useReveal dodaje .reveal-ready). */
+
+.reveal-ready .reveal {
   opacity: 0;
-  transform: translateY(1.2rem);
+  transform: translateY(0.9rem);
   transition:
     opacity 900ms ease,
     transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.reveal.is-visible {
+.reveal-ready .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
 
 @media (max-width: 900px) {
-  .workshop-difference,
-  .workshop-audience {
+  .workshop-split {
     grid-template-columns: 1fr;
   }
 
@@ -186,7 +226,8 @@
     grid-column: 2;
   }
 
-  .workshop-approach__follow {
+  .workshop-manifest__follow,
+  .workshop-about__body {
     margin-left: 0;
   }
 }
@@ -200,23 +241,18 @@
     grid-column: 1;
   }
 
+  .workshop-topic__text .workshop-line {
+    display: inline;
+  }
+
   .workshop-closing__actions {
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .workshop-closing__contact {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .workshop-closing__contact span {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .reveal-ready .reveal {
     opacity: 1;
     transform: none;
   }
