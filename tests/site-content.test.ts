@@ -3,6 +3,7 @@ import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { personSchema, siteContent } from '../app/content/site'
 import { workshop, workshopMailHref } from '../app/content/workshop'
+import { workshopOffer, workshopOfferPages } from '../app/content/workshop-offer'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -45,5 +46,18 @@ describe('site content', () => {
     const sitemap = readFileSync(resolve(process.cwd(), 'public/sitemap.xml'), 'utf8')
     expect(sitemap).toContain('<loc>https://dobrolinski.pl/</loc>')
     expect(sitemap).toContain(`<loc>${workshop.seo.url}</loc>`)
+  })
+  it('keeps the offer structure ready for a six-page PDF', () => {
+    expect(workshopOffer.process.workshop.parts.map(part => part.name)).toEqual([
+      'CZŁOWIEK', 'SPRZEDAŻ', 'RELACJA', 'WASZA FIRMA',
+    ])
+    expect(workshopOfferPages.map(page => page.page)).toEqual([1, 2, 3, 4, 5, 6])
+    expect(workshopOffer.pilot.priceNet).toBe(2900)
+    expect(workshopOffer.pilot.slots).toBe(3)
+  })
+
+  it('makes no numeric promises in the offer', () => {
+    const promises = [...workshopOffer.outcomes, ...workshopOffer.pilot.narrative].join(' ')
+    expect(promises).not.toMatch(/%|\d/)
   })
 })
