@@ -26,7 +26,8 @@ Statyczny rezultat powstaje w `.output/public`.
 - `app/components/` — elementy strony głównej i sekcje warsztatu
 - `app/composables/` — myśli i obszary, światło kursora, wejście sekcji, zgoda
 - `app/content/site.ts` — treści strony głównej i Schema.org
-- `app/content/workshop.ts` — treści, SEO i adres warsztatu POZNAJ CZŁOWIEKA
+- `app/content/workshop.ts` — treści, SEO, adres i dane produktu warsztatu POZNAJ CZŁOWIEKA (cena regularna)
+- `app/content/workshop-offer.ts` — układ 6-stronicowej oferty PDF (bez ceny pilotażowej: repo jest publiczne)
 - `app/assets/css/` — baza, interfejs, ruch i responsywność
 - `public/` — favicon, Open Graph, robots, sitemap i CNAME
 - `legacy/index.v0.html` — zachowany oryginał wizualny
@@ -62,11 +63,13 @@ Do pomiaru kliknięć w GTM (wyzwalacz „Kliknięcie — wszystkie elementy”,
 
 | `data-track` | `data-track-place` | Element |
 |---|---|---|
-| `home-project` | — | blok „Teraz / 01 / POZNAJ CZŁOWIEKA” na głównej |
-| `workshop-cta` | `hero`, `closing` | „Porozmawiajmy…” na stronie warsztatu (mailto) |
-| `mail` | `home`, `workshop-topbar`, `workshop-closing` | kliknięcie adresu e-mail |
-| `phone` | `home`, `workshop-topbar` | kliknięcie numeru telefonu |
-| `back-home` | `back`, `brand` | powrót z warsztatu na główną |
+| `open_project` | — | blok „Teraz / 01 / POZNAJ CZŁOWIEKA” na głównej |
+| `workshop_cta` | `hero`, `closing` | „Porozmawiajmy…” na stronie warsztatu (mailto) |
+| `email_click` | `home`, `workshop-topbar`, `workshop-closing` | kliknięcie adresu e-mail |
+| `phone_click` | `home`, `workshop-topbar` | kliknięcie numeru telefonu |
+| `back_home` | `back`, `brand` | powrót z warsztatu na główną |
+
+Wartość `data-track` jest jednocześnie proponowaną nazwą zdarzenia GA4.
 
 ## Adresy i build
 

@@ -19,14 +19,14 @@ const { hero } = workshop
     >
 
     <header class="workshop-topbar">
-      <NuxtLink class="workshop-topbar__brand" to="/" data-track="back-home" data-track-place="brand">{{ siteContent.name }}</NuxtLink>
+      <NuxtLink class="workshop-topbar__brand" to="/" data-track="back_home" data-track-place="brand">{{ siteContent.name }}</NuxtLink>
       <ul class="workshop-topbar__areas" aria-label="Obszary">
         <li v-for="area in siteContent.areas" :key="area.slug">{{ area.label }}</li>
       </ul>
       <address class="workshop-topbar__contact">
-        <a :href="`mailto:${siteContent.email}`" data-track="mail" data-track-place="workshop-topbar">{{ siteContent.email }}</a>
+        <a :href="`mailto:${siteContent.email}`" data-track="email_click" data-track-place="workshop-topbar">{{ siteContent.email }}</a>
         <span aria-hidden="true">·</span>
-        <a :href="siteContent.phoneHref" data-track="phone" data-track-place="workshop-topbar">{{ siteContent.phoneDisplay }}</a>
+        <a :href="siteContent.phoneHref" data-track="phone_click" data-track-place="workshop-topbar">{{ siteContent.phoneDisplay }}</a>
       </address>
     </header>
 
@@ -60,7 +60,7 @@ const { hero } = workshop
         </li>
       </ul>
 
-      <a class="workshop-link" :href="workshopMailHref" data-track="workshop-cta" data-track-place="hero">
+      <a class="workshop-link" :href="workshopMailHref" data-track="workshop_cta" data-track-place="hero">
         {{ hero.cta }}
         <span aria-hidden="true">→</span>
       </a>

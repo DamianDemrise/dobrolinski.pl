@@ -10,6 +10,8 @@
 
 .workshop-screen {
   position: relative;
+  /* Zdjęcie celowo wychodzi za prawą krawędź; przycinamy je tutaj, nie poszerzając strony. */
+  overflow: clip;
   display: grid;
   min-height: 100%;
   grid-template-rows: auto 1fr;

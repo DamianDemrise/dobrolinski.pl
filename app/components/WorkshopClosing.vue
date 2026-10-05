@@ -16,7 +16,7 @@ const { closing } = workshop
       <a
         class="workshop-link workshop-link--large"
         :href="workshopMailHref"
-        data-track="workshop-cta"
+        data-track="workshop_cta"
         data-track-place="closing"
       >
         {{ closing.cta }}
@@ -25,9 +25,17 @@ const { closing } = workshop
       <a
         class="workshop-closing__mail"
         :href="workshopMailHref"
-        data-track="mail"
+        data-track="email_click"
         data-track-place="workshop-closing"
       >{{ siteContent.email }}</a>
     </div>
   </section>
+
+  <footer class="workshop-epilogue" aria-label="Na koniec">
+    <p class="reveal">
+      <template v-for="line in workshop.epilogue" :key="line">
+        <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+      </template>
+    </p>
+  </footer>
 </template>

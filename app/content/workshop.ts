@@ -2,6 +2,11 @@ import { siteContent } from './site'
 
 const SITE_URL = 'https://dobrolinski.pl'
 
+/**
+ * Warsztat POZNAJ CZŁOWIEKA: jedyne źródło treści strony /poznaj-czlowieka
+ * i danych produktu. Wszystko tutaj jest publiczne (repo i build).
+ * Ceny pilotażowej celowo tu nie ma: Damian proponuje ją indywidualnie.
+ */
 export const workshop = {
   slug: 'poznaj-czlowieka',
   path: '/poznaj-czlowieka',
@@ -9,12 +14,28 @@ export const workshop = {
   index: '01 / POZNAJ CZŁOWIEKA',
   homeLabel: 'Teraz',
   mailSubject: 'Warsztat POZNAJ CZŁOWIEKA',
+  title: 'Na końcu każdej sprzedaży jest człowiek.',
+  subtitle: 'Warsztat o sprzedaży, relacjach i pracy z ludźmi.',
   seo: {
     title: 'Poznaj Człowieka — warsztat o sprzedaży i relacjach | Damian Dobroliński',
     description:
       'Warsztat o sprzedaży, relacjach i codziennej pracy z ludźmi. Bez skryptów i magicznych technik. Prawdziwe historie, rozmowa i praktyka.',
     url: `${SITE_URL}/poznaj-czlowieka`,
   },
+
+  format: {
+    duration: 'Około 6 godzin + przerwy',
+    audience: 'Dla właścicieli firm i osób pracujących z klientem',
+    type: 'Warsztat zamknięty dla jednej firmy',
+    group: 'Zamknięta grupa, docelowo około 10 osób',
+  },
+  regularPrice: {
+    amount: 4900,
+    currency: 'PLN',
+    net: true,
+    label: '4 900 zł netto',
+  },
+
   hero: {
     titleLines: ['Na końcu każdej', 'sprzedaży jest człowiek.'],
     lead: 'Warsztat o sprzedaży, relacjach i pracy z ludźmi.',
@@ -31,6 +52,7 @@ export const workshop = {
     cta: 'Porozmawiajmy o warsztacie',
     more: 'Więcej o warsztacie',
   },
+
   manifest: {
     quietLine: 'Nie uczę sprzedawać.',
     strongLine: 'Uczę rozmawiać z ludźmi.',
@@ -44,6 +66,34 @@ export const workshop = {
     ],
     reason: 'Bo klient po drugiej stronie nie przeczytał naszego skryptu.',
     statement: 'Każdy jest inny.',
+  },
+  interludes: [
+    {
+      id: 'czego-nie-kupisz',
+      titleLines: ['Powiedz mi,', 'czego nie kupisz.'],
+      lines: ['Zanim spróbujesz coś sprzedać, dowiedz się, czego człowiek przed Tobą na pewno nie potrzebuje.'],
+    },
+    {
+      id: 'nie-wiem',
+      titleLines: ['Nie wiem.'],
+      lines: [
+        'To też jest dobra odpowiedź.',
+        'Nie musisz znać odpowiedzi na wszystko, żeby dobrze pracować z klientem.',
+      ],
+    },
+  ],
+  question: {
+    promptLines: ['Co robisz,', 'kiedy klient mówi:'],
+    quote: '„Za drogo”?',
+    answerIntro: 'Ja najpierw zapytam:',
+    answer: 'Za drogo w porównaniu z czym?',
+  },
+  industry: {
+    titleLines: ['Klient nie ma obowiązku', 'znać Twojej branży.'],
+    lines: [
+      'Ty znasz ofertę, ceny, skróty i proces.',
+      'Dla człowieka po drugiej stronie to może być pierwszy taki zakup w życiu.',
+    ],
   },
   program: {
     eyebrow: 'O CZYM BĘDZIEMY ROZMAWIAĆ',
@@ -78,6 +128,63 @@ export const workshop = {
       },
     ],
   },
+  honesty: {
+    titleLines: ['Nie każda sprzedaż', 'powinna się wydarzyć.'],
+    reference: '04 / Ja bym Ci tego nie sprzedał.',
+    lines: ['Czasami uczciwa odpowiedź brzmi:', 'tego Ci nie polecam.'],
+  },
+  marketing: {
+    title: 'Marketing przyprowadził człowieka.',
+    question: 'Co dalej?',
+    steps: ['Kliknął.', 'Zadzwonił.', 'Wysłał formularz.'],
+    conclusionLines: ['Od tego momentu reklama', 'już za Ciebie nie porozmawia.'],
+  },
+  groundRules: {
+    eyebrow: 'NA TYM WARSZTACIE',
+    items: [
+      ['Można się ze mną nie zgadzać.'],
+      ['Można powiedzieć,', 'że u Was to nie działa.'],
+      ['Można przynieść przypadek,', 'z którym sam nie będę wiedział,', 'co zrobić.'],
+    ],
+  },
+  workshopParts: [
+    {
+      number: '01',
+      name: 'CZŁOWIEK',
+      lines: ['Potrzeby.', 'Słuchanie.', 'Pierwsze wrażenie.', 'Indywidualne podejście.'],
+      closing: 'Klient jako człowiek, nie numer.',
+    },
+    {
+      number: '02',
+      name: 'SPRZEDAŻ',
+      lines: ['Cena.', '„Za drogo”.', 'Rabaty.', 'Granice.', 'Uczciwość.'],
+      closing: 'I sytuacje, w których nie warto sprzedawać.',
+    },
+    {
+      number: '03',
+      name: 'RELACJA',
+      lines: ['Co dzieje się po sprzedaży.', 'Powroty klientów.', 'Rekomendacje.', 'Małe rzeczy, które zostają w pamięci.'],
+      closing: '',
+    },
+    {
+      number: '04',
+      name: 'WASZA FIRMA',
+      lines: ['Pracujemy na prawdziwych sytuacjach, z którymi spotyka się Wasz zespół.'],
+      closing: '',
+    },
+  ],
+  yourStories: {
+    quietLine: 'Tu kończą się moje historie.',
+    strongLine: 'Zaczynają Wasze.',
+    caption: 'SYTUACJE, NA KTÓRYCH MOŻEMY PRACOWAĆ',
+    situations: [
+      ['Konkurencja ma taniej.'],
+      ['Ile rabatu?'],
+      ['Muszę się zastanowić.'],
+      ['Nie wiem, czego potrzebuję.'],
+      ['Lead przyszedł z reklamy.', 'Co dalej?'],
+    ],
+  },
   about: {
     titleLines: ['Sprzedaży nauczyli mnie ludzie,', 'nie książki.'],
     paragraphs: [
@@ -92,6 +199,50 @@ export const workshop = {
     people: ['Właściciele firm.', 'Handlowcy.', 'Doradcy.', 'Obsługa klienta.', 'Zespoły sprzedażowe.'],
     detailsLines: ['Warsztat zamknięty dla jednej firmy.', 'Około 6 godzin + przerwy.'],
   },
+  outcomes: {
+    intro: 'Jeżeli po tym spotkaniu…',
+    items: [
+      ['…zadajesz klientowi jedno pytanie więcej,', 'zanim zaczniesz mu coś sprzedawać…'],
+      ['…chwilę dłużej słuchasz,', 'zanim zaczniesz odpowiadać…'],
+      ['…nie panikujesz,', 'kiedy słyszysz „za drogo”…'],
+      ['…potrafisz powiedzieć:', '„tego Ci nie polecam”…'],
+      ['…pamiętasz o człowieku', 'również po wystawieniu faktury…'],
+    ],
+    conclusion: 'to już coś zmieniliśmy.',
+  },
+  process: {
+    title: 'Jak wygląda współpraca',
+    steps: [
+      {
+        id: 'before',
+        label: 'PRZED',
+        lead: '30–45 minut rozmowy z właścicielem lub managerem.',
+        lines: ['Chcę poznać firmę, zespół, klientów, najczęstsze problemy i prawdziwe sytuacje.'],
+        note: 'Na tej podstawie dopasowuję część warsztatu.',
+      },
+      {
+        id: 'during',
+        label: 'W TRAKCIE',
+        lead: 'Około 6 godzin + przerwy.',
+        lines: ['Historie. Rozmowa. Ćwiczenia. Dyskusja.', 'Prawdziwe przypadki zespołu.'],
+        note: '',
+      },
+      {
+        id: 'after',
+        label: 'PO',
+        lead: 'Jedna strona: „Co zabieramy ze sobą?”',
+        lines: ['5–7 najważniejszych rzeczy, które wypracował konkretny zespół.'],
+        note: '',
+      },
+    ],
+    priceIncludes: [
+      'rozmowa przed warsztatem',
+      'przygotowanie i dopasowanie części warsztatu',
+      'około 6 godzin + przerwy',
+      'praca na przypadkach firmy',
+      'jednostronicowe podsumowanie po warsztacie',
+    ],
+  },
   closing: {
     title: 'A jak jest u Was?',
     paragraphs: [
@@ -100,6 +251,7 @@ export const workshop = {
     ],
     cta: 'Porozmawiajmy',
   },
+  epilogue: ['Bądźmy po prostu dobrzy dla ludzi.', 'Bo na końcu i tak zostaje człowiek.'],
 } as const
 
 export const workshopMailHref = `mailto:${siteContent.email}?subject=${encodeURIComponent(workshop.mailSubject)}`
