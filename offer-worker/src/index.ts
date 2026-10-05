@@ -8,7 +8,7 @@ import { isValidEmail, normalizeEmail, sanitizeSource, type OfferErrorCode, type
 import { allowedOrigins, DEFAULTS, LIMITS, mailMode, type Env } from './config.ts'
 import { allowIp, checkEmail, countDaily, rememberEmail, sha256, underDailyLimit } from './limits.ts'
 import { sendMail, type OutgoingMail } from './resend.ts'
-import { NOTIFICATION_SUBJECT, notificationText, OFFER_SUBJECT, offerHtml, offerText } from './templates.ts'
+import { NOTIFICATION_SUBJECT, notificationText, OFFER_ATTACHMENT, OFFER_SUBJECT, offerHtml, offerText } from './templates.ts'
 
 type LogStatus = 'sent' | 'dry' | 'duplicate' | 'bot' | 'rejected' | 'error'
 
@@ -132,7 +132,7 @@ export async function handleRequest(request: Request, env: Env, fetcher: typeof 
     subject: testPrefix + OFFER_SUBJECT,
     text: offerText(pdfUrl),
     html: offerHtml(pdfUrl),
-    attachment: { filename: DEFAULTS.pdfFilename, path: pdfUrl },
+    attachment: { filename: OFFER_ATTACHMENT.filename, path: pdfUrl },
     idempotencyKey: `offer-${emailHash}-${bucket}`,
   }
   const sent = await sendMail(env.RESEND_API_KEY, offer, fetcher)

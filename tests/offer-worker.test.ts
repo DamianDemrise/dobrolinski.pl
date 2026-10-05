@@ -71,7 +71,7 @@ describe('offer endpoint', () => {
     expect(offer.to).toEqual(['anna@firma.pl'])
     expect(offer.reply_to).toBe('damian@dobrolinski.pl')
     expect(offer.subject).toBe(OFFER_SUBJECT)
-    expect(offer.attachments).toEqual([{ filename: 'poznaj-czlowieka-damian-dobrolinski.pdf', path: PDF }])
+    expect(offer.attachments).toEqual([{ filename: 'poznaj-czlowieka-oferta.pdf', path: PDF }])
     expect(offer.text).toContain(PDF)
     expect(offer.html).toContain(PDF)
     const notification = t.sentBody(1)
