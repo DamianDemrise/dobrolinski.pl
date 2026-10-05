@@ -12,6 +12,12 @@ useHead({
   ],
 })
 
+// Kaskada wejścia gra tylko przy pierwszym wejściu na stronę, nie przy powrocie z podstrony.
+const hasNavigated = ref(false)
+useRouter().afterEach((_to, from) => {
+  if (from.matched.length) hasNavigated.value = true
+})
+
 const focusActiveView = () => {
   document.querySelector<HTMLElement>('.view')?.focus({ preventScroll: true })
 }
@@ -20,6 +26,7 @@ const focusActiveView = () => {
 <template>
   <main
     class="site-stage"
+    :class="{ 'has-navigated': hasNavigated }"
     :style="lightStyle"
     @pointermove="onPointerMove"
   >
@@ -28,8 +35,6 @@ const focusActiveView = () => {
     <NuxtPage
       :transition="{ name: 'view', mode: 'out-in', onAfterEnter: focusActiveView }"
     />
-
-    <IntroReveal />
 
     <ClientOnly>
       <ConsentBanner />

@@ -92,6 +92,20 @@ a {
   );
   opacity: 0.78;
   pointer-events: none;
+  /* Światło żyje: bardzo powolny dryf, który widać dopiero po kilku sekundach. */
+  animation: ambient-drift 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes ambient-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2.5%, -2%, 0) scale(1.06); }
+  100% { transform: translate3d(-2%, 1.5%, 0) scale(1.02); }
+}
+
+::selection {
+  background: rgba(247, 247, 245, 0.9);
+  color: #080808;
 }
 
 .view {
