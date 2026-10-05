@@ -76,4 +76,11 @@ describe('site content', () => {
     expect(seo.title).toBeTruthy()
     expect(visible).not.toContain('—')
   })
+  it('ships the dedicated Open Graph image for the workshop', () => {
+    expect(workshop.seo.image).toBe('https://dobrolinski.pl/og-poznaj-czlowieka.png')
+    const png = readFileSync(resolve(process.cwd(), 'public/og-poznaj-czlowieka.png'))
+    // Nagłówek IHDR: szerokość i wysokość jako 32-bit big-endian.
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630])
+    expect(workshop.seo.socialTitle).not.toContain('—')
+  })
 })
