@@ -13,3 +13,4 @@
 | SEO | `nuxt.config.ts` (główna), `pages/poznaj-czlowieka.vue` (`useSeoMeta`) | — | Schema.org w `site.ts`, `workshop.seo` | — | `sitemap.xml` w teście + build |
 | Zgoda i statystyki | `ConsentBanner.vue` | `useAnalyticsConsent.ts`, `plugins/analytics.client.ts` | `site.ts` (`consent`), `nuxt.config.ts` (`gtmId`) | `consent.css` | `site-content.test.ts` + DOM |
 | Oferta warsztatu (pod PDF, niewyświetlana) | — | — | `workshop-offer.ts` (`workshopOfferPages`) | — | `site-content.test.ts` |
+| Oferta e-mailem (formularz → mail z PDF) | `WorkshopOfferForm.vue` (w `WorkshopProcess.vue`, pod ceną) | `useOfferForm.ts`, endpoint `offer-worker/` (Cloudflare Worker + Resend), kontrakt `shared/offer.ts` | `workshop.ts` (`offer`), `offer-worker/src/templates.ts`, `public/oferta/poznaj-czlowieka.pdf` | `workshop-offer.css` | `offer-worker.test.ts`; `docs/OFFER-AUTOMATION.md` |

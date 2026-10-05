@@ -223,6 +223,21 @@ export const workshop = {
       'jednostronicowe podsumowanie po warsztacie',
     ],
   },
+  offer: {
+    title: 'Chcesz zobaczyć całość?',
+    lines: ['Przygotowałem krótką ofertę warsztatu', 'z programem, sposobem pracy i organizacją.'],
+    label: 'Twój e-mail',
+    submit: 'Wyślij mi ofertę',
+    sending: 'Wysyłam...',
+    note: ['Bez newslettera.', 'Dostaniesz tylko ofertę.'],
+    success: { title: 'Poszło.', text: 'Sprawdź skrzynkę.', hint: 'Jeżeli nic nie przyszło w ciągu kilku minut, sprawdź spam.' },
+    errors: {
+      empty: 'Wpisz adres e-mail.',
+      invalid: 'To nie wygląda na adres e-mail. Sprawdź go jeszcze raz.',
+      failed: 'Nie udało się wysłać oferty.',
+      failedHint: 'Spróbuj ponownie albo napisz:',
+    },
+  },
   closing: {
     title: 'A jak jest u Was?',
     paragraphs: [

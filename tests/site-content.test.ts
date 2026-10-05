@@ -63,7 +63,7 @@ describe('site content', () => {
   })
 
   it('never ships the pilot price in public source', () => {
-    const dirs = ['app/content', 'app/components', 'app/pages']
+    const dirs = ['app/content', 'app/components', 'app/pages', 'shared', 'offer-worker/src']
     for (const dir of dirs) {
       for (const file of readdirSync(resolve(process.cwd(), dir))) {
         const source = readFileSync(resolve(process.cwd(), dir, file), 'utf8')
@@ -71,6 +71,13 @@ describe('site content', () => {
       }
     }
   })
+  it('serves the offer PDF at a stable public URL', () => {
+    const pdf = readFileSync(resolve(process.cwd(), 'public/oferta/poznaj-czlowieka.pdf'))
+    expect(pdf.subarray(0, 5).toString()).toBe('%PDF-')
+    // Pod /poznaj-czlowieka/ nie może powstać katalog: przesłoniłby poznaj-czlowieka.html na GitHub Pages.
+    expect(() => readdirSync(resolve(process.cwd(), 'public/poznaj-czlowieka'))).toThrow()
+  })
+
   it('keeps visible copy free of em-dash pauses', () => {
     const { seo, ...visibleWorkshop } = workshop
     const visible = JSON.stringify([siteContent, visibleWorkshop])

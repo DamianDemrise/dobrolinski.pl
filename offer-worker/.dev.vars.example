@@ -1,0 +1,10 @@
+# Kopia jako offer-worker/.dev.vars (plik jest w .gitignore). Bez prawdziwych wartości w repo.
+RESEND_API_KEY=
+MAIL_MODE=dry
+TEST_RECIPIENT=
+MAIL_FROM=Damian Dobroliński <oferta@dobrolinski.pl>
+MAIL_REPLY_TO=damian@dobrolinski.pl
+NOTIFICATION_EMAIL=damian@dobrolinski.pl
+ALLOWED_ORIGINS=https://dobrolinski.pl,http://localhost:3000,http://localhost:4880
+PDF_URL=https://dobrolinski.pl/oferta/poznaj-czlowieka.pdf
+DAILY_LIMIT=40

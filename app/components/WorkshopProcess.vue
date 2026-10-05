@@ -40,5 +40,9 @@ const { process, regularPrice, format, groundRules } = workshop
       <p class="workshop-price__amount">{{ regularPrice.label }}</p>
       <p class="workshop-price__includes">W cenie: {{ process.priceIncludes.join(', ') }}.</p>
     </div>
+
+    <ClientOnly>
+      <WorkshopOfferForm />
+    </ClientOnly>
   </section>
 </template>
