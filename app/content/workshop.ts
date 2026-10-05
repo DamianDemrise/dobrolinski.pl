@@ -1,6 +1,8 @@
 import { siteContent } from './site'
 
 const SITE_URL = 'https://dobrolinski.pl'
+const NUMBER = '01'
+const NAME = 'POZNAJ CZŁOWIEKA'
 
 /**
  * Warsztat POZNAJ CZŁOWIEKA: jedyne źródło treści strony /poznaj-czlowieka
@@ -10,14 +12,15 @@ const SITE_URL = 'https://dobrolinski.pl'
 export const workshop = {
   slug: 'poznaj-czlowieka',
   path: '/poznaj-czlowieka',
-  name: 'POZNAJ CZŁOWIEKA',
-  index: '01 / POZNAJ CZŁOWIEKA',
+  number: NUMBER,
+  name: NAME,
+  index: `${NUMBER} / ${NAME}`,
   homeLabel: 'Teraz',
   mailSubject: 'Warsztat POZNAJ CZŁOWIEKA',
   title: 'Na końcu każdej sprzedaży jest człowiek.',
   subtitle: 'Warsztat o sprzedaży, relacjach i pracy z ludźmi.',
   seo: {
-    title: 'Poznaj Człowieka — warsztat o sprzedaży i relacjach | Damian Dobroliński',
+    title: 'Poznaj Człowieka | Damian Dobroliński',
     description:
       'Warsztat o sprzedaży, relacjach i codziennej pracy z ludźmi. Bez skryptów i magicznych technik. Prawdziwe historie, rozmowa i praktyka.',
     url: `${SITE_URL}/poznaj-czlowieka`,
