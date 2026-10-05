@@ -70,14 +70,27 @@
     top: max(1.1rem, env(safe-area-inset-top));
     right: 1.25rem;
     left: 1.25rem;
-    justify-content: center;
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
+    justify-items: center;
+    gap: 0.45rem;
+    text-align: center;
+  }
+
+  .current-project__label {
+    font-size: 0.58rem;
   }
 
   .current-project__line {
-    width: 1.4rem;
-    margin: 0 0.6rem;
+    width: 1.6rem;
+    margin-left: 0.7rem;
+  }
+
+  .current-project__name {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
+
+  .current-project__lead {
+    font-size: 0.78rem;
   }
 
   .powered {
