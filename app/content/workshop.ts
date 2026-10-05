@@ -21,6 +21,12 @@ export const workshop = {
     description:
       'Warsztat o sprzedaży, relacjach i codziennej pracy z ludźmi. Bez skryptów i magicznych technik. Prawdziwe historie, rozmowa i praktyka.',
     url: `${SITE_URL}/poznaj-czlowieka`,
+    /* Krótszy tytuł i opis do podglądów linków (OG, X). Pełny <title> i description zostają wyżej. */
+    socialTitle: 'Poznaj Człowieka | Damian Dobroliński',
+    socialDescription:
+      'Warsztat o sprzedaży, relacjach i pracy z ludźmi. Bez skryptów i magicznych technik. Prawdziwe historie, rozmowa i praktyka.',
+    image: `${SITE_URL}/og-poznaj-czlowieka.png`,
+    imageAlt: 'POZNAJ CZŁOWIEKA. Na końcu każdej sprzedaży jest człowiek. Warsztat Damiana Dobrolińskiego.',
   },
 
   format: {

@@ -7,11 +7,19 @@ useSeoMeta({
   title: seo.title,
   description: seo.description,
   ogType: 'website',
-  ogTitle: seo.title,
-  ogDescription: seo.description,
+  ogTitle: seo.socialTitle,
+  ogDescription: seo.socialDescription,
   ogUrl: seo.url,
-  twitterTitle: seo.title,
-  twitterDescription: seo.description,
+  ogImage: seo.image,
+  ogImageType: 'image/png',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: seo.imageAlt,
+  twitterCard: 'summary_large_image',
+  twitterTitle: seo.socialTitle,
+  twitterDescription: seo.socialDescription,
+  twitterImage: seo.image,
+  twitterImageAlt: seo.imageAlt,
 })
 
 useHead({
