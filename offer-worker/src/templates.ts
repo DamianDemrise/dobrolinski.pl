@@ -54,8 +54,8 @@ export function offerText(pdfUrl: string): string {
 const text = (content: string, style: string) =>
   `<p style="margin:0;font-family:${FONT};${style}">${content}</p>`
 
-const divider = (space: string, cls: string) =>
-  `<table class="${cls}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:${space};"><tr><td style="border-top:1px solid ${LINE};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr></table>`
+const divider = (space: string, cls: string, extra = '') =>
+  `<table class="${cls}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:${space};${extra}"><tr><td style="border-top:1px solid ${LINE};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr></table>`
 
 const body = (content: string, bottom = 20, color = BODY) =>
   text(content, `font-size:18px;line-height:28px;color:${color};margin:0 0 ${bottom}px;`)
@@ -77,12 +77,15 @@ export function offerHtml(pdfUrl: string): string {
     .page { padding: 38px 24px 44px !important; }
     .eyebrow { margin-bottom: 18px !important; }
     .hero { font-size: 44px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
-    .d1 { margin: 30px 0 32px !important; }
+    .d1 { display: table !important; margin: 30px 0 32px !important; }
     .d2 { margin: 30px 0 22px !important; }
     .d3 { margin: 28px 0 32px !important; }
     .body p { font-size: 17px !important; line-height: 26px !important; margin-bottom: 20px !important; }
     .body p.last { margin-bottom: 0 !important; }
     .sig { margin-top: 36px !important; }
+    .col { display: block !important; width: 100% !important; max-width: 100% !important; }
+    .gap { padding-right: 0 !important; }
+    .claim { display: none !important; }
   }
   @media (max-width: 360px) {
     .page { padding: 36px 20px 40px !important; }
@@ -95,12 +98,18 @@ export function offerHtml(pdfUrl: string): string {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${PAPER}" style="background-color:${PAPER};">
   <tr>
     <td align="center" bgcolor="${PAPER}" style="padding:0;background-color:${PAPER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:860px;">
         <tr>
-          <td class="page" bgcolor="${PAPER}" style="padding:48px 44px 48px;background-color:${PAPER};">
-            <p class="eyebrow" style="margin:0 0 20px;font-family:${FONT};font-size:12px;line-height:16px;letter-spacing:2.5px;color:${GREY};">01 / POZNAJ CZŁOWIEKA</p>
-            <h1 class="hero" style="margin:0;font-family:${FONT};font-size:54px;line-height:54px;font-weight:400;letter-spacing:-1.5px;color:${INK};">Oferta<br><span style="color:${GREY};">warsztatu.</span></h1>
-            ${divider('34px 0 38px', 'd1')}
+          <td class="page" bgcolor="${PAPER}" style="padding:52px 56px 56px;background-color:${PAPER};">
+            <p class="eyebrow" style="margin:0 0 32px;font-family:${FONT};font-size:12px;line-height:16px;letter-spacing:2.5px;color:${GREY};">01 / POZNAJ CZŁOWIEKA</p>
+            <div style="font-size:0;line-height:0;">
+            <div class="col" style="display:inline-block;vertical-align:top;width:100%;max-width:340px;">
+              <div class="gap" style="padding-right:48px;">
+                <h1 class="hero" style="margin:0;font-family:${FONT};font-size:58px;line-height:58px;font-weight:400;letter-spacing:-1.6px;color:${INK};">Oferta<br><span style="color:${GREY};">warsztatu.</span></h1>
+                <p class="claim" style="margin:60px 0 0;font-family:${FONT};font-size:24px;line-height:29px;font-weight:400;letter-spacing:-0.3px;color:#777777;">Na końcu każdej sprzedaży<br>jest człowiek.</p>
+              </div>
+            </div><div class="col" style="display:inline-block;vertical-align:top;width:100%;max-width:408px;">
+            ${divider('34px 0 38px', 'd1', 'display:none;')}
             <div class="body">
               ${body('Cześć,')}
               ${body('zgodnie z prośbą przesyłam ofertę warsztatu „Poznaj&nbsp;Człowieka”.')}
@@ -117,16 +126,23 @@ export function offerHtml(pdfUrl: string): string {
                 </td>
               </tr>
             </table>
-            ${divider('30px 0 34px', 'd3')}
-            <div class="body">
+            </div>
+            </div>
+            ${divider('44px 0 38px', 'd3')}
+            <div style="font-size:0;line-height:0;">
+            <div class="col" style="display:inline-block;vertical-align:top;width:100%;max-width:340px;">
+            <div class="gap body" style="padding-right:48px;">
               ${body('Jeżeli po przeczytaniu będziesz mieć pytania albo uznasz, że może to mieć sens u&nbsp;Was, po prostu odpisz na tego maila.')}
               ${body('Najpierw pogadamy.', 0, INK).replace('<p ', '<p class="last" ')}
             </div>
-            <table class="sig" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:38px 0 0;"><tr><td>
+            </div><div class="col" style="display:inline-block;vertical-align:top;width:100%;max-width:408px;">
+            <table class="sig" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;"><tr><td>
               ${text(NAME, `font-size:18px;line-height:24px;font-weight:700;color:${INK};margin:0 0 6px;`)}
               <p class="areas" style="margin:0 0 2px;font-family:${FONT};font-size:14px;line-height:21px;color:${GREY};">${AREAS}</p>
               ${text(`<a href="${SITE_URL}" target="_blank" style="color:${GREY};text-decoration:none;white-space:nowrap;">${SITE}</a>`, `font-size:14px;line-height:21px;color:${GREY};margin:0;`)}
             </td></tr></table>
+            </div>
+            </div>
           </td>
         </tr>
       </table>
