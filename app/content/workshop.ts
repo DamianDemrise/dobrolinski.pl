@@ -87,7 +87,8 @@ export const workshop = {
     ],
   },
   audience: {
-    titleLines: ['Jeśli pracujesz z ludźmi,', 'prawdopodobnie znajdziemy wspólny język.'],
+    eyebrow: 'DLA KOGO',
+    titleLines: ['Jeśli pracujesz z ludźmi,', 'prawdopodobnie znajdziemy', 'wspólny język.'],
     people: ['Właściciele firm.', 'Handlowcy.', 'Doradcy.', 'Obsługa klienta.', 'Zespoły sprzedażowe.'],
     detailsLines: ['Warsztat zamknięty dla jednej firmy.', 'Około 6 godzin + przerwy.'],
   },
