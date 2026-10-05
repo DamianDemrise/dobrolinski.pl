@@ -1,21 +1,12 @@
 <script setup lang="ts">
-import { siteContent } from '~/content/site'
-
-defineEmits<{ open: [] }>()
-
-const { workshop } = siteContent
+import { workshop } from '~/content/workshop'
 </script>
 
 <template>
-  <button class="current-project" type="button" @click="$emit('open')">
-    <span class="current-project__label">
-      {{ workshop.homeLabel }}
-      <span class="current-project__line" aria-hidden="true" />
-    </span>
-    <span class="current-project__name">
-      {{ workshop.index }}
-      <span class="current-project__arrow" aria-hidden="true">→</span>
-    </span>
-    <span class="current-project__lead">{{ workshop.lead }}</span>
-  </button>
+  <NuxtLink class="current-project" :to="workshop.path" data-track="home-project">
+    <span class="current-project__label">{{ workshop.homeLabel }}</span>
+    <span class="current-project__name">{{ workshop.index }}</span>
+    <span class="current-project__lead">{{ workshop.hero.lead }}</span>
+    <span class="current-project__arrow" aria-hidden="true">→</span>
+  </NuxtLink>
 </template>

@@ -8,20 +8,6 @@
     transform: translateY(-0.4rem);
   }
 
-  .background-statement {
-    width: 155vw;
-    transform: translate(-50%, -52%) rotate(-4deg);
-  }
-
-  .background-statement span {
-    display: none;
-  }
-
-  .background-statement strong {
-    font-size: 22vw;
-    -webkit-text-stroke-color: rgba(255, 255, 255, 0.085);
-  }
-
   .name {
     font-size: clamp(2.35rem, 11.5vw, 3.45rem);
     line-height: 0.98;
@@ -67,30 +53,17 @@
   }
 
   .current-project {
-    top: max(1.1rem, env(safe-area-inset-top));
-    right: 1.25rem;
-    left: 1.25rem;
-    justify-items: center;
-    gap: 0.45rem;
-    text-align: center;
-  }
-
-  .current-project__label {
-    font-size: 0.58rem;
-  }
-
-  .current-project__line {
-    width: 1.6rem;
-    margin-left: 0.7rem;
+    margin-top: 1.4rem;
+    column-gap: 1.2rem;
   }
 
   .current-project__name {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     letter-spacing: 0.14em;
   }
 
   .current-project__lead {
-    font-size: 0.78rem;
+    font-size: 0.84rem;
   }
 
   .powered {
@@ -109,6 +82,15 @@
 @media (pointer: coarse) {
   .ambient-light { opacity: 0.52; }
   .area { min-height: 2.75rem; }
+
+  /* Większa strefa dotyku dla małych linków tekstowych, bez zmiany układu. */
+  .contact a,
+  .workshop-topbar__brand,
+  .workshop-closing__mail {
+    display: inline-block;
+    margin-block: -0.6rem;
+    padding-block: 0.6rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -124,9 +106,6 @@
 
   .intro { display: none; }
   .identity,
-  .background-statement,
-  .current-project,
   .powered { opacity: 1; transform: none; }
-  .background-statement { transform: translate(-50%, -48%) rotate(-2.5deg); }
   .ambient-light { display: none; }
 }

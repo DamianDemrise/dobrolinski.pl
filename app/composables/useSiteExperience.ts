@@ -3,7 +3,6 @@ import type { AreaSlug } from '~/content/site'
 import { siteContent } from '~/content/site'
 
 export function useSiteExperience() {
-  const view = ref<'home' | 'workshop'>('home')
   const thoughtIndex = ref(0)
   const activeArea = ref<AreaSlug | null>(null)
   const pinnedArea = ref<AreaSlug | null>(null)
@@ -27,19 +26,9 @@ export function useSiteExperience() {
     activeArea.value = pinnedArea.value
   }
 
-  const openWorkshop = () => {
-    view.value = 'workshop'
-    pinnedArea.value = null
-    activeArea.value = null
-  }
-
-  const closeWorkshop = () => {
-    view.value = 'home'
-  }
-
   onMounted(() => {
     rotationTimer = setInterval(() => {
-      if (view.value === 'home' && !activeArea.value && !document.hidden) {
+      if (!activeArea.value && !document.hidden) {
         thoughtIndex.value = (thoughtIndex.value + 1) % siteContent.thoughts.length
       }
     }, 7200)
@@ -51,12 +40,9 @@ export function useSiteExperience() {
 
   return {
     activeArea,
-    closeWorkshop,
     leaveArea,
-    openWorkshop,
     previewArea,
     thought,
     toggleArea,
-    view,
   }
 }

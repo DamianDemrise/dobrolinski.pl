@@ -22,9 +22,11 @@ Statyczny rezultat powstaje w `.output/public`.
 
 ## Struktura
 
-- `app/components/` — niezależne elementy obu stanów widoku
-- `app/composables/` — stan doświadczenia i bezwładność światła kursora
-- `app/content/site.ts` — jedno źródło treści i danych Schema.org
+- `app/pages/` — `/` (strona główna) i `/poznaj-czlowieka` (warsztat)
+- `app/components/` — elementy strony głównej i sekcje warsztatu
+- `app/composables/` — myśli i obszary, światło kursora, wejście sekcji, zgoda
+- `app/content/site.ts` — treści strony głównej i Schema.org
+- `app/content/workshop.ts` — treści, SEO i adres warsztatu POZNAJ CZŁOWIEKA
 - `app/assets/css/` — baza, interfejs, ruch i responsywność
 - `public/` — favicon, Open Graph, robots, sitemap i CNAME
 - `legacy/index.v0.html` — zachowany oryginał wizualny
@@ -34,7 +36,7 @@ Dokładne granice modułów opisuje `MODULE_MAP.md`.
 
 ## Dostępność
 
-Obszary są prawdziwymi przyciskami i działają z klawiaturą oraz dotykiem. Stan warsztatu można zamknąć przyciskiem lub klawiszem `Escape`. Zmiany myśli są komunikowane przez `aria-live`, fokus pozostaje widoczny, a `prefers-reduced-motion` wyłącza intro i skraca pozostały ruch.
+Obszary są prawdziwymi przyciskami i działają z klawiaturą oraz dotykiem. Ze strony warsztatu wraca się linkiem „Wróć”, imieniem w pasku albo klawiszem `Escape`. Zmiany myśli są komunikowane przez `aria-live`, fokus pozostaje widoczny, a `prefers-reduced-motion` wyłącza intro i skraca pozostały ruch.
 
 ## Publikacja
 
@@ -55,6 +57,20 @@ GTM ładuje się dopiero po zgodzie odwiedzającego (tryb podstawowy Consent Mod
 - `app/components/ConsentBanner.vue` pokazuje panel, a po decyzji mały przycisk „Cookies” do jej zmiany; odrzucenie usuwa ciasteczka `_ga*`.
 
 Nowe tagi reklamowe w GTM wymagają rozszerzenia panelu o zgody `ad_*`.
+
+Do pomiaru kliknięć w GTM (wyzwalacz „Kliknięcie — wszystkie elementy”, warunek na selektor CSS) linki mają atrybuty:
+
+| `data-track` | `data-track-place` | Element |
+|---|---|---|
+| `home-project` | — | blok „Teraz / 01 / POZNAJ CZŁOWIEKA” na głównej |
+| `workshop-cta` | `hero`, `closing` | „Porozmawiajmy…” na stronie warsztatu (mailto) |
+| `mail` | `home`, `workshop-topbar`, `workshop-closing` | kliknięcie adresu e-mail |
+| `phone` | `home`, `workshop-topbar` | kliknięcie numeru telefonu |
+| `back-home` | `back`, `brand` | powrót z warsztatu na główną |
+
+## Adresy i build
+
+`nuxt generate` prerenderuje `/` i `/poznaj-czlowieka` jako `index.html` i `poznaj-czlowieka.html` (`autoSubfolderIndex: false`, bez osobnych `_payload.json`), więc GitHub Pages serwuje `/poznaj-czlowieka` bez przekierowania na ukośnik. Nowy adres dopisz też do `public/sitemap.xml`; test pilnuje obu obecnych.
 
 ## Bezpieczeństwo linków
 

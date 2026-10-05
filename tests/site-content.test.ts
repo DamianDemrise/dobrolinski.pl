@@ -1,5 +1,8 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { personSchema, siteContent, workshopMailHref } from '../app/content/site'
+import { personSchema, siteContent } from '../app/content/site'
+import { workshop, workshopMailHref } from '../app/content/workshop'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -26,8 +29,9 @@ describe('site content', () => {
   })
 
   it('presents the workshop as a numbered project with a short program teaser', () => {
-    const { workshop } = siteContent
     expect(workshop.index).toBe(`01 / ${workshop.name}`)
+    expect(workshop.path).toBe(`/${workshop.slug}`)
+    expect(workshop.seo.url).toBe(`https://dobrolinski.pl${workshop.path}`)
     expect(workshop.program.topics).toHaveLength(5)
     expect(workshop.program.topics.map(topic => topic.number)).toEqual(['01', '02', '03', '04', '05'])
   })
@@ -36,5 +40,10 @@ describe('site content', () => {
     expect(workshopMailHref).toBe(
       `mailto:${siteContent.email}?subject=${encodeURIComponent('Warsztat POZNAJ CZŁOWIEKA')}`,
     )
+  })
+  it('lists both pages in the sitemap', () => {
+    const sitemap = readFileSync(resolve(process.cwd(), 'public/sitemap.xml'), 'utf8')
+    expect(sitemap).toContain('<loc>https://dobrolinski.pl/</loc>')
+    expect(sitemap).toContain(`<loc>${workshop.seo.url}</loc>`)
   })
 })
