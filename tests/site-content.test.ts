@@ -1,9 +1,9 @@
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { personSchema, siteContent } from '../app/content/site'
 import { workshop, workshopMailHref } from '../app/content/workshop'
-import { workshopOffer, workshopOfferPages } from '../app/content/workshop-offer'
+import { workshopOfferPages } from '../app/content/workshop-offer'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -47,16 +47,27 @@ describe('site content', () => {
     expect(sitemap).toContain('<loc>https://dobrolinski.pl/</loc>')
     expect(sitemap).toContain(`<loc>${workshop.seo.url}</loc>`)
   })
-  it('keeps the offer structure ready for a six-page PDF', () => {
-    expect(workshopOffer.process.workshop.parts.map(part => part.name)).toEqual([
+  it('keeps the product structure and the six-page offer layout', () => {
+    expect(workshop.workshopParts.map(part => part.name)).toEqual([
       'CZŁOWIEK', 'SPRZEDAŻ', 'RELACJA', 'WASZA FIRMA',
     ])
+    expect(workshop.process.steps.map(step => step.label)).toEqual(['PRZED', 'W TRAKCIE', 'PO'])
     expect(workshopOfferPages.map(page => page.page)).toEqual([1, 2, 3, 4, 5, 6])
-    expect(workshopOffer.pilot.slots).toBe(3)
+    expect(workshop.regularPrice.amount).toBe(4900)
   })
 
-  it('makes no numeric promises in the offer', () => {
-    const promises = [...workshopOffer.outcomes, ...workshopOffer.pilot.narrative].join(' ')
-    expect(promises).not.toMatch(/%|\d/)
+  it('makes no numeric promises in outcomes', () => {
+    const outcomes = workshop.outcomes.items.flat().join(' ')
+    expect(outcomes).not.toMatch(/%|\d/)
+  })
+
+  it('never ships the pilot price in public source', () => {
+    const dirs = ['app/content', 'app/components', 'app/pages']
+    for (const dir of dirs) {
+      for (const file of readdirSync(resolve(process.cwd(), dir))) {
+        const source = readFileSync(resolve(process.cwd(), dir, file), 'utf8')
+        expect(source, `${dir}/${file}`).not.toMatch(/2[\s\u00a0]?900/)
+      }
+    }
   })
 })

@@ -29,17 +29,27 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <WorkshopHero @more="showContent" />
 
     <div ref="content" class="workshop-content">
+      <!-- Rozdział 1: sposób myślenia -->
       <WorkshopManifest />
       <WorkshopNoScript />
+      <WorkshopInterludes />
+      <WorkshopQuestion />
+      <!-- Rozdział 2: o czym rozmawiamy -->
       <WorkshopProgram />
+      <WorkshopHonesty />
+      <!-- Rozdział 3: jak wygląda warsztat -->
+      <WorkshopParts />
       <WorkshopAbout />
+      <!-- Rozdział 4: dla kogo i jak zacząć -->
       <WorkshopAudience />
+      <WorkshopOutcomes />
+      <WorkshopProcess />
       <WorkshopClosing />
     </div>
 
     <div class="workshop-fade" aria-hidden="true" />
 
-    <NuxtLink class="back-button" to="/" data-track="back-home" data-track-place="back">
+    <NuxtLink class="back-button" to="/" data-track="back_home" data-track-place="back">
       <span aria-hidden="true">←</span> Wróć
     </NuxtLink>
   </section>

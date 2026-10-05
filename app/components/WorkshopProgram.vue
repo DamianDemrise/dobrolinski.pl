@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import { workshop } from '~/content/workshop'
 
-const { program } = workshop
+const { industry, program } = workshop
 </script>
 
 <template>
   <section class="workshop-section workshop-program" aria-labelledby="workshop-program-title">
+    <div class="workshop-program__intro">
+      <p class="workshop-program__industry reveal">
+        <template v-for="line in industry.titleLines" :key="line">
+          <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+        </template>
+      </p>
+      <p class="workshop-program__industry-text reveal">
+        <template v-for="line in industry.lines" :key="line">
+          <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+        </template>
+      </p>
+    </div>
+
     <h2 id="workshop-program-title" class="workshop-eyebrow reveal">{{ program.eyebrow }}</h2>
     <ol class="workshop-program__list">
       <li v-for="topic in program.topics" :key="topic.number" class="workshop-topic reveal">

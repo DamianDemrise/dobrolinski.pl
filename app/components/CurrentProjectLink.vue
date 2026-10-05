@@ -3,7 +3,7 @@ import { workshop } from '~/content/workshop'
 </script>
 
 <template>
-  <NuxtLink class="current-project" :to="workshop.path" data-track="home-project">
+  <NuxtLink class="current-project" :to="workshop.path" data-track="open_project">
     <span class="current-project__label">{{ workshop.homeLabel }}</span>
     <span class="current-project__name">{{ workshop.index }}</span>
     <span class="current-project__lead">{{ workshop.hero.lead }}</span>

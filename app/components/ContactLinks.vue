@@ -4,8 +4,8 @@ import { siteContent } from '~/content/site'
 
 <template>
   <address class="contact">
-    <a :href="`mailto:${siteContent.email}`" data-track="mail" data-track-place="home">{{ siteContent.email }}</a>
+    <a :href="`mailto:${siteContent.email}`" data-track="email_click" data-track-place="home">{{ siteContent.email }}</a>
     <span class="contact__separator" aria-hidden="true">·</span>
-    <a :href="siteContent.phoneHref" data-track="phone" data-track-place="home">{{ siteContent.phoneDisplay }}</a>
+    <a :href="siteContent.phoneHref" data-track="phone_click" data-track-place="home">{{ siteContent.phoneDisplay }}</a>
   </address>
 </template>
