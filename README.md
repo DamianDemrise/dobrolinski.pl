@@ -59,7 +59,9 @@ GTM ładuje się dopiero po zgodzie odwiedzającego (tryb podstawowy Consent Mod
 
 Nowe tagi reklamowe w GTM wymagają rozszerzenia panelu o zgody `ad_*`.
 
-Do pomiaru kliknięć w GTM (wyzwalacz „Kliknięcie — wszystkie elementy”, warunek na selektor CSS) linki mają atrybuty:
+Pomiar kliknięć: po zgodzie `app/plugins/analytics.client.ts` zamienia kliknięcie elementu z `data-track` w zdarzenie `dataLayer` `track_click` (`track_name`, `track_place`, `link_url`, logika w `app/utils/clickTracking.ts`). W GTM (wersja 3) działa na to jeden wyzwalacz `CE - track_click` i tag `GA4 - Event - track_click`, którego nazwa zdarzenia to `track_name`. Nowy element do pomiaru wymaga tylko atrybutu `data-track`, bez zmian w GTM.
+
+Wartości atrybutów:
 
 | `data-track` | `data-track-place` | Element |
 |---|---|---|
