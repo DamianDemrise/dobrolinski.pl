@@ -48,6 +48,13 @@ export const siteContent = {
     statement:
       'Bez skryptów. Bez magicznych technik. Prawdziwe historie, sytuacje i rozmowy.',
   },
+  consent: {
+    label: 'Zgoda na statystyki',
+    text: 'Za Twoją zgodą korzystam z Google Analytics, żeby wiedzieć, ile osób odwiedza stronę. Bez zgody nic nie jest mierzone.',
+    accept: 'Zgoda',
+    reject: 'Odrzuć',
+    reopen: 'Cookies',
+  },
 } as const
 
 export const personSchema = {
