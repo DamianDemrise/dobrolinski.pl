@@ -41,12 +41,21 @@ export const siteContent = {
     'Możesz kupić kliknięcia. Relacji z klientem nie kupisz.',
   ],
   workshop: {
-    eyebrow: '01 / WARSZTAT',
-    title: 'Na końcu każdej sprzedaży jest człowiek.',
+    index: '01 / WARSZTAT',
+    eyebrow: 'WARSZTAT DLA FIRM I ZESPOŁÓW',
+    titleLines: ['Na końcu każdej sprzedaży', 'jest człowiek.'],
+    lead: 'Warsztat o sprzedaży, relacjach i pracy z ludźmi.',
     description:
-      'Pracuję nad warsztatem o sprzedaży, relacjach i codziennej pracy z ludźmi.',
-    statement:
-      'Bez skryptów. Bez magicznych technik. Prawdziwe historie, sytuacje i rozmowy.',
+      'Nie uczę sprzedawać. Uczę rozmawiać z ludźmi. Najpierw trzeba zrozumieć człowieka. Potem możemy rozmawiać o sprzedaży.',
+    meta: [
+      { label: 'FORMA', value: 'Warsztat zamknięty' },
+      { label: 'DLA KOGO', value: 'Firmy i zespoły' },
+      { label: 'CZAS', value: '1 dzień' },
+    ],
+    cta: 'Porozmawiajmy o warsztacie',
+    mailSubject: 'Warsztat CZŁOWIEK',
+    visualNumber: '01',
+    visualWord: 'CZŁOWIEK',
   },
 } as const
 
