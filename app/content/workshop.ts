@@ -66,39 +66,18 @@ export const workshop = {
   },
   noScript: {
     title: 'Nie dostaniesz ode mnie skryptu rozmowy.',
-    lines: [
-      'Nie będzie siedmiu sposobów na zamknięcie sprzedaży.',
-      'Nie będziemy ćwiczyć odpowiedzi z punktu 4B.',
-    ],
+    lines: ['Nie będzie siedmiu sposobów na zamknięcie sprzedaży.'],
     reason: 'Bo klient po drugiej stronie nie przeczytał naszego skryptu.',
     statement: 'Każdy jest inny.',
   },
-  interludes: [
-    {
-      id: 'czego-nie-kupisz',
-      titleLines: ['Powiedz mi,', 'czego nie kupisz.'],
-      lines: ['Zanim spróbujesz coś sprzedać, dowiedz się, czego człowiek przed Tobą na pewno nie potrzebuje.'],
-    },
-    {
-      id: 'nie-wiem',
-      titleLines: ['Nie wiem.'],
-      lines: [
-        'To też jest dobra odpowiedź.',
-        'Nie musisz znać odpowiedzi na wszystko, żeby dobrze pracować z klientem.',
-      ],
-    },
-  ],
-  question: {
-    promptLines: ['Co robisz,', 'kiedy klient mówi:'],
-    quote: '„Za drogo”?',
-    answerIntro: 'Ja najpierw zapytam:',
-    answer: 'Za drogo w porównaniu z czym?',
-  },
-  industry: {
-    titleLines: ['Klient nie ma obowiązku', 'znać Twojej branży.'],
-    lines: [
-      'Ty znasz ofertę, ceny, skróty i proces.',
-      'Dla człowieka po drugiej stronie to może być pierwszy taki zakup w życiu.',
+  beliefs: {
+    eyebrow: 'KILKA RZECZY, W KTÓRE WIERZĘ',
+    items: [
+      ['Najpierw posłuchaj.', 'Potem sprzedawaj.'],
+      ['Nie każda sprzedaż', 'powinna się wydarzyć.'],
+      ['„Nie wiem”', 'też jest dobrą odpowiedzią.'],
+      ['Klient nie ma obowiązku', 'znać Twojej branży.'],
+      ['Marketing przyprowadził człowieka.', 'Dalej musisz już z nim porozmawiać.'],
     ],
   },
   program: {
@@ -134,23 +113,12 @@ export const workshop = {
       },
     ],
   },
-  honesty: {
-    titleLines: ['Nie każda sprzedaż', 'powinna się wydarzyć.'],
-    reference: '04 / Ja bym Ci tego nie sprzedał.',
-    lines: ['Czasami uczciwa odpowiedź brzmi:', 'tego Ci nie polecam.'],
-  },
-  marketing: {
-    title: 'Marketing przyprowadził człowieka.',
-    question: 'Co dalej?',
-    steps: ['Kliknął.', 'Zadzwonił.', 'Wysłał formularz.'],
-    conclusionLines: ['Od tego momentu reklama', 'już za Ciebie nie porozmawia.'],
-  },
   groundRules: {
     eyebrow: 'NA TYM WARSZTACIE',
     items: [
       ['Można się ze mną nie zgadzać.'],
       ['Można powiedzieć,', 'że u Was to nie działa.'],
-      ['Można przynieść przypadek,', 'z którym sam nie będę wiedział,', 'co zrobić.'],
+      ['I właśnie o to chodzi.'],
     ],
   },
   workshopParts: [
@@ -207,6 +175,7 @@ export const workshop = {
     people: ['Właściciele firm.', 'Handlowcy.', 'Doradcy.', 'Obsługa klienta.', 'Zespoły sprzedażowe.'],
     detailsLines: ['Warsztat zamknięty dla jednej firmy.', 'Około 6 godzin + przerwy.'],
   },
+  /** Nie renderowane na stronie (powtarzało wcześniejsze myśli); zostaje do oferty PDF. */
   outcomes: {
     intro: 'Jeżeli po tym spotkaniu…',
     items: [
@@ -225,7 +194,7 @@ export const workshop = {
         id: 'before',
         label: 'PRZED',
         lead: '30–45 minut rozmowy z właścicielem lub managerem.',
-        lines: ['Chcę poznać firmę, zespół, klientów, najczęstsze problemy i prawdziwe sytuacje.'],
+        lines: ['Poznaję firmę, zespół, klientów i prawdziwe sytuacje.'],
         note: 'Na tej podstawie dopasowuję część warsztatu.',
       },
       {

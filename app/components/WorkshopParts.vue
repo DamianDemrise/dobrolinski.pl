@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import { workshop } from '~/content/workshop'
 
-const { groundRules, workshopParts, yourStories } = workshop
+const { workshopParts, yourStories } = workshop
 </script>
 
 <template>
-  <section class="workshop-section workshop-rules" aria-labelledby="workshop-rules-title">
-    <h2 id="workshop-rules-title" class="workshop-eyebrow reveal">{{ groundRules.eyebrow }}</h2>
-    <p v-for="item in groundRules.items" :key="item[0]" class="workshop-rules__item reveal">
-      <template v-for="line in item" :key="line">
-        <span class="workshop-line">{{ line }}</span>{{ ' ' }}
-      </template>
-    </p>
-  </section>
-
   <section class="workshop-section workshop-parts" aria-label="Części warsztatu">
     <ol class="workshop-parts__list">
       <li v-for="part in workshopParts" :key="part.number" class="workshop-part reveal">

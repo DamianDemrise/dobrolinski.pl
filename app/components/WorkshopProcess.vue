@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { workshop } from '~/content/workshop'
 
-const { process, regularPrice, format } = workshop
+const { process, regularPrice, format, groundRules } = workshop
 </script>
 
 <template>
@@ -21,6 +21,15 @@ const { process, regularPrice, format } = workshop
         </div>
       </li>
     </ol>
+
+    <div class="workshop-rules reveal">
+      <h3 class="workshop-eyebrow">{{ groundRules.eyebrow }}</h3>
+      <p v-for="item in groundRules.items" :key="item[0]" class="workshop-rules__item">
+        <template v-for="line in item" :key="line">
+          <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+        </template>
+      </p>
+    </div>
 
     <div class="workshop-price reveal">
       <p class="workshop-eyebrow">{{ workshop.name }}</p>

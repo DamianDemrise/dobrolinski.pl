@@ -28,16 +28,13 @@
   text-wrap: balance;
 }
 
-/* Manifest: najwięcej przestrzeni, blok wycentrowany w viewportcie */
+/* Manifest + bez skryptu: jeden rozdział, duży oddech na wejściu */
 
 .workshop-manifest {
-  display: grid;
   /* Szerokość = najdłuższa linia, więc cały blok siedzi optycznie na środku. */
   width: fit-content;
   max-width: 64rem;
-  min-height: min(100svh, 60rem);
-  align-content: center;
-  padding-block: clamp(7rem, 14vw, 12rem);
+  padding-block: clamp(7rem, 14vw, 11rem) clamp(5rem, 10vw, 8rem);
 }
 
 .workshop-manifest__title {
@@ -66,8 +63,8 @@
 /* Bez skryptu: zwarty tekst, potem osobny mocny moment */
 
 .workshop-noscript {
-  max-width: var(--workshop-narrow);
-  padding-block: clamp(3rem, 6vw, 5rem) clamp(7rem, 14vw, 12rem);
+  /* Szerokość z manifestu; akapity mają własne limity, „Każdy jest inny.” mieści się w linii. */
+  margin-top: clamp(4.5rem, 9vw, 7rem);
 }
 
 .workshop-quiet-list {
@@ -91,7 +88,7 @@
 }
 
 .workshop-statement {
-  margin-top: clamp(4.5rem, 10vw, 8.5rem);
+  margin-top: clamp(3rem, 6vw, 5rem);
   font-size: var(--type-display-xl);
   font-weight: 650;
   letter-spacing: -0.055em;
@@ -102,26 +99,6 @@
 
 .workshop-program {
   padding-block: clamp(4rem, 8vw, 7rem);
-}
-
-.workshop-program__intro {
-  max-width: var(--workshop-narrow);
-  margin-bottom: clamp(4rem, 8vw, 6.5rem);
-}
-
-.workshop-program__industry {
-  font-size: var(--type-heading);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-}
-
-.workshop-program__industry-text {
-  max-width: 34rem;
-  margin-top: clamp(1.2rem, 2.4vw, 1.8rem);
-  color: var(--ink-secondary);
-  font-size: var(--type-body);
-  line-height: 1.6;
 }
 
 .workshop-program .workshop-eyebrow {
@@ -196,7 +173,7 @@
 
 .workshop-audience {
   max-width: var(--workshop-narrow);
-  padding-block: clamp(4rem, 9vw, 8rem) clamp(6rem, 12vw, 10rem);
+  padding-block: clamp(4rem, 9vw, 8rem) clamp(2.5rem, 5vw, 4rem);
 }
 
 .workshop-audience__title {
@@ -324,10 +301,6 @@
 }
 
 @media (max-width: 640px) {
-  .workshop-manifest {
-    min-height: 0;
-  }
-
   .workshop-topic {
     grid-template-columns: 1fr;
     row-gap: 0.75rem;

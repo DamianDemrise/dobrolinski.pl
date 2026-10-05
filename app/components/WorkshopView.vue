@@ -29,20 +29,16 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <WorkshopHero @more="showContent" />
 
     <div ref="content" class="workshop-content">
-      <!-- Rozdział 1: sposób myślenia -->
+      <!-- Sposób myślenia: manifest i bez skryptu -->
       <WorkshopManifest />
-      <WorkshopNoScript />
-      <WorkshopInterludes />
-      <WorkshopQuestion />
-      <!-- Rozdział 2: o czym rozmawiamy -->
+      <!-- O czym rozmawiamy -->
       <WorkshopProgram />
-      <WorkshopHonesty />
-      <!-- Rozdział 3: jak wygląda warsztat -->
+      <WorkshopBeliefs />
+      <!-- Jak wygląda warsztat: cztery części i Wasze historie -->
       <WorkshopParts />
       <WorkshopAbout />
-      <!-- Rozdział 4: dla kogo i jak zacząć -->
+      <!-- Dla kogo, współpraca i cena -->
       <WorkshopAudience />
-      <WorkshopOutcomes />
       <WorkshopProcess />
       <WorkshopClosing />
     </div>
