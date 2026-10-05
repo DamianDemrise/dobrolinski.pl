@@ -88,9 +88,8 @@ const errorText = () => fieldError.value ? offer.errors[fieldError.value] : ''
       </form>
 
       <p id="offer-email-note" class="workshop-offer__note">
-        <template v-for="line in offer.note" :key="line">
-          <span class="workshop-line">{{ line }}</span>{{ ' ' }}
-        </template>
+        {{ offer.note.text }}
+        <NuxtLink to="/polityka-prywatnosci">{{ offer.note.link }}</NuxtLink>.
       </p>
     </template>
 

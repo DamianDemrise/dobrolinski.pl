@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       gtmId: 'GTM-TR8MDG8W',
       // Endpoint oferty (offer-worker/). Pusty = formularz się nie renderuje.
       // Lokalnie: NUXT_PUBLIC_OFFER_ENDPOINT=http://localhost:8787 npm run generate
-      offerEndpoint: '',
+      offerEndpoint: 'https://dobrolinski-oferta.demrise.workers.dev',
     },
   },
   app: {
@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/poznaj-czlowieka'],
+      routes: ['/', '/poznaj-czlowieka', '/polityka-prywatnosci'],
       // /poznaj-czlowieka.html zamiast /poznaj-czlowieka/index.html:
       // GitHub Pages serwuje wtedy adres bez ukośnika i bez przekierowania.
       autoSubfolderIndex: false,
