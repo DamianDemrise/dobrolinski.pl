@@ -8,3 +8,4 @@
 | Światło kursora | `app.vue` | `usePointerLight.ts` | — | `base.css` | weryfikacja DOM/manualna |
 | Intro | `IntroReveal.vue` | CSS animation | — | `motion.css` | reduced-motion/manualna |
 | SEO | `app.vue`, `nuxt.config.ts` | — | Schema.org w `site.ts` | — | build statyczny |
+| Zgoda i statystyki | `ConsentBanner.vue` | `useAnalyticsConsent.ts`, `plugins/analytics.client.ts` | `site.ts` (`consent`), `nuxt.config.ts` (`gtmId`) | `consent.css` | `site-content.test.ts` + DOM |
