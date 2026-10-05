@@ -29,7 +29,7 @@ export default defineNuxtConfig({
           content: 'Ludzie · Sprzedaż · Marketing · Technologia',
         },
         { property: 'og:url', content: 'https://dobrolinski.pl/' },
-        { property: 'og:image', content: 'https://dobrolinski.pl/og-image.png' },
+        { property: 'og:image', content: 'https://dobrolinski.pl/og-home.png' },
         { property: 'og:image:type', content: 'image/png' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
           name: 'twitter:description',
           content: 'Ludzie · Sprzedaż · Marketing · Technologia',
         },
-        { name: 'twitter:image', content: 'https://dobrolinski.pl/og-image.png' },
+        { name: 'twitter:image', content: 'https://dobrolinski.pl/og-home.png' },
       ],
       link: [
         { rel: 'canonical', href: 'https://dobrolinski.pl/' },
