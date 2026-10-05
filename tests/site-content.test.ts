@@ -19,6 +19,12 @@ describe('site content', () => {
     expect(personSchema.url).toBe('https://dobrolinski.pl/')
     expect(personSchema.knowsAbout).toEqual(siteContent.areas.map(area => area.label))
   })
+  it('describes analytics consent with both choices', () => {
+    const { consent } = siteContent
+    expect(consent.accept).not.toBe(consent.reject)
+    expect(consent.text).toMatch(/Google Analytics/)
+  })
+
   it('presents the workshop as a numbered project with a short program teaser', () => {
     const { workshop } = siteContent
     expect(workshop.index).toBe(`01 / ${workshop.name}`)

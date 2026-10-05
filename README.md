@@ -38,19 +38,23 @@ Obszary są prawdziwymi przyciskami i działają z klawiaturą oraz dotykiem. St
 
 ## Publikacja
 
-Projekt jest przygotowany do statycznego hostingu, w tym Cloudflare Pages:
+Produkcja działa na GitHub Pages. Każdy push do `main` uruchamia `.github/workflows/deploy.yml`: `npm run generate` i publikację `.output/public` (Node.js 22). Domena `dobrolinski.pl` jest ustawiona przez `public/CNAME` i rekordy A GitHub Pages.
 
-- komenda budowania: `npm run generate`
-- katalog publikacji: `.output/public`
-- wersja Node.js: `22`
-
-Repozytorium zawiera `public/CNAME`, ale samo uruchomienie builda nie zmienia DNS ani bieżącego hostingu. Migrację produkcji należy wykonać osobno po akceptacji podglądu.
+Zmiany rób na osobnej gałęzi i merguj do `main` dopiero po akceptacji podglądu, bo merge oznacza wdrożenie.
 
 ## Search Console i analityka
 
 Search Console można podłączyć bez zmian architektury. Preferowana jest weryfikacja domenowa przez rekord DNS. Jeśli potrzebny będzie znacznik HTML, należy dodać prawdziwą wartość `google-site-verification` do `app.head.meta` w `nuxt.config.ts`; repo celowo nie zawiera fikcyjnego tokenu.
 
-GA4/GTM i banner cookies nie są obecnie dodane. Późniejszą integrację należy umieścić w osobnym pluginie `app/plugins/analytics.client.ts`, z identyfikatorem pobieranym z konfiguracji środowiska i dopiero po ustaleniu podstawy prawnej/cookies.
+Statystyki: GTM `GTM-TR8MDG8W` z jednym tagiem GA4. Identyfikator jest w `runtimeConfig.public.gtmId` w `nuxt.config.ts` (nadpisywalny przez `NUXT_PUBLIC_GTM_ID`).
+
+GTM ładuje się dopiero po zgodzie odwiedzającego (tryb podstawowy Consent Mode v2):
+
+- `app/plugins/analytics.client.ts` ustawia domyślnie wszystkie zgody na `denied`;
+- `app/composables/useAnalyticsConsent.ts` zapamiętuje decyzję w `localStorage` i ładuje GTM po „Zgoda”;
+- `app/components/ConsentBanner.vue` pokazuje panel, a po decyzji mały przycisk „Cookies” do jej zmiany; odrzucenie usuwa ciasteczka `_ga*`.
+
+Nowe tagi reklamowe w GTM wymagają rozszerzenia panelu o zgody `ad_*`.
 
 ## Bezpieczeństwo linków
 

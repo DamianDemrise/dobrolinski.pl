@@ -335,10 +335,7 @@
   }
 
   .workshop-more {
-    right: var(--workshop-x);
     bottom: max(1.15rem, env(safe-area-inset-bottom));
-    left: auto;
-    transform: none;
   }
 
   .back-button {

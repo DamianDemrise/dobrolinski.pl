@@ -62,5 +62,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     </Transition>
 
     <IntroReveal />
+
+    <ClientOnly>
+      <ConsentBanner />
+    </ClientOnly>
   </main>
 </template>

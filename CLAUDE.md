@@ -16,7 +16,8 @@ Minimalistyczna, statycznie generowana wizytówka Damiana Dobrolińskiego.
 
 ## Granice
 
-- Nie dodawaj trackingu, sekretów ani tokenów Search Console do repo.
+- Tracking tylko przez `useAnalyticsConsent` (po zgodzie). Nie wklejaj skryptów do `app.head`. Bez sekretów i tokenów Search Console w repo.
+- Push do `main` = wdrożenie na GitHub Pages. Pracuj na gałęzi.
 - Nie zmieniaj hostingu, DNS ani `CNAME` bez wyraźnej zgody.
 - Zachowuj pojedynczy viewport, dostępność i spokojny charakter ruchu.
 - Treści są w `app/content/site.ts`, zachowanie w composables, wygląd w CSS.
