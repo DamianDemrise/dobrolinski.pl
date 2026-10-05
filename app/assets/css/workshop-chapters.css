@@ -5,7 +5,7 @@
  */
 
 .workshop-display {
-  font-size: clamp(2.4rem, 5vw, 5.4rem);
+  font-size: var(--type-display);
   font-weight: 650;
   letter-spacing: -0.05em;
   line-height: 1.02;
@@ -27,7 +27,7 @@
 }
 
 .workshop-interlude__title {
-  font-size: clamp(1.45rem, 2.3vw, 2.3rem);
+  font-size: var(--type-heading);
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.12;
@@ -39,8 +39,8 @@
 
 .workshop-interlude__text {
   margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
   line-height: 1.6;
 }
 
@@ -52,8 +52,8 @@
 }
 
 .workshop-question__prompt {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-heading);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.2;
@@ -62,6 +62,7 @@
 .workshop-question__quote {
   margin-top: 0.35em;
   color: #f7f7f5;
+  /* Wyjątek: „Za drogo”? jest celowo największym tekstem strony. */
   font-size: clamp(3rem, 8vw, 8.4rem);
   font-weight: 650;
   letter-spacing: -0.055em;
@@ -70,7 +71,7 @@
 
 .workshop-question__answer {
   margin-top: clamp(4.5rem, 10vw, 8rem);
-  font-size: clamp(1.6rem, 3vw, 3rem);
+  font-size: var(--type-heading-l);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 1.12;
@@ -78,8 +79,8 @@
 
 .workshop-question__intro {
   margin-bottom: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
   font-weight: 400;
   letter-spacing: 0;
 }
@@ -99,7 +100,7 @@
 .workshop-honesty__text {
   margin-top: 0.9rem;
   color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+  font-size: var(--type-lead);
   line-height: 1.4;
 }
 
@@ -109,14 +110,14 @@
 }
 
 .workshop-marketing__title {
-  font-size: clamp(1.8rem, 3.4vw, 3.4rem);
+  font-size: var(--type-heading-l);
   font-weight: 650;
   letter-spacing: -0.045em;
   line-height: 1.08;
 }
 
 .workshop-marketing__question {
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--ink-muted);
 }
 
 .workshop-marketing__steps {
@@ -124,8 +125,8 @@
   flex-wrap: wrap;
   margin-top: clamp(2rem, 4vw, 3rem);
   padding: 0;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-lead);
   gap: 0.4rem clamp(1.4rem, 3vw, 2.6rem);
   list-style: none;
 }
@@ -133,7 +134,7 @@
 .workshop-marketing__conclusion {
   margin-top: clamp(2rem, 4vw, 3rem);
   color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(1.3rem, 2.2vw, 2.1rem);
+  font-size: var(--type-heading);
   font-weight: 500;
   letter-spacing: -0.025em;
   line-height: 1.3;
@@ -148,7 +149,7 @@
 
 .workshop-rules__item {
   color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(1.3rem, 2.3vw, 2.3rem);
+  font-size: var(--type-heading);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.22;
@@ -182,22 +183,22 @@
 
 .workshop-part__name {
   color: #f7f7f5;
-  font-size: 0.76rem;
+  font-size: var(--type-eyebrow);
   font-weight: 600;
   letter-spacing: 0.16em;
 }
 
 .workshop-part__lines {
   margin-top: 1.2rem;
-  color: rgba(255, 255, 255, 0.56);
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-  line-height: 1.7;
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
+  line-height: 1.65;
 }
 
 .workshop-part__closing {
   margin-top: 1rem;
   color: rgba(255, 255, 255, 0.88);
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  font-size: var(--type-body-s);
   line-height: 1.5;
 }
 
@@ -208,14 +209,14 @@
 }
 
 .workshop-stories__title {
-  font-size: clamp(2.4rem, 5vw, 5.4rem);
+  font-size: var(--type-display);
   font-weight: 650;
   letter-spacing: -0.055em;
   line-height: 1;
 }
 
 .workshop-stories__quiet {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--ink-muted);
 }
 
 .workshop-stories__title .reveal + .reveal {
@@ -231,7 +232,7 @@
   margin-left: var(--workshop-axis);
   padding: 0;
   color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(1.3rem, 2.2vw, 2.2rem);
+  font-size: var(--type-heading);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.25;
@@ -243,7 +244,7 @@
 }
 
 .workshop-stories__list li:nth-child(even) {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--ink-secondary);
 }
 
 /* Efekt */
@@ -254,8 +255,8 @@
 }
 
 .workshop-outcomes__intro {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: clamp(1.2rem, 1.9vw, 1.8rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-lead);
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -264,7 +265,7 @@
   margin-top: clamp(1.8rem, 3.4vw, 2.8rem);
   padding: 0;
   color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(1.15rem, 1.8vw, 1.7rem);
+  font-size: var(--type-lead);
   line-height: 1.4;
   list-style: none;
 }
@@ -275,7 +276,7 @@
 
 .workshop-outcomes__conclusion {
   margin-top: clamp(2.6rem, 5vw, 4rem);
-  font-size: clamp(1.9rem, 3.8vw, 3.8rem);
+  font-size: var(--type-display-s);
   font-weight: 650;
   letter-spacing: -0.05em;
   line-height: 1.05;
@@ -307,8 +308,8 @@
 }
 
 .workshop-step__label {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.7rem;
+  color: var(--ink-secondary);
+  font-size: var(--type-eyebrow);
   font-weight: 500;
   letter-spacing: 0.18em;
 }
@@ -321,14 +322,14 @@
 
 .workshop-step__lead {
   color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  font-size: var(--type-lead);
   line-height: 1.35;
 }
 
 .workshop-step__text {
-  color: rgba(255, 255, 255, 0.56);
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-  line-height: 1.65;
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
+  line-height: 1.6;
 }
 
 .workshop-price {
@@ -338,22 +339,22 @@
 }
 
 .workshop-price__format {
-  color: rgba(255, 255, 255, 0.58);
-  font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-body);
   line-height: 1.6;
 }
 
 .workshop-price__amount {
   margin-top: 1rem;
-  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  font-size: var(--type-heading-l);
   font-weight: 600;
   letter-spacing: -0.04em;
 }
 
 .workshop-price__includes {
   margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.48);
-  font-size: 0.9rem;
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
   line-height: 1.6;
 }
 
@@ -364,8 +365,8 @@
   max-width: var(--workshop-narrow);
   margin-inline: auto;
   padding-block: clamp(7rem, 16vw, 13rem) clamp(5rem, 10vw, 8rem);
-  color: rgba(255, 255, 255, 0.5);
-  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  color: var(--ink-secondary);
+  font-size: var(--type-body);
   line-height: 1.6;
 }
 
