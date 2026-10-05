@@ -1,6 +1,6 @@
 # Oferta POZNAJ CZŁOWIEKA: e-mail → PDF
 
-Użytkownik wpisuje e-mail pod ceną na `/poznaj-czlowieka`, dostaje osobisty mail z ofertą (link + załącznik PDF) i może po prostu kliknąć „Odpowiedz”. Damian dostaje krótkie powiadomienie.
+Użytkownik wpisuje e-mail w finale „A jak jest u Was?” na `/poznaj-czlowieka`, dostaje osobisty mail z ofertą (link + załącznik PDF) i może po prostu kliknąć „Odpowiedz”. Damian dostaje krótkie powiadomienie.
 
 Strona zostaje na GitHub Pages. Backend to jeden mały Cloudflare Worker w `offer-worker/`, wdrażany osobno.
 

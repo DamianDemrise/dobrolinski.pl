@@ -32,7 +32,6 @@ export const DEFAULTS = {
   notification: 'damian@dobrolinski.pl',
   origins: 'https://dobrolinski.pl',
   pdfUrl: 'https://dobrolinski.pl/oferta/poznaj-czlowieka.pdf',
-  pdfFilename: 'poznaj-czlowieka-damian-dobrolinski.pdf',
   /** Ofert na dobę; każda to 2 maile, a darmowy Resend ma 100 maili dziennie. */
   dailyLimit: 40,
 } as const

@@ -29,6 +29,11 @@ const { closing } = workshop
         data-track-place="workshop-closing"
       >{{ siteContent.email }}</a>
     </div>
+
+    <!-- Oferta PDF: na końcu, po przeczytaniu całości, jako druga droga obok rozmowy. -->
+    <ClientOnly>
+      <WorkshopOfferForm />
+    </ClientOnly>
   </section>
 
   <footer class="workshop-epilogue" aria-label="Na koniec">

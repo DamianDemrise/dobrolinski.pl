@@ -4,7 +4,7 @@
  */
 import { writeFileSync } from 'node:fs'
 import { DEFAULTS } from '../src/config.ts'
-import { NOTIFICATION_SUBJECT, notificationText, OFFER_PREHEADER, OFFER_SUBJECT, offerHtml, offerText } from '../src/templates.ts'
+import { NOTIFICATION_SUBJECT, notificationText, OFFER_ATTACHMENT, OFFER_PREHEADER, OFFER_SUBJECT, offerHtml, offerText } from '../src/templates.ts'
 
 const out = new URL('../../design/', import.meta.url)
 writeFileSync(new URL('email-offer-preview.html', out), offerHtml(DEFAULTS.pdfUrl))
@@ -13,7 +13,7 @@ writeFileSync(new URL('email-offer-preview.txt', out), [
   `Odpowiedz do: ${DEFAULTS.replyTo}`,
   `Temat: ${OFFER_SUBJECT}`,
   `Preheader: ${OFFER_PREHEADER}`,
-  `Załącznik: ${DEFAULTS.pdfFilename}`,
+  `Załącznik: ${OFFER_ATTACHMENT.filename}`,
   '',
   offerText(DEFAULTS.pdfUrl),
   '',

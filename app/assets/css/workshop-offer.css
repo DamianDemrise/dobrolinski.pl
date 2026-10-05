@@ -1,16 +1,19 @@
-/* Formularz oferty: dopowiedzenie do ceny, na tej samej osi, bez karty i bez ramki. */
+/* Formularz oferty: w finale „A jak jest u Was?”, pod rozmową. Bez karty i bez ramki. */
 
 .workshop-offer {
   max-width: 34rem;
-  margin-top: clamp(2.6rem, 5vw, 3.8rem);
-  margin-left: var(--workshop-axis);
+  margin-top: clamp(3.4rem, 6vw, 5rem);
+  /* Cienka linia oddziela formularz od „Porozmawiajmy”: osobny krok, nie dopisek. */
+  padding-top: clamp(2.2rem, 4vw, 3rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .workshop-offer__title {
-  color: var(--ink-primary);
-  font-size: var(--type-body-l);
+  color: #fff;
+  font-size: var(--type-heading);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
 }
 
 .workshop-offer__title:focus {
@@ -18,7 +21,7 @@
 }
 
 .workshop-offer__text {
-  margin-top: 0.6rem;
+  margin-top: 0.9rem;
   color: var(--ink-secondary);
   font-size: var(--type-body-s);
   line-height: 1.6;
@@ -31,7 +34,7 @@
 .workshop-offer__label {
   display: block;
   margin-bottom: 0.4rem;
-  color: var(--ink-muted);
+  color: var(--ink-secondary);
   font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.18em;
@@ -50,7 +53,7 @@
   min-height: 2.75rem;
   padding: 0.5rem 0;
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 0;
   background: transparent;
   color: #fff;
@@ -59,8 +62,12 @@
   transition: border-color 220ms ease;
 }
 
+.workshop-offer__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
 .workshop-offer__input:hover {
-  border-bottom-color: rgba(255, 255, 255, 0.46);
+  border-bottom-color: rgba(255, 255, 255, 0.66);
 }
 
 .workshop-offer__input:focus {
@@ -165,16 +172,9 @@
   overflow: hidden;
 }
 
-@media (max-width: 900px) {
-  .workshop-offer {
-    margin-left: clamp(0rem, 20vw, 12rem);
-  }
-}
-
 @media (max-width: 640px) {
   .workshop-offer {
-    margin-top: 2.2rem;
-    margin-left: 0;
+    margin-top: 2.8rem;
   }
 
   /* Telefon: pole i przycisk jeden pod drugim, bez ściskania. */
@@ -186,5 +186,9 @@
 
   .workshop-offer__submit {
     align-self: flex-start;
+  }
+
+  .workshop-offer__text .workshop-line {
+    display: inline;
   }
 }

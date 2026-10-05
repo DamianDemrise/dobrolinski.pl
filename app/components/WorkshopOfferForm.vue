@@ -68,6 +68,7 @@ const errorText = () => fieldError.value ? offer.errors[fieldError.value] : ''
             autocapitalize="off"
             spellcheck="false"
             maxlength="254"
+            placeholder="imie@firma.pl"
             required
             :aria-invalid="fieldError ? 'true' : undefined"
             :aria-describedby="fieldError ? 'offer-email-error' : 'offer-email-note'"
