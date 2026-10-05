@@ -1,118 +1,169 @@
 .workshop-view {
+  --workshop-x: clamp(1.5rem, 7.4vw, 8rem);
   display: grid;
   grid-template-rows: auto 1fr;
-  padding:
-    clamp(1.5rem, 4vw, 3.2rem)
-    clamp(1.5rem, 4vw, 3.5rem)
-    clamp(4.5rem, 8vw, 6.5rem);
+  padding: clamp(1.5rem, 3vw, 3rem) var(--workshop-x) clamp(4.5rem, 8vw, 6rem);
+  background:
+    radial-gradient(ellipse 38% 70% at 74% 42%, rgba(255, 255, 255, 0.07), transparent 70%);
 }
 
 .workshop-topbar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  color: rgba(255, 255, 255, 0.46);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  gap: 2rem;
+  font-size: clamp(0.78rem, 0.9vw, 0.9rem);
 }
 
-.workshop-topbar__index {
+.workshop-topbar__brand {
+  font-weight: 650;
+}
+
+.workshop-topbar__areas {
+  display: flex;
+  margin-right: auto;
+  margin-left: clamp(1rem, 5vw, 5.5rem);
+  padding: 0;
+  color: rgba(255, 255, 255, 0.58);
+  list-style: none;
+  gap: 0.9rem;
+}
+
+.workshop-topbar__areas li + li::before {
+  margin-right: 0.9rem;
+  color: rgba(255, 255, 255, 0.28);
+  content: "·";
+}
+
+.workshop-topbar__contact {
+  display: flex;
+  font-style: normal;
+  gap: 0.8rem;
+}
+
+.workshop-topbar__contact a {
+  color: rgba(255, 255, 255, 0.86);
+  text-decoration: none;
+  transition: color 220ms ease;
+}
+
+.workshop-topbar__contact a:hover {
+  color: #fff;
+}
+
+.workshop-topbar__contact span {
   color: rgba(255, 255, 255, 0.3);
 }
 
 .workshop-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
-  align-items: center;
-  width: min(100%, 76rem);
-  margin: 0 auto;
-  gap: clamp(2rem, 5vw, 5rem);
+  align-self: center;
+  max-width: 62rem;
 }
 
 .workshop-hero__eyebrow {
-  margin-bottom: 1.6rem;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.67rem;
-  font-weight: 600;
-  letter-spacing: 0.19em;
+  margin-bottom: 1.4rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
 }
 
 .workshop-hero__title {
-  font-size: clamp(2.2rem, 4vw, 4.4rem);
+  font-size: clamp(2.2rem, 5vw, 5.6rem);
   font-weight: 650;
   letter-spacing: -0.05em;
   line-height: 1;
 }
 
-.workshop-hero__title-line {
+.workshop-hero__title-line,
+.workshop-hero__description-line,
+.workshop-meta__line {
   display: block;
+}
+
+.workshop-hero__title-line {
   white-space: nowrap;
 }
 
 .workshop-hero__lead {
-  margin-top: 1.6rem;
-  color: rgba(255, 255, 255, 0.88);
-  font-size: clamp(1rem, 1.3vw, 1.2rem);
-  line-height: 1.5;
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(1.15rem, 2vw, 2.15rem);
+  line-height: 1.3;
+}
+
+.workshop-hero__rule {
+  display: block;
+  width: 3rem;
+  height: 1px;
+  margin: clamp(1.2rem, 2.4vw, 2rem) 0;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .workshop-hero__description {
-  max-width: 34rem;
-  margin-top: 0.7rem;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: clamp(0.9rem, 1.1vw, 1rem);
-  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
 }
 
 .workshop-meta {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 2rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  gap: 1.2rem clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(1.6rem, 3.2vw, 3rem);
+  padding: 0;
+  list-style: none;
+  gap: 1.2rem 0;
 }
 
-.workshop-meta__item dd {
-  margin-top: 0.4rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.86rem;
-  font-weight: 600;
+.workshop-meta__item {
+  display: flex;
+  align-items: flex-start;
+  padding-right: clamp(1rem, 2vw, 1.9rem);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(0.82rem, 0.95vw, 0.98rem);
+  line-height: 1.6;
+  gap: 1rem;
 }
 
-.workshop-meta__label {
-  color: rgba(255, 255, 255, 0.36);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
+.workshop-meta__item + .workshop-meta__item {
+  padding-left: clamp(1rem, 2vw, 1.9rem);
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.workshop-meta__icon {
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: 0.1rem;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.3;
 }
 
 .workshop-hero__cta {
   display: inline-flex;
   align-items: center;
-  min-height: 2.9rem;
-  margin-top: 2.1rem;
-  padding: 0 1.3rem;
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  background: #f7f7f5;
-  color: #080808;
-  font-size: 0.74rem;
+  margin-top: clamp(1.8rem, 3.6vw, 3.4rem);
+  padding-bottom: 0.55rem;
+  background:
+    linear-gradient(#fff, #fff) left bottom / 3rem 1px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)) left bottom / 100% 1px no-repeat;
+  color: #fff;
+  font-size: clamp(0.92rem, 1.1vw, 1.12rem);
   font-weight: 600;
-  letter-spacing: 0.06em;
   text-decoration: none;
-  text-transform: uppercase;
-  transition: background-color 220ms ease;
+  transition: background-size 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .workshop-hero__cta:hover {
-  background: #fff;
+  background-size: 100% 1px, 100% 1px;
 }
 
 .workshop-hero__cta span {
   display: inline-block;
-  margin-left: 0.6rem;
+  margin-left: 1rem;
   transition: transform 250ms ease;
 }
 
@@ -120,42 +171,31 @@
   transform: translateX(0.3rem);
 }
 
-.workshop-hero__visual {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  user-select: none;
-}
-
-.workshop-hero__number {
-  color: transparent;
-  font-size: clamp(8rem, 19vw, 17rem);
-  font-weight: 700;
-  letter-spacing: -0.06em;
-  line-height: 0.8;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.22);
-}
-
-.workshop-hero__word {
-  margin-top: 1.4rem;
-  color: rgba(255, 255, 255, 0.34);
-  font-size: clamp(0.7rem, 1vw, 0.85rem);
-  font-weight: 600;
-  letter-spacing: 0.5em;
+.workshop-aside {
+  position: absolute;
+  top: 50%;
+  right: clamp(1.5rem, 6vw, 6.5rem);
+  margin: 0;
+  padding: 0.6rem 0 0.6rem 1.6rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
+  line-height: 1.6;
+  list-style: none;
+  transform: translateY(-50%);
 }
 
 .back-button {
   position: absolute;
-  bottom: clamp(1.5rem, 4vw, 3rem);
-  left: clamp(1.5rem, 4vw, 3.5rem);
+  bottom: clamp(1.5rem, 4vw, 2.6rem);
+  left: clamp(1.5rem, 2.6vw, 3rem);
   padding: 0.5rem 0;
   border: 0;
   background: none;
-  color: rgba(255, 255, 255, 0.46);
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.82rem;
+  font-weight: 500;
   transition: color 240ms ease;
 }
 
@@ -163,61 +203,59 @@
   color: rgba(255, 255, 255, 0.92);
 }
 
-@media (max-width: 900px) {
-  .workshop-hero {
-    grid-template-columns: 1fr;
+@media (max-width: 1360px) {
+  .workshop-aside {
+    display: none;
   }
+}
 
-  .workshop-hero__visual {
-    position: absolute;
-    z-index: -1;
-    top: 50%;
-    right: -0.04em;
-    transform: translateY(-50%);
-  }
-
-  .workshop-hero__number {
-    -webkit-text-stroke-color: rgba(255, 255, 255, 0.09);
-  }
-
-  .workshop-hero__word {
+@media (max-width: 1100px) {
+  .workshop-topbar__areas {
     display: none;
   }
 }
 
 @media (max-width: 640px) {
   .workshop-view {
+    --workshop-x: 1.25rem;
     overflow-y: auto;
     padding:
       max(1.1rem, env(safe-area-inset-top))
-      1.25rem
+      var(--workshop-x)
       max(4.5rem, calc(env(safe-area-inset-bottom) + 3.5rem));
+    background:
+      radial-gradient(ellipse 80% 40% at 80% 20%, rgba(255, 255, 255, 0.06), transparent 70%);
   }
 
-  .workshop-topbar {
-    font-size: 0.56rem;
+  .workshop-topbar__contact {
+    display: none;
   }
 
   .workshop-hero {
-    padding: 2rem 0 0;
+    padding-top: 2.2rem;
   }
 
   .workshop-hero__title {
-    font-size: clamp(2.1rem, 10vw, 3rem);
+    font-size: clamp(2.1rem, 10.5vw, 3rem);
   }
 
-  .workshop-hero__title-line {
+  .workshop-hero__title-line,
+  .workshop-hero__description-line,
+  .workshop-meta__line {
     display: inline;
     white-space: normal;
   }
 
   .workshop-meta {
-    gap: 1rem 1.5rem;
+    flex-direction: column;
+    gap: 0.9rem;
   }
 
-  .workshop-hero__cta {
-    justify-content: center;
-    width: 100%;
+  .workshop-meta__item,
+  .workshop-meta__item + .workshop-meta__item {
+    align-items: center;
+    padding: 0;
+    border: 0;
   }
 
   .back-button {
@@ -227,9 +265,10 @@
   }
 }
 
-@media (max-height: 700px) and (min-width: 641px) {
-  .workshop-hero__eyebrow { margin-bottom: 1rem; }
-  .workshop-hero__lead { margin-top: 1rem; }
-  .workshop-meta { margin-top: 1.3rem; padding-top: 1rem; }
-  .workshop-hero__cta { margin-top: 1.3rem; }
+@media (max-height: 760px) and (min-width: 641px) {
+  .workshop-hero__eyebrow { margin-bottom: 0.9rem; }
+  .workshop-hero__title { font-size: clamp(2.2rem, 4.2vw, 4.4rem); }
+  .workshop-hero__rule { margin: 1rem 0; }
+  .workshop-meta { margin-top: 1.4rem; }
+  .workshop-hero__cta { margin-top: 1.6rem; }
 }

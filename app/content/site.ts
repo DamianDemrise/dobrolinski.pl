@@ -42,20 +42,20 @@ export const siteContent = {
   ],
   workshop: {
     index: '01 / WARSZTAT',
-    eyebrow: 'WARSZTAT DLA FIRM I ZESPOŁÓW',
-    titleLines: ['Na końcu każdej sprzedaży', 'jest człowiek.'],
+    titleLines: ['Na końcu każdej', 'sprzedaży jest człowiek.'],
     lead: 'Warsztat o sprzedaży, relacjach i pracy z ludźmi.',
-    description:
-      'Nie uczę sprzedawać. Uczę rozmawiać z ludźmi. Najpierw trzeba zrozumieć człowieka. Potem możemy rozmawiać o sprzedaży.',
+    descriptionLines: [
+      'Historie z prawdziwego życia. Rozmowa. Ćwiczenia. Dyskusja.',
+      'Bez skryptów. Bez magicznych technik.',
+      'Tylko praktyka i ludzie.',
+    ],
     meta: [
-      { label: 'FORMA', value: 'Warsztat zamknięty' },
-      { label: 'DLA KOGO', value: 'Firmy i zespoły' },
-      { label: 'CZAS', value: '1 dzień' },
+      { icon: 'clock', lines: ['Około 6 godzin', '+ przerwy'] },
+      { icon: 'people', lines: ['Dla właścicieli firm', 'i osób pracujących z klientem'] },
+      { icon: 'closed', lines: ['Warsztat zamknięty', 'dla jednej firmy'] },
     ],
     cta: 'Porozmawiajmy o warsztacie',
     mailSubject: 'Warsztat CZŁOWIEK',
-    visualNumber: '01',
-    visualWord: 'CZŁOWIEK',
   },
 } as const
 
