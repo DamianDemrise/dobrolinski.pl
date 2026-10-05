@@ -89,4 +89,8 @@ describe('site content', () => {
     expect(projectLabel(currentProject)).toBe(workshop.index)
     expect(new Set(projects.map(project => project.number)).size).toBe(projects.length)
   })
+  it('ships the homepage Open Graph image at 1200x630', () => {
+    const png = readFileSync(resolve(process.cwd(), 'public/og-home.png'))
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630])
+  })
 })
