@@ -104,8 +104,8 @@
     transition-duration: 0.01ms !important;
   }
 
-  .intro { display: none; }
-  .identity,
-  .powered { opacity: 1; transform: none; }
-  .ambient-light { display: none; }
+  /* Bez ruchu: treść od razu na miejscu, światło zostaje, ale stoi. */
+  .identity > *,
+  .powered { animation: none; opacity: 1; transform: none; }
+  .ambient-light { animation: none; }
 }

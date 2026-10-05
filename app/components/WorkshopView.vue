@@ -5,6 +5,7 @@ const root = ref<HTMLElement | null>(null)
 const content = ref<HTMLElement | null>(null)
 
 useReveal(root)
+const progress = useScrollProgress(root)
 
 const showContent = () => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -44,6 +45,12 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     </div>
 
     <div class="workshop-fade" aria-hidden="true" />
+    <div
+      class="workshop-progress"
+      :class="{ 'is-active': progress > 0.002 }"
+      :style="{ '--progress': progress }"
+      aria-hidden="true"
+    />
 
     <NuxtLink class="back-button" to="/" data-track="back_home" data-track-place="back">
       <span aria-hidden="true">←</span> Wróć

@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { personSchema, siteContent } from '../app/content/site'
 import { workshop, workshopMailHref } from '../app/content/workshop'
 import { workshopOfferPages } from '../app/content/workshop-offer'
+import { currentProject, projectLabel, projects } from '../app/content/projects'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -82,5 +83,10 @@ describe('site content', () => {
     // Nagłówek IHDR: szerokość i wysokość jako 32-bit big-endian.
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630])
     expect(workshop.seo.socialTitle).not.toContain('—')
+  })
+  it('treats the workshop as the first project of a numbered series', () => {
+    expect(projects[0]?.number).toBe('01')
+    expect(projectLabel(currentProject)).toBe(workshop.index)
+    expect(new Set(projects.map(project => project.number)).size).toBe(projects.length)
   })
 })
