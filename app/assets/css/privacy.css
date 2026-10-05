@@ -1,0 +1,95 @@
+/* Polityka prywatności: dokument do czytania. Ten sam świat co warsztat, bez efektów. */
+
+.privacy {
+  width: 100%;
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: clamp(5rem, 11vw, 9rem) var(--workshop-x) clamp(6rem, 12vw, 9rem);
+}
+
+.privacy__title {
+  color: #fff;
+  font-size: var(--type-display-s);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.privacy__site {
+  margin-top: 1.2rem;
+  color: var(--ink-primary);
+  font-size: var(--type-body);
+}
+
+.privacy__date {
+  margin-top: 0.4rem;
+  color: var(--ink-muted);
+  font-size: var(--type-small);
+}
+
+.privacy__section {
+  margin-top: clamp(2.8rem, 5vw, 3.8rem);
+}
+
+.privacy__heading {
+  margin-bottom: 1rem;
+  color: #fff;
+  font-size: var(--type-body-l);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.privacy__text,
+.privacy__list {
+  color: var(--ink-secondary);
+  font-size: var(--type-body-s);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.privacy__text + .privacy__text,
+.privacy__text + .privacy__list,
+.privacy__list + .privacy__text {
+  margin-top: 0.9rem;
+}
+
+.privacy__list {
+  padding-left: 1.2rem;
+}
+
+.privacy__list li + li {
+  margin-top: 0.45rem;
+}
+
+.privacy__list li::marker {
+  color: var(--ink-muted);
+}
+
+.privacy a {
+  color: var(--ink-primary);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 220ms ease;
+}
+
+.privacy a:hover {
+  text-decoration-color: #fff;
+}
+
+/* Subtelny link do polityki: stopka strony głównej i koniec warsztatu. */
+.privacy-link {
+  color: rgba(255, 255, 255, 0.32);
+  font-size: var(--type-small, 0.9rem);
+  text-decoration: none;
+  transition: color 220ms ease;
+}
+
+.privacy-link:hover {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.workshop-epilogue__legal {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}

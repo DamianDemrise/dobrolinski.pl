@@ -8,3 +8,4 @@
 | `legacy/index.v0.html` | porównanie z pierwotnym wyglądem | archiwum V0 | 2026-10-04 |
 | `docs/BRAND.md` | przed każdym nowym materiałem marki | tak, dla marki | 2026-10-05 |
 | `docs/OFFER-AUTOMATION.md` | formularz oferty, endpoint, mail, PDF, DNS | tak, dla automatyzacji oferty | 2026-10-05 |
+| `docs/PRIVACY-AUDIT.md` | zmiana polityki prywatności, nowe narzędzie lub dostawca | tak, dla zgodności polityki z kodem | 2026-10-05 |

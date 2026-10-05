@@ -8,15 +8,18 @@ workers_dev = true
 [observability]
 enabled = true
 
+# Tylko nasze logi (czas, status, typ błędu). Bez logów wywołań z metadanymi requestu (m.in. IP).
+[observability.logs]
+invocation_logs = false
+
 [[kv_namespaces]]
 binding = "OFFER_KV"
 # Utworzone 2026-10-05 na koncie Cloudflare damian@demrise.pl.
 id = "6c1831c374e24dd3af93f0c009b1c0c0"
 
 [vars]
-# Bezpieczny start: wszystko idzie na TEST_RECIPIENT. Na "live" dopiero po teście.
-MAIL_MODE = "test"
-TEST_RECIPIENT = "damian@dobrolinski.pl"
+# live: oferta idzie na adres z formularza. Do testów: MAIL_MODE = "test" + TEST_RECIPIENT.
+MAIL_MODE = "live"
 MAIL_FROM = "Damian Dobroliński <oferta@dobrolinski.pl>"
 MAIL_REPLY_TO = "damian@dobrolinski.pl"
 NOTIFICATION_EMAIL = "damian@dobrolinski.pl"

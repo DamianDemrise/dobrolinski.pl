@@ -225,12 +225,15 @@ export const workshop = {
   },
   offer: {
     title: 'Chcesz zobaczyć całość?',
-    lines: ['Przygotowałem krótką ofertę warsztatu', 'z programem, sposobem pracy i organizacją.'],
+    lines: ['Przygotowałem krótką ofertę warsztatu', 'z programem, sposobem pracy, organizacją i ceną.'],
     label: 'Twój e-mail',
     submit: 'Wyślij mi ofertę',
     sending: 'Wysyłam...',
-    note: ['Bez newslettera.', 'Dostaniesz tylko ofertę.'],
-    success: { title: 'Poszło.', text: 'Sprawdź skrzynkę.', hint: 'Jeżeli nic nie przyszło w ciągu kilku minut, sprawdź spam.' },
+    note: {
+      text: 'Podając e-mail, prosisz mnie o przesłanie oferty warsztatu „Poznaj Człowieka”. Adres wykorzystam w tym celu. Nie zapisuję Cię do newslettera. Szczegóły znajdziesz w',
+      link: 'Polityce prywatności',
+    },
+    success: { title: 'Poszło.', text: 'Sprawdź skrzynkę.', hint: 'Jeśli nie widzisz wiadomości, sprawdź spam.' },
     errors: {
       empty: 'Wpisz adres e-mail.',
       invalid: 'To nie wygląda na adres e-mail. Sprawdź go jeszcze raz.',
