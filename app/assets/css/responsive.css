@@ -70,49 +70,32 @@
     top: max(1.1rem, env(safe-area-inset-top));
     right: 1.25rem;
     left: 1.25rem;
-    justify-content: center;
-    font-size: 0.56rem;
+    justify-items: center;
+    gap: 0.45rem;
+    text-align: center;
+  }
+
+  .current-project__label {
+    font-size: 0.58rem;
   }
 
   .current-project__line {
-    width: 1rem;
-    margin: 0 0.55rem;
+    width: 1.6rem;
+    margin-left: 0.7rem;
+  }
+
+  .current-project__name {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
+
+  .current-project__lead {
+    font-size: 0.78rem;
   }
 
   .powered {
     bottom: max(1.15rem, env(safe-area-inset-bottom));
     white-space: nowrap;
-  }
-
-  .workshop {
-    width: calc(100% - 2.5rem);
-    transform: translateY(-1.2rem);
-  }
-
-  .workshop__eyebrow {
-    margin-bottom: 1.4rem;
-  }
-
-  .workshop__title {
-    font-size: clamp(2.35rem, 11vw, 3.75rem);
-  }
-
-  .workshop__description {
-    margin-top: 1.5rem;
-  }
-
-  .workshop__description,
-  .workshop__statement {
-    font-size: 0.92rem;
-  }
-
-  .workshop__cta {
-    margin-top: 1.6rem;
-  }
-
-  .back-button {
-    bottom: max(1.15rem, env(safe-area-inset-bottom));
-    left: 1.25rem;
   }
 
 }
@@ -121,9 +104,6 @@
   .site-stage { min-height: 100svh; }
   .thought-wrap { margin-top: 1rem; }
   .contact { margin-top: 0.8rem; }
-  .workshop__eyebrow { margin-bottom: 1rem; }
-  .workshop__description { margin-top: 1rem; }
-  .workshop__cta { margin-top: 1.1rem; }
 }
 
 @media (pointer: coarse) {

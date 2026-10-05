@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { personSchema, siteContent } from '../app/content/site'
+import { personSchema, siteContent, workshopMailHref } from '../app/content/site'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -18,5 +18,17 @@ describe('site content', () => {
     expect(personSchema.name).toBe(siteContent.name)
     expect(personSchema.url).toBe('https://dobrolinski.pl/')
     expect(personSchema.knowsAbout).toEqual(siteContent.areas.map(area => area.label))
+  })
+  it('presents the workshop as a numbered project with a short program teaser', () => {
+    const { workshop } = siteContent
+    expect(workshop.index).toBe(`01 / ${workshop.name}`)
+    expect(workshop.program.topics).toHaveLength(5)
+    expect(workshop.program.topics.map(topic => topic.number)).toEqual(['01', '02', '03', '04', '05'])
+  })
+
+  it('opens an email about the workshop with an encoded subject', () => {
+    expect(workshopMailHref).toBe(
+      `mailto:${siteContent.email}?subject=${encodeURIComponent('Warsztat POZNAJ CZŁOWIEKA')}`,
+    )
   })
 })

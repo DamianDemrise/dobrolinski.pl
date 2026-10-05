@@ -1,0 +1,223 @@
+/* Warsztat: sekcje pod pierwszym ekranem. Editorial, bez kart. */
+
+.workshop-content {
+  padding: 0 var(--workshop-x) clamp(7rem, 12vw, 10rem);
+}
+
+.workshop-section {
+  max-width: 76rem;
+  padding-block: clamp(5rem, 11vw, 10rem);
+}
+
+.workshop-section + .workshop-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.workshop-heading {
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+/* 2. Podejście */
+
+.workshop-approach {
+  padding-top: clamp(4rem, 9vw, 8rem);
+}
+
+.workshop-approach__title {
+  font-size: clamp(2.3rem, 5.6vw, 6.2rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+}
+
+.workshop-approach__follow {
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  margin-left: clamp(0rem, 24vw, 22rem);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(1.15rem, 2vw, 2.1rem);
+  line-height: 1.35;
+}
+
+/* 3 i 5. Nagłówek po lewej, treść po prawej */
+
+.workshop-difference,
+.workshop-audience {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 6vw, 7rem);
+}
+
+.workshop-difference__list {
+  padding: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  line-height: 1.7;
+  list-style: none;
+}
+
+.workshop-difference__text,
+.workshop-audience__lead {
+  margin-top: clamp(1.6rem, 3vw, 2.6rem);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1.15rem, 1.8vw, 1.7rem);
+  line-height: 1.45;
+}
+
+.workshop-audience__lead {
+  margin-top: 0;
+}
+
+.workshop-audience__text {
+  margin-top: 1.4rem;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  line-height: 1.7;
+}
+
+/* 4. Program */
+
+.workshop-program .workshop-eyebrow {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.workshop-program__list {
+  padding: 0;
+  list-style: none;
+}
+
+.workshop-topic {
+  display: grid;
+  grid-template-columns: clamp(3rem, 7vw, 7rem) minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: baseline;
+  padding-block: clamp(1.8rem, 3.2vw, 2.8rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  column-gap: clamp(1rem, 3vw, 3rem);
+}
+
+.workshop-topic:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.workshop-topic__number {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.workshop-topic__title {
+  font-size: clamp(1.35rem, 2.4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.workshop-topic__text {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  line-height: 1.65;
+}
+
+/* 6. Finał */
+
+.workshop-closing__title {
+  font-size: clamp(2.6rem, 7.4vw, 8rem);
+  font-weight: 650;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.workshop-closing__text {
+  max-width: 40rem;
+  margin-top: clamp(1.6rem, 3vw, 2.6rem);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  line-height: 1.55;
+}
+
+.workshop-closing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-top: clamp(2rem, 4vw, 3.4rem);
+  gap: 1.4rem clamp(2rem, 4vw, 3.5rem);
+}
+
+.workshop-link--large {
+  margin-top: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+}
+
+.workshop-closing__contact {
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+}
+
+/* Wejście sekcji */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(1.2rem);
+  transition:
+    opacity 900ms ease,
+    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 900px) {
+  .workshop-difference,
+  .workshop-audience {
+    grid-template-columns: 1fr;
+  }
+
+  .workshop-topic {
+    grid-template-columns: clamp(3rem, 9vw, 5rem) minmax(0, 1fr);
+    row-gap: 0.9rem;
+  }
+
+  .workshop-topic__text {
+    grid-column: 2;
+  }
+
+  .workshop-approach__follow {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .workshop-topic {
+    grid-template-columns: 1fr;
+  }
+
+  .workshop-topic__text {
+    grid-column: 1;
+  }
+
+  .workshop-closing__actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .workshop-closing__contact {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .workshop-closing__contact span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
