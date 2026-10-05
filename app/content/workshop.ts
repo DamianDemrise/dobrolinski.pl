@@ -188,9 +188,11 @@ export const workshop = {
   about: {
     titleLines: ['Sprzedaży nauczyli mnie ludzie,', 'nie książki.'],
     paragraphs: [
-      ['Sprzedawałem różne rzeczy.', 'Znicze, skarpetki, farby, samochody.'],
-      ['Dzisiaj zajmuję się marketingiem i technologią.'],
-      ['Produkty się zmieniały.', 'Jedna rzecz została — po drugiej stronie zawsze był człowiek.'],
+      ['Sprzedawałem naprawdę różne rzeczy.'],
+      ['Od ubrań, kwiatów i warzyw,', 'przez farby,', 'aż po samochody.'],
+      ['Dzisiaj zajmuję się marketingiem', 'i technologią.'],
+      ['Produkty się zmieniały.'],
+      ['Jedna rzecz została:', 'po drugiej stronie zawsze był człowiek.'],
     ],
   },
   audience: {

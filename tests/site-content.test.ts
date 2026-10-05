@@ -70,4 +70,10 @@ describe('site content', () => {
       }
     }
   })
+  it('keeps visible copy free of em-dash pauses', () => {
+    const { seo, ...visibleWorkshop } = workshop
+    const visible = JSON.stringify([siteContent, visibleWorkshop])
+    expect(seo.title).toBeTruthy()
+    expect(visible).not.toContain('—')
+  })
 })
