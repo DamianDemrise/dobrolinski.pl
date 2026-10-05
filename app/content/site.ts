@@ -15,17 +15,17 @@ export const siteContent = {
     {
       label: 'Ludzie',
       slug: 'people',
-      thought: 'To ludzie nadają sens każdej dobrej rozmowie.',
+      thought: 'Od tego zaczyna się cała reszta.',
     },
     {
       label: 'Sprzedaż',
       slug: 'sales',
-      thought: 'Nie sprzedajesz do skryptu. Rozmawiasz z człowiekiem.',
+      thought: 'Najpierw posłuchaj. Potem sprzedawaj.',
     },
     {
       label: 'Marketing',
       slug: 'marketing',
-      thought: 'Dobry marketing zaczyna się od uważnego słuchania.',
+      thought: 'Marketing przyprowadza człowieka. Co zrobisz później?',
     },
     {
       label: 'Technologia',
