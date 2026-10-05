@@ -1,25 +1,39 @@
 <script setup lang="ts">
-import { siteContent } from '~/content/site'
+import { ref } from 'vue'
 
 defineEmits<{ close: [] }>()
+
+const root = ref<HTMLElement | null>(null)
+const content = ref<HTMLElement | null>(null)
+
+useReveal(root)
+
+const showContent = () => {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  content.value?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+}
 </script>
 
 <template>
-  <section class="view workshop-view" aria-labelledby="workshop-title" tabindex="-1">
-    <div class="workshop">
-      <p class="workshop__eyebrow">{{ siteContent.workshop.eyebrow }}</p>
-      <h2 id="workshop-title" class="workshop__title">
-        {{ siteContent.workshop.title }}
-      </h2>
-      <p class="workshop__description">{{ siteContent.workshop.description }}</p>
-      <p class="workshop__statement">{{ siteContent.workshop.statement }}</p>
-      <a class="workshop__cta" :href="`mailto:${siteContent.email}?subject=Warsztat%20CZŁOWIEK`">
-        {{ siteContent.email }} <span aria-hidden="true">→</span>
-      </a>
+  <section
+    ref="root"
+    class="view workshop-view"
+    aria-labelledby="workshop-title"
+    tabindex="-1"
+  >
+    <WorkshopHero @more="showContent" />
+
+    <div ref="content" class="workshop-content">
+      <WorkshopApproach />
+      <WorkshopDifference />
+      <WorkshopProgram />
+      <WorkshopClosing />
     </div>
 
+    <div class="workshop-fade" aria-hidden="true" />
+
     <button class="back-button" type="button" @click="$emit('close')">
-      <span aria-hidden="true">←</span> WRÓĆ
+      <span aria-hidden="true">←</span> Wróć
     </button>
   </section>
 </template>

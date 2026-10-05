@@ -1,82 +1,356 @@
+/* Warsztat: kontener przewijania, pierwszy ekran i elementy wspólne sekcji. */
+
 .workshop-view {
+  --workshop-x: clamp(1.5rem, 7.4vw, 8rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.workshop-screen {
+  position: relative;
+  display: grid;
+  min-height: 100%;
+  grid-template-rows: auto 1fr;
+  padding: clamp(1.5rem, 3vw, 3rem) var(--workshop-x) clamp(5.5rem, 9vw, 7.5rem);
+  background:
+    radial-gradient(ellipse 38% 70% at 74% 42%, rgba(255, 255, 255, 0.07), transparent 70%);
+}
+
+.workshop-photo {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  /* Na węższych ekranach postać zjeżdża w prawo, żeby nie wejść pod tytuł. */
+  right: min(0px, calc((100vw - 1690px) / 2));
+  width: auto;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 24%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 24%);
+  user-select: none;
+}
+
+.workshop-topbar,
+.workshop-hero,
+.workshop-aside {
+  position: relative;
+  z-index: 1;
+}
+
+.workshop-topbar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 2rem;
+  font-size: clamp(0.78rem, 0.9vw, 0.9rem);
 }
 
-.workshop {
-  width: min(80vw, 52rem);
-}
-
-.workshop__eyebrow {
-  margin-bottom: 2rem;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.67rem;
-  font-weight: 600;
-  letter-spacing: 0.19em;
-}
-
-.workshop__title {
-  max-width: 14ch;
-  font-size: clamp(2.4rem, 6.2vw, 5.8rem);
+.workshop-topbar__brand {
   font-weight: 650;
-  letter-spacing: -0.055em;
-  line-height: 0.98;
-  text-wrap: balance;
 }
 
-.workshop__description,
-.workshop__statement {
-  max-width: 39rem;
-  color: rgba(255, 255, 255, 0.57);
-  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  line-height: 1.6;
+.workshop-topbar__areas {
+  display: flex;
+  margin-right: auto;
+  margin-left: clamp(1rem, 5vw, 5.5rem);
+  padding: 0;
+  color: rgba(255, 255, 255, 0.58);
+  list-style: none;
+  gap: 0.9rem;
 }
 
-.workshop__description {
-  margin-top: 2rem;
+.workshop-topbar__areas li + li::before {
+  margin-right: 0.9rem;
+  color: rgba(255, 255, 255, 0.28);
+  content: "·";
 }
 
-.workshop__statement {
-  margin-top: 0.75rem;
-  color: rgba(255, 255, 255, 0.8);
+.workshop-topbar__contact,
+.workshop-closing__contact {
+  display: flex;
+  font-style: normal;
+  gap: 0.8rem;
 }
 
-.workshop__cta {
-  display: inline-block;
-  margin-top: 2.2rem;
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+.workshop-topbar__contact a,
+.workshop-closing__contact a {
+  color: rgba(255, 255, 255, 0.86);
   text-decoration: none;
+  transition: color 220ms ease;
 }
 
-.workshop__cta span {
+.workshop-topbar__contact a:hover,
+.workshop-closing__contact a:hover {
+  color: #fff;
+}
+
+.workshop-topbar__contact span,
+.workshop-closing__contact span {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.workshop-hero {
+  align-self: center;
+  max-width: 62rem;
+}
+
+.workshop-eyebrow {
+  margin-bottom: 1.4rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.workshop-line {
+  display: block;
+}
+
+.workshop-line--nowrap {
+  white-space: nowrap;
+}
+
+.workshop-hero__title {
+  font-size: clamp(2.2rem, 5vw, 5.6rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.workshop-hero__lead {
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(1.15rem, 2vw, 2.15rem);
+  line-height: 1.3;
+}
+
+.workshop-rule {
+  display: block;
+  width: 3rem;
+  height: 1px;
+  margin: clamp(1.2rem, 2.4vw, 2rem) 0;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.workshop-hero__description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
+}
+
+.workshop-meta {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: clamp(1.6rem, 3.2vw, 3rem);
+  padding: 0;
+  list-style: none;
+  gap: 1.2rem 0;
+}
+
+.workshop-meta__item {
+  display: flex;
+  flex-direction: column;
+  padding-right: clamp(1rem, 2vw, 1.9rem);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(0.82rem, 0.95vw, 0.98rem);
+  line-height: 1.6;
+  gap: 0.45rem;
+}
+
+.workshop-meta__item + .workshop-meta__item {
+  padding-left: clamp(1rem, 2vw, 1.9rem);
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.workshop-meta__label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.workshop-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: clamp(1.8rem, 3.6vw, 3.4rem);
+  padding-bottom: 0.55rem;
+  background:
+    linear-gradient(#fff, #fff) left bottom / 3rem 1px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)) left bottom / 100% 1px no-repeat;
+  color: #fff;
+  font-size: clamp(0.92rem, 1.1vw, 1.12rem);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-size 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workshop-link:hover {
+  background-size: 100% 1px, 100% 1px;
+}
+
+.workshop-link span,
+.workshop-more span {
   display: inline-block;
-  margin-left: 0.45rem;
+  margin-left: 1rem;
   transition: transform 250ms ease;
 }
 
-.workshop__cta:hover span {
+.workshop-link:hover span {
   transform: translateX(0.3rem);
 }
 
-.back-button {
+.workshop-aside {
   position: absolute;
-  bottom: clamp(1.5rem, 4vw, 3rem);
-  left: clamp(1.5rem, 4vw, 3.5rem);
+  top: 50%;
+  right: clamp(1.5rem, 6vw, 6.5rem);
+  margin: 0;
+  padding: 0.6rem 0 0.6rem 1.6rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
+  line-height: 1.6;
+  list-style: none;
+  transform: translateY(-50%);
+}
+
+.workshop-more {
+  position: absolute;
+  z-index: 3;
+  bottom: clamp(1.5rem, 4vw, 2.6rem);
+  left: 50%;
   padding: 0.5rem 0;
   border: 0;
   background: none;
-  color: rgba(255, 255, 255, 0.46);
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transform: translateX(-50%);
+  transition: color 240ms ease;
+  white-space: nowrap;
+}
+
+.workshop-more span {
+  margin-left: 0.5rem;
+}
+
+.workshop-more:hover {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.workshop-more:hover span {
+  transform: translateY(0.2rem);
+}
+
+.workshop-fade {
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: clamp(4.5rem, 9vw, 6.5rem);
+  background: linear-gradient(rgba(8, 8, 8, 0), rgba(8, 8, 8, 0.94));
+  pointer-events: none;
+}
+
+.back-button {
+  position: fixed;
+  z-index: 3;
+  bottom: clamp(1.5rem, 4vw, 2.6rem);
+  left: clamp(1.5rem, 2.6vw, 3rem);
+  padding: 0.5rem 0;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
   transition: color 240ms ease;
 }
 
 .back-button:hover {
   color: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 1599px) {
+  .workshop-aside {
+    display: none;
+  }
+}
+
+@media (max-width: 1199px) {
+  .workshop-photo {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .workshop-topbar__areas {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .workshop-view {
+    --workshop-x: 1.25rem;
+  }
+
+  .workshop-screen {
+    padding:
+      max(1.1rem, env(safe-area-inset-top))
+      var(--workshop-x)
+      max(5.5rem, calc(env(safe-area-inset-bottom) + 4.5rem));
+    background:
+      radial-gradient(ellipse 80% 40% at 80% 20%, rgba(255, 255, 255, 0.06), transparent 70%);
+  }
+
+  .workshop-topbar__contact {
+    display: none;
+  }
+
+  .workshop-hero {
+    padding-top: 2.2rem;
+  }
+
+  .workshop-hero__title {
+    font-size: clamp(2.1rem, 10.5vw, 3rem);
+  }
+
+  .workshop-hero .workshop-line {
+    display: inline;
+    white-space: normal;
+  }
+
+  .workshop-meta {
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .workshop-meta__item,
+  .workshop-meta__item + .workshop-meta__item {
+    padding: 0;
+    border: 0;
+  }
+
+  .workshop-more {
+    right: var(--workshop-x);
+    bottom: max(1.15rem, env(safe-area-inset-bottom));
+    left: auto;
+    transform: none;
+  }
+
+  .back-button {
+    bottom: max(1.15rem, env(safe-area-inset-bottom));
+    left: var(--workshop-x);
+  }
+}
+
+@media (max-height: 760px) and (min-width: 641px) {
+  .workshop-eyebrow { margin-bottom: 0.9rem; }
+  .workshop-hero__title { font-size: clamp(2.2rem, 4.2vw, 4.4rem); }
+  .workshop-rule { margin: 1rem 0; }
+  .workshop-meta { margin-top: 1.4rem; }
+  .workshop-hero .workshop-link { margin-top: 1.6rem; }
 }
