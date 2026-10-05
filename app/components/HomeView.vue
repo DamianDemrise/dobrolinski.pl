@@ -35,6 +35,8 @@ const emit = defineEmits<{
         Powered by <strong>DEMRISE</strong>
         <span class="sr-only">(otwiera nową kartę)</span>
       </a>
+      <span class="powered__sep" aria-hidden="true">·</span>
+      <NuxtLink to="/polityka-prywatnosci">Polityka prywatności</NuxtLink>
     </div>
   </section>
 </template>

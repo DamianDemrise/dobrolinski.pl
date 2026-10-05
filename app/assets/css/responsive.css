@@ -68,7 +68,16 @@
 
   .powered {
     bottom: max(1.15rem, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
     white-space: nowrap;
+  }
+
+  /* Telefon: dwa krótkie wiersze zamiast jednego, żeby nie wejść pod przycisk „Cookies”. */
+  .powered__sep {
+    display: none;
   }
 
 }

@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { personSchema, siteContent } from '../app/content/site'
 import { workshop, workshopMailHref } from '../app/content/workshop'
 import { workshopOfferPages } from '../app/content/workshop-offer'
+import { privacy } from '../app/content/privacy'
 import { currentProject, projectLabel, projects } from '../app/content/projects'
 
 describe('site content', () => {
@@ -47,6 +48,7 @@ describe('site content', () => {
     const sitemap = readFileSync(resolve(process.cwd(), 'public/sitemap.xml'), 'utf8')
     expect(sitemap).toContain('<loc>https://dobrolinski.pl/</loc>')
     expect(sitemap).toContain(`<loc>${workshop.seo.url}</loc>`)
+    expect(sitemap).toContain(`<loc>${privacy.seo.url}</loc>`)
   })
   it('keeps the product structure and the six-page offer layout', () => {
     expect(workshop.workshopParts.map(part => part.name)).toEqual([
@@ -71,6 +73,16 @@ describe('site content', () => {
       }
     }
   })
+  it('keeps the privacy policy honest about the stack', () => {
+    const text = JSON.stringify(privacy.sections)
+    expect(text).toContain('Demrise sp. z o.o.')
+    expect(text).toContain('0001157533')
+    expect(text).toContain('biuro@demrise.pl')
+    expect(text).toContain('Resend')
+    expect(text).not.toMatch(/CookieYes|DO UZUPEŁNIENIA|G-3HLJLPBZJM|GTM-TR8MDG8W/)
+    expect(text).not.toMatch(/DOBROLINSKI\.PL/)
+  })
+
   it('serves the offer PDF at a stable public URL', () => {
     const pdf = readFileSync(resolve(process.cwd(), 'public/oferta/poznaj-czlowieka.pdf'))
     expect(pdf.subarray(0, 5).toString()).toBe('%PDF-')
@@ -80,7 +92,7 @@ describe('site content', () => {
 
   it('keeps visible copy free of em-dash pauses', () => {
     const { seo, ...visibleWorkshop } = workshop
-    const visible = JSON.stringify([siteContent, visibleWorkshop])
+    const visible = JSON.stringify([siteContent, visibleWorkshop, privacy])
     expect(seo.title).toBeTruthy()
     expect(visible).not.toContain('—')
   })

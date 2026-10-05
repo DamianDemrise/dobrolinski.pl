@@ -201,6 +201,12 @@
   letter-spacing: 0.17em;
 }
 
+.powered__sep {
+  margin-inline: 0.7rem;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.64rem;
+}
+
 .powered strong {
   color: rgba(255, 255, 255, 0.43);
 }

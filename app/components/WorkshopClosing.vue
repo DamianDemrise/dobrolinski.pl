@@ -37,5 +37,8 @@ const { closing } = workshop
         <span class="workshop-line">{{ line }}</span>{{ ' ' }}
       </template>
     </p>
+    <p class="workshop-epilogue__legal">
+      <NuxtLink class="privacy-link" to="/polityka-prywatnosci">Polityka prywatności</NuxtLink>
+    </p>
   </footer>
 </template>
