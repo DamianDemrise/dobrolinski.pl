@@ -3,6 +3,8 @@ import { trackEventPayload } from '~/utils/clickTracking'
 
 export type OfferFormState = 'idle' | 'sending' | 'sent' | 'error'
 export type OfferFieldError = 'empty' | 'invalid' | null
+/** Co wysyła formularz: oferta warsztatu (domyślnie) albo ebook. */
+export type OfferFormProduct = 'offer' | 'ebook'
 
 const REQUEST_TIMEOUT_MS = 15000
 
@@ -22,7 +24,11 @@ function currentSource(): OfferSource {
   return source
 }
 
-export const useOfferForm = () => {
+/**
+ * Logika formularza (oferta albo ebook). Oferta wysyła body bez pola `product` (jak dotąd),
+ * ebook dopisuje `product: 'ebook'`. Miejsca w pomiarze mają przedrostek produktu (offer-…, ebook-…).
+ */
+export const useOfferForm = (product: OfferFormProduct = 'offer') => {
   const { offerEndpoint } = useRuntimeConfig().public
   const email = ref('')
   const website = ref('')
@@ -34,9 +40,11 @@ export const useOfferForm = () => {
     shownAt = Date.now()
   }
 
-  const fail = (place: string) => {
+  const place = (suffix?: string) => (suffix ? `${product}-${suffix}` : product)
+
+  const fail = (suffix: string) => {
     state.value = 'error'
-    trackOffer('offer_form_error', place)
+    trackOffer('offer_form_error', place(suffix))
   }
 
   const submit = async () => {
@@ -45,12 +53,12 @@ export const useOfferForm = () => {
     const address = normalizeEmail(email.value)
     fieldError.value = !address ? 'empty' : isValidEmail(address) ? null : 'invalid'
     if (fieldError.value) {
-      trackOffer('offer_form_error', 'offer-validation')
+      trackOffer('offer_form_error', place('validation'))
       return
     }
 
     state.value = 'sending'
-    trackOffer('offer_form_submit')
+    trackOffer('offer_form_submit', place())
     try {
       const response = await fetch(offerEndpoint, {
         method: 'POST',
@@ -60,25 +68,26 @@ export const useOfferForm = () => {
           website: website.value,
           elapsed: shownAt ? Date.now() - shownAt : 0,
           source: currentSource(),
+          ...(product === 'offer' ? {} : { product }),
         }),
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       })
       const result = await response.json().catch(() => null) as OfferResponse | null
       if (response.ok && result?.ok) {
         state.value = 'sent'
-        trackOffer('offer_form_success')
+        trackOffer('offer_form_success', place())
         return
       }
       if (result && !result.ok && result.error === 'invalid_email') {
         state.value = 'idle'
         fieldError.value = 'invalid'
-        trackOffer('offer_form_error', 'offer-validation')
+        trackOffer('offer_form_error', place('validation'))
         return
       }
-      fail(response.status === 429 ? 'offer-limit' : 'offer-server')
+      fail(response.status === 429 ? 'limit' : 'server')
     }
     catch {
-      fail('offer-network')
+      fail('network')
     }
   }
 

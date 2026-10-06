@@ -20,12 +20,17 @@ export const blockRegions: Record<BlockType, string> = {
   'workshop-process': 'main',
   'workshop-closing': 'main',
   'privacy-document': 'main',
+  'ebook-hero': 'ebook',
+  'ebook-contents': 'ebook',
+  'ebook-form': 'ebook',
 }
 
 export const layoutRegions = {
   home: ['identity', 'footer'],
   workshop: ['hero', 'main', 'back'],
   document: ['main', 'back'],
+  // Własny obszar: bloki ebooka nie trafiają do palety innych stron.
+  ebook: ['ebook', 'back'],
 } as const
 
 export type LayoutName = keyof typeof layoutRegions

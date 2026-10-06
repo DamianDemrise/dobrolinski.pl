@@ -7,6 +7,7 @@ import { workshopOfferPages } from '../app/content/workshop-offer'
 import { privacy, privacyPage } from '../app/content/privacy'
 import { currentProject, projectLabel, projects } from '../app/content/projects'
 import { blockedPhrases, squashText } from '../scripts/cms-pull.mjs'
+import { publicRoutes, sitemapXml } from '../cms/routes'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -47,7 +48,8 @@ describe('site content', () => {
     )
   })
   it('lists both pages in the sitemap', () => {
-    const sitemap = readFileSync(resolve(process.cwd(), 'public/sitemap.xml'), 'utf8')
+    // sitemap.xml generuje server/routes/sitemap.xml.ts z opublikowanych stron.
+    const sitemap = sitemapXml(publicRoutes(publishedContent))
     expect(sitemap).toContain('<loc>https://dobrolinski.pl/</loc>')
     expect(sitemap).toContain(`<loc>${workshopPage.seo.canonical}</loc>`)
     expect(sitemap).toContain(`<loc>${privacyPage.seo.canonical}</loc>`)

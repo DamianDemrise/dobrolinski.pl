@@ -153,6 +153,24 @@ export interface PrivacyDocumentProps {
   sections: (ListItem & { anchor: string, title: string, blocks: PrivacyBlockItem[] })[]
 }
 
+/* Ebook „Na końcu jest człowiek” */
+
+export interface EbookHeroProps {
+  eyebrow: string
+  titleLines: string[]
+  leadLines: string[]
+}
+
+export interface EbookContentsProps {
+  eyebrow: string
+  items: (ListItem & { number: string, title: string })[]
+}
+
+/** Teksty formularza ebooka: jak oferta, ale zgoda jako jeden tekst z linkami [[adres|etykieta]]. */
+export interface EbookFormProps extends Omit<WorkshopOfferCopy, 'note'> {
+  consent: string
+}
+
 export interface BlockPropsMap {
   'home-stage': HomeStageProps
   'current-project': CurrentProjectProps
@@ -169,6 +187,9 @@ export interface BlockPropsMap {
   'workshop-process': WorkshopProcessProps
   'workshop-closing': WorkshopClosingProps
   'privacy-document': PrivacyDocumentProps
+  'ebook-hero': EbookHeroProps
+  'ebook-contents': EbookContentsProps
+  'ebook-form': EbookFormProps
 }
 
 export type BlockType = keyof BlockPropsMap

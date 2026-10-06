@@ -1,0 +1,74 @@
+{
+  "title": "Na końcu jest człowiek",
+  "slug": "na-koncu-jest-czlowiek",
+  "layout": "ebook",
+  "seo": {
+    "title": "Na końcu jest człowiek | Damian Dobroliński",
+    "description": "Nie jestem trenerem sprzedaży. Produkty się zmieniały. Ludzie nie. Na końcu każdej sprzedaży jest człowiek.",
+    "canonical": "https://dobrolinski.pl/na-koncu-jest-czlowiek",
+    "ogTitle": "Na końcu jest człowiek | Damian Dobroliński",
+    "ogDescription": "Nie jestem trenerem sprzedaży. Produkty się zmieniały. Ludzie nie. Na końcu każdej sprzedaży jest człowiek.",
+    "ogImage": "",
+    "noindex": false
+  },
+  "blocks": [
+    {
+      "id": "hero",
+      "type": "ebook-hero",
+      "props": {
+        "eyebrow": "Ebook",
+        "titleLines": ["Na końcu", "jest człowiek."],
+        "leadLines": [
+          "Nie jestem trenerem sprzedaży.",
+          "Za to przez sporą część życia coś komuś sprzedawałem. Ubrania, kwiaty, warzywa, znicze, farby, samochody.",
+          "Produkty się zmieniały. Ludzie nie.",
+          "Po prostu przeczytaj."
+        ]
+      }
+    },
+    {
+      "id": "contents",
+      "type": "ebook-contents",
+      "props": {
+        "eyebrow": "Spis",
+        "items": [
+          { "_id": "story-1", "number": "01", "title": "Ty jesteś problemem." },
+          { "_id": "story-2", "number": "02", "title": "Nie rozmawialiśmy o stronie." },
+          { "_id": "story-3", "number": "03", "title": "Dla mnie to był samochód." },
+          { "_id": "ending", "number": "—", "title": "I co z tego?" }
+        ]
+      }
+    },
+    {
+      "id": "form",
+      "type": "ebook-form",
+      "props": {
+        "title": "Ebook na e-mail",
+        "lines": ["Podaj adres, wyślę Ci ebook w PDF."],
+        "label": "Twój e-mail",
+        "placeholder": "imie@firma.pl",
+        "submit": "Wyślij mi ebook",
+        "sending": "Wysyłam...",
+        "consent": "Podając e-mail, prosisz mnie o przesłanie ebooka „Na końcu jest człowiek”. Adres wykorzystam w tym celu. Nie zapisuję Cię do newslettera. Szczegóły znajdziesz w [[/polityka-prywatnosci|Polityce prywatności]].",
+        "success": {
+          "title": "Wysłane.",
+          "text": "Sprawdź skrzynkę.",
+          "hint": "Jeśli nie widzisz wiadomości, sprawdź spam."
+        },
+        "errors": {
+          "empty": "Wpisz adres e-mail.",
+          "invalid": "To nie wygląda na adres e-mail. Sprawdź go jeszcze raz.",
+          "failed": "Nie udało się wysłać ebooka.",
+          "failedHint": "Spróbuj ponownie albo napisz:"
+        }
+      }
+    },
+    {
+      "id": "back",
+      "type": "global",
+      "ref": "back-link",
+      "props": {},
+      "overrides": { "trackPlace": "ebook" }
+    }
+  ]
+}

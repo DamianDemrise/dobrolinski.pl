@@ -6,6 +6,7 @@ import type { PageDocument } from '@demrise/cms-core'
 import type { Component, PropType } from 'vue'
 import { defineComponent, h } from 'vue'
 import type { LayoutName } from '~~/cms/regions'
+import EbookView from '~/components/EbookView.vue'
 import HomeView from '~/components/HomeView.vue'
 import PrivacyView from '~/components/PrivacyView.vue'
 import WorkshopView from '~/components/WorkshopView.vue'
@@ -14,6 +15,7 @@ export const layoutRegistry: Record<LayoutName, Component> = {
   home: HomeView,
   workshop: WorkshopView,
   document: PrivacyView,
+  ebook: EbookView,
 }
 
 export default defineComponent({
