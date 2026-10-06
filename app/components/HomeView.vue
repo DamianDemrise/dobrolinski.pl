@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PageDocument } from '@demrise/cms-core'
-import CmsBlocks from '~/cms/CmsBlocks'
+import CmsBlocks from '@demrise/cms-runtime/CmsBlocks'
 
 defineProps<{ page: PageDocument }>()
 </script>

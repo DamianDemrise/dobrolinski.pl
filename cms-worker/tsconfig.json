@@ -9,7 +9,10 @@
     "noEmit": true,
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": false,
-    "paths": { "@demrise/cms-core": ["../packages/cms-core/src/index.ts"] }
+    "paths": {
+      "@demrise/cms-core": ["../vendor/demrise-cms/core/src/index.ts"],
+      "~~/*": ["../*"]
+    }
   },
   "include": ["src/**/*.ts", "test/**/*.ts"]
 }

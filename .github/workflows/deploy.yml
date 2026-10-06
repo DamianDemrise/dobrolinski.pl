@@ -20,8 +20,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Repo strony bez submodułów: DEMRISE CMS (vendor/demrise-cms) jest prywatny
+      # i pobierany osobno kluczem wdrożeniowym tylko do odczytu.
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Resolve DEMRISE CMS commit
+        id: cms
+        run: |
+          sha="$(git ls-tree HEAD vendor/demrise-cms | awk '{print $3}')"
+          if [ -z "$sha" ]; then echo "Brak submodułu vendor/demrise-cms w repo" >&2; exit 1; fi
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+
+      # Dokładnie ta wersja CMS, którą zapisano w repo strony (wskaźnik submodułu).
+      - name: Checkout DEMRISE CMS
+        uses: actions/checkout@v4
+        with:
+          repository: demrise-pl/demrise-cms
+          path: vendor/demrise-cms
+          ref: ${{ steps.cms.outputs.sha }}
+          ssh-key: ${{ secrets.DEMRISE_CMS_DEPLOY_KEY }}
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v4

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PageDocument } from '@demrise/cms-core'
 import { onBeforeUnmount, onMounted, provide, ref } from 'vue'
-import CmsBlocks from '~/cms/CmsBlocks'
-import { useCmsEditContext } from '~/cms/context'
+import CmsBlocks from '@demrise/cms-runtime/CmsBlocks'
+import { useCmsEditContext } from '@demrise/cms-runtime/context'
 import { BACK_LINK_TRAILING_SPACE, WORKSHOP_SHOW_CONTENT } from '~/composables/useWorkshopNav'
 
 defineProps<{ page: PageDocument }>()

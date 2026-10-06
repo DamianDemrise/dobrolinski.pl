@@ -4,7 +4,7 @@ import { tokensToCss, validateEntityData } from '@demrise/cms-core'
 import { describe, expect, it } from 'vitest'
 import { siteSchema } from '../../cms/schema'
 import published from '../../content/published.json'
-import { cssVarFor, newTokenRow, rowsToTokens, tokensToRows, validateTokenRows } from '../../app/admin/tokens-form'
+import { cssVarFor, newTokenRow, rowsToTokens, tokensToRows, validateTokenRows } from '../../vendor/demrise-cms/nuxt/app/admin/tokens-form'
 
 const tokens = (published as unknown as PublishedSite).tokens
 

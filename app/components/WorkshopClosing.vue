@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mailHref, projectIndex } from '~~/cms/derive'
 import type { WorkshopClosingProps } from '~~/cms/types'
-import { useCmsGlobals } from '~/cms/context'
-import { vCms } from '~/cms/directive'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
+import { vCms } from '@demrise/cms-runtime/directive'
 
 // Dwa korzenie (sekcja i epilog): klasy widoczności z CMS trafiają na oba.
 defineOptions({ inheritAttrs: false })

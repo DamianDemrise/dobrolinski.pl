@@ -2,10 +2,10 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { validateEntityData, type EntityKind } from '../../packages/cms-core/src/index'
+import { validateEntityData, type EntityKind } from '../../vendor/demrise-cms/core/src/index'
 import { siteSchema } from '../../cms/schema'
-import { createApp } from '../src/app'
-import { createD1, memoryKV } from './support/d1'
+import { createApp } from '../../vendor/demrise-cms/worker/src/app'
+import { createD1, memoryKV } from '../../vendor/demrise-cms/worker/test/support/d1'
 
 const seedFile = join(import.meta.dirname, '../migrations/0002_seed.sql')
 const publishedFile = join(import.meta.dirname, '../../content/published.json')

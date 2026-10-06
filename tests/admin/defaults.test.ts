@@ -6,7 +6,7 @@ import { validateBlock } from '@demrise/cms-core'
 import { describe, expect, it } from 'vitest'
 import { siteSchema } from '../../cms/schema'
 import published from '../../content/published.json'
-import { emptyItem, emptyProps, emptyValue, newBlockProps } from '../../app/admin/editor/defaults'
+import { emptyItem, emptyProps, emptyValue, newBlockProps } from '../../vendor/demrise-cms/nuxt/app/admin/editor/defaults'
 
 const site = published as unknown as PublishedSite
 const allBlocks: BlockInstance[] = Object.values(site.pages).flatMap((p: PageDocument) => p.blocks)

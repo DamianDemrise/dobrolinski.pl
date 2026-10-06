@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { projectIndex } from '~~/cms/derive'
 import type { CurrentProjectProps } from '~~/cms/types'
-import { useCmsGlobals } from '~/cms/context'
-import { vCms } from '~/cms/directive'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
+import { vCms } from '@demrise/cms-runtime/directive'
 
 defineProps<{ data: CurrentProjectProps }>()
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { WorkshopProcessProps } from '~~/cms/types'
-import { useCmsGlobals } from '~/cms/context'
-import { vCms } from '~/cms/directive'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
+import { vCms } from '@demrise/cms-runtime/directive'
 
 defineProps<{ data: WorkshopProcessProps }>()
 

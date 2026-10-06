@@ -4,8 +4,8 @@ import type { ComponentDocument, PublishedSite } from '@demrise/cms-core'
 import { describe, expect, it } from 'vitest'
 import published from '../../content/published.json'
 import { siteSchema } from '../../cms/schema'
-import { slugify } from '../../app/admin/entities'
-import { copyPage, emptyPage, layoutBlocks, pageSlugMessage, type ComponentOption } from '../../app/admin/new-page'
+import { slugify } from '../../vendor/demrise-cms/nuxt/app/admin/entities'
+import { copyPage, emptyPage, layoutBlocks, pageSlugMessage, type ComponentOption } from '../../vendor/demrise-cms/nuxt/app/admin/new-page'
 
 const site = published as unknown as PublishedSite
 const components: ComponentOption[] = Object.entries(site.components).map(([id, doc]) => ({ id, doc: doc as ComponentDocument, published: true }))

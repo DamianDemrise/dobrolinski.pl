@@ -1,7 +1,7 @@
 /** Punkt wejścia Workera dobrolinski-cms. Schemat strony z cms/schema.ts, układ plików repo poniżej. */
 import { siteSchema } from '../../cms/schema'
 import tokensMap from '../../cms/tokens-css.json'
-import { createApp } from './app'
+import { createApp } from '../../vendor/demrise-cms/worker/src/app'
 
 export default createApp({
   schema: siteSchema,

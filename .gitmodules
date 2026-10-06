@@ -1,0 +1,3 @@
+[submodule "vendor/demrise-cms"]
+	path = vendor/demrise-cms
+	url = https://github.com/demrise-pl/demrise-cms.git

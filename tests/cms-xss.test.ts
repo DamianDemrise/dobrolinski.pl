@@ -4,12 +4,12 @@
  * Testy FAILUJĄCE = potwierdzona podatność (oczekują bezpiecznego zachowania).
  */
 import { describe, expect, it } from 'vitest'
-import { getAtPath, isSafeUrl, setAtPath, tokensToCss, validateEntityData } from '../../src/index'
-import { isSafeTokenValue } from '../../src/tokens'
-import { siteSchema } from '../../../../cms/schema'
-import { linkSegments, personSchema } from '../../../../cms/derive'
+import { getAtPath, isSafeUrl, setAtPath, tokensToCss, validateEntityData } from '../vendor/demrise-cms/core/src/index'
+import { isSafeTokenValue } from '../vendor/demrise-cms/core/src/tokens'
+import { siteSchema } from '../cms/schema'
+import { linkSegments, personSchema } from '../cms/derive'
 // @ts-expect-error moduł .mjs bez typów
-import { localizeMedia } from '../../../../scripts/cms-pull.mjs'
+import { localizeMedia } from '../scripts/cms-pull.mjs'
 
 const JS = [
   'javascript:alert(1)',

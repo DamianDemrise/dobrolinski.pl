@@ -9,7 +9,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { generateTokensCss } from './tokens-css.mjs'
+import { generateTokensCss } from '../vendor/demrise-cms/scripts/tokens-css.mjs'
 
 export { generateTokensCss }
 

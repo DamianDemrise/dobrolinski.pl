@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import type { PublishedSite } from './packages/cms-core/src/types'
-import { seoMeta } from './app/cms/seo'
+import type { PublishedSite } from './vendor/demrise-cms/core/src/types'
+import { seoMeta } from './vendor/demrise-cms/runtime/seo'
 import { isUnpublishedRoute, publicRoutes } from './cms/routes'
 import published from './content/published.json'
 
@@ -12,14 +12,15 @@ const home = site.pages['']!
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-04',
   devtools: { enabled: false },
+  // Panel DEMRISE CMS (warstwa z submodułu vendor/demrise-cms) tylko w buildzie panelu:
+  // publiczny build nie zawiera tras ani kodu panelu.
+  extends: isAdminBuild ? ['./vendor/demrise-cms/nuxt'] : [],
   modules: ['@nuxt/eslint'],
   css: ['~/assets/css/main.css'],
   alias: {
-    '@demrise/cms-core': fileURLToPath(new URL('./packages/cms-core/src/index.ts', import.meta.url)),
+    '@demrise/cms-core': fileURLToPath(new URL('./vendor/demrise-cms/core/src/index.ts', import.meta.url)),
+    '@demrise/cms-runtime': fileURLToPath(new URL('./vendor/demrise-cms/runtime', import.meta.url)),
   },
-  // Publiczny build nie zawiera tras ani kodu panelu.
-  ignore: isAdminBuild ? [] : ['app/pages/admin/**', 'app/components/admin/**', 'app/admin/**'],
-  routeRules: isAdminBuild ? { '/admin/**': { ssr: false } } : {},
   runtimeConfig: {
     public: {
       // GTM ładuje się dopiero po zgodzie (app/plugins/analytics.client.ts).
