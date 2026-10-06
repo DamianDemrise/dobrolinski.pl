@@ -1,0 +1,35 @@
+/* Wygenerowane przez scripts/cms-tokens.mjs z tokenów CMS (content/published.json). Nie edytuj ręcznie. */
+
+.workshop-view {
+  --workshop-x: clamp(1.5rem, 7.4vw, 8rem);
+  --type-display-xl: clamp(2.8rem, 7vw, 7.4rem);
+  --type-display: clamp(2.4rem, 5vw, 5.6rem);
+  --type-display-s: clamp(2rem, 4.2vw, 4.4rem);
+  --type-heading-l: clamp(1.7rem, 2.9vw, 3rem);
+  --type-heading: clamp(1.5rem, 2.4vw, 2.5rem);
+  --type-lead: clamp(1.2rem, 1.8vw, 1.75rem);
+  --type-body-l: clamp(1.125rem, 1.4vw, 1.35rem);
+  --type-body: clamp(1.0625rem, 1.28vw, 1.25rem);
+  --type-body-s: clamp(1rem, 1.18vw, 1.125rem);
+  --type-small: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  --type-eyebrow: 0.74rem;
+  --type-label: 0.7rem;
+  --ink-primary: rgba(255, 255, 255, 0.9);
+  --ink-secondary: rgba(255, 255, 255, 0.66);
+  --ink-muted: rgba(255, 255, 255, 0.46);
+}
+
+.workshop-content {
+  --workshop-measure: 66rem;
+  --workshop-narrow: 58rem;
+  --workshop-number-col: clamp(2.5rem, 7%, 4.5rem);
+  --workshop-col-gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+@media (max-width: 640px) {
+  .workshop-view {
+    --workshop-x: 1.25rem;
+    --ink-secondary: rgba(255, 255, 255, 0.7);
+    --type-small: 1rem;
+  }
+}

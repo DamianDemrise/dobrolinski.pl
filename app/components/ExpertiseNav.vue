@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import type { Area, AreaSlug } from '~/content/site'
+import type { AreaItem } from '~~/cms/types'
+import { vCms } from '~/cms/directive'
 
 defineProps<{
-  activeArea: AreaSlug | null
-  areas: readonly Area[]
+  activeArea: string | null
+  areas: readonly AreaItem[]
+  label: string
 }>()
 
 const emit = defineEmits<{
-  activate: [slug: AreaSlug]
+  activate: [slug: string]
   leave: []
-  preview: [slug: AreaSlug]
+  preview: [slug: string]
 }>()
 </script>
 
 <template>
-  <nav class="areas" aria-label="Obszary doświadczenia">
+  <nav class="areas" :aria-label="label">
     <template v-for="(area, index) in areas" :key="area.slug">
       <button
+        v-cms="`globals.site.areas.${index}.label`"
         class="area"
         :class="{ 'area--active': activeArea === area.slug }"
         type="button"

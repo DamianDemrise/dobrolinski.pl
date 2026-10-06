@@ -1,0 +1,22 @@
+/*
+ * Widoczność bloków per urządzenie (DEMRISE CMS). Klasy pojawiają się w HTML tylko,
+ * gdy blok ma ustawioną widoczność, więc bez nich strona wygląda dokładnie jak wcześniej.
+ * Progi: telefon do 640 px, tablet 641–1100 px, desktop od 1101 px.
+ */
+@media (min-width: 1101px) {
+  .cms-hide-desktop {
+    display: none !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1100px) {
+  .cms-hide-tablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .cms-hide-mobile {
+    display: none !important;
+  }
+}

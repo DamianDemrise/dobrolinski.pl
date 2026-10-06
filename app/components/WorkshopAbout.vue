@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { workshop } from '~/content/workshop'
+import type { WorkshopAboutProps } from '~~/cms/types'
+import { vCms } from '~/cms/directive'
 
-const { about } = workshop
+defineProps<{ data: WorkshopAboutProps }>()
 </script>
 
 <template>
   <section class="workshop-section workshop-about" aria-labelledby="workshop-about-title">
     <h2 id="workshop-about-title" class="workshop-about__title reveal">
-      <template v-for="line in about.titleLines" :key="line">
-        <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+      <template v-for="(line, i) in data.titleLines" :key="line">
+        <span v-cms="`titleLines.${i}`" class="workshop-line">{{ line }}</span>{{ ' ' }}
       </template>
     </h2>
     <div class="workshop-about__body">
-      <p v-for="paragraph in about.paragraphs" :key="paragraph[0]" class="reveal">
-        <template v-for="line in paragraph" :key="line">
-          <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+      <p v-for="(paragraph, p) in data.paragraphs" :key="paragraph._id" class="reveal">
+        <template v-for="(line, i) in paragraph.lines" :key="line">
+          <span v-cms="`paragraphs.${p}.lines.${i}`" class="workshop-line">{{ line }}</span>{{ ' ' }}
         </template>
       </p>
     </div>

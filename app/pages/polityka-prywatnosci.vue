@@ -1,22 +1,12 @@
 <script setup lang="ts">
-import { privacy } from '~/content/privacy'
+import CmsPageView from '~/cms/CmsPageView'
+import { useCmsPage } from '~/cms/context'
+import { useCmsPageHead } from '~/cms/head'
 
-const { seo } = privacy
-
-useSeoMeta({
-  title: seo.title,
-  description: seo.description,
-  ogType: 'website',
-  ogTitle: seo.title,
-  ogDescription: seo.description,
-  ogUrl: seo.url,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: seo.url }],
-})
+const page = useCmsPage('polityka-prywatnosci')
+useCmsPageHead(page, 'website')
 </script>
 
 <template>
-  <PrivacyView />
+  <CmsPageView :page="page" />
 </template>

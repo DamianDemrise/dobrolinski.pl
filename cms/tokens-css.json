@@ -1,0 +1,44 @@
+{
+  "$comment": "Mapa tokenów na istniejące zmienne CSS (nazwa i selektor jak w kodzie przed CMS). Generator: scripts/cms-tokens.mjs. Tokeny spoza mapy (np. colors.base, breakpoints) są informacyjne.",
+  "rules": [
+    {
+      "selector": ".workshop-view",
+      "vars": [
+        ["spacing", "workshop-x", "--workshop-x"],
+        ["typography", "display-xl", "--type-display-xl"],
+        ["typography", "display", "--type-display"],
+        ["typography", "display-s", "--type-display-s"],
+        ["typography", "heading-l", "--type-heading-l"],
+        ["typography", "heading", "--type-heading"],
+        ["typography", "lead", "--type-lead"],
+        ["typography", "body-l", "--type-body-l"],
+        ["typography", "body", "--type-body"],
+        ["typography", "body-s", "--type-body-s"],
+        ["typography", "small", "--type-small"],
+        ["typography", "eyebrow", "--type-eyebrow"],
+        ["typography", "label", "--type-label"],
+        ["colors", "ink-primary", "--ink-primary"],
+        ["colors", "ink-secondary", "--ink-secondary"],
+        ["colors", "ink-muted", "--ink-muted"]
+      ]
+    },
+    {
+      "selector": ".workshop-content",
+      "vars": [
+        ["widths", "workshop-measure", "--workshop-measure"],
+        ["widths", "workshop-narrow", "--workshop-narrow"],
+        ["spacing", "workshop-number-col", "--workshop-number-col"],
+        ["spacing", "workshop-col-gap", "--workshop-col-gap"]
+      ]
+    },
+    {
+      "media": "(max-width: 640px)",
+      "selector": ".workshop-view",
+      "vars": [
+        ["spacing", "workshop-x-mobile", "--workshop-x"],
+        ["colors", "ink-secondary-mobile", "--ink-secondary"],
+        ["typography", "small-mobile", "--type-small"]
+      ]
+    }
+  ]
+}

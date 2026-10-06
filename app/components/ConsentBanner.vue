@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { siteContent } from '~/content/site'
+import { useCmsGlobals } from '~/cms/context'
 
-const { consent } = siteContent
+const globals = useCmsGlobals()
+const consent = computed(() => globals.value.site.consent)
 const { decide, panelOpen } = useAnalyticsConsent()
 </script>
 

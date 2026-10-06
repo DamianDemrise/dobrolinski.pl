@@ -1,11 +1,12 @@
-import { readdirSync, readFileSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { personSchema, siteContent } from '../app/content/site'
-import { workshop, workshopMailHref } from '../app/content/workshop'
+import { personSchema, publishedContent, siteContent } from '../app/content/site'
+import { workshop, workshopBlock, workshopIndex, workshopMailHref, workshopPage } from '../app/content/workshop'
 import { workshopOfferPages } from '../app/content/workshop-offer'
-import { privacy } from '../app/content/privacy'
+import { privacy, privacyPage } from '../app/content/privacy'
 import { currentProject, projectLabel, projects } from '../app/content/projects'
+import { blockedPhrases, squashText } from '../scripts/cms-pull.mjs'
 
 describe('site content', () => {
   it('keeps the requested thought as the default', () => {
@@ -32,11 +33,12 @@ describe('site content', () => {
   })
 
   it('presents the workshop as a numbered project with a short program teaser', () => {
-    expect(workshop.index).toBe(`01 / ${workshop.name}`)
-    expect(workshop.path).toBe(`/${workshop.slug}`)
-    expect(workshop.seo.url).toBe(`https://dobrolinski.pl${workshop.path}`)
-    expect(workshop.program.topics).toHaveLength(5)
-    expect(workshop.program.topics.map(topic => topic.number)).toEqual(['01', '02', '03', '04', '05'])
+    expect(workshopIndex).toBe(`01 / ${workshop.name}`)
+    expect(workshop.path).toBe(`/${workshopPage.slug}`)
+    expect(workshopPage.seo.canonical).toBe(`https://dobrolinski.pl${workshop.path}`)
+    const { topics } = workshopBlock('workshop-program')
+    expect(topics).toHaveLength(5)
+    expect(topics.map(topic => topic.number)).toEqual(['01', '02', '03', '04', '05'])
   })
 
   it('opens an email about the workshop with an encoded subject', () => {
@@ -47,29 +49,33 @@ describe('site content', () => {
   it('lists both pages in the sitemap', () => {
     const sitemap = readFileSync(resolve(process.cwd(), 'public/sitemap.xml'), 'utf8')
     expect(sitemap).toContain('<loc>https://dobrolinski.pl/</loc>')
-    expect(sitemap).toContain(`<loc>${workshop.seo.url}</loc>`)
-    expect(sitemap).toContain(`<loc>${privacy.seo.url}</loc>`)
+    expect(sitemap).toContain(`<loc>${workshopPage.seo.canonical}</loc>`)
+    expect(sitemap).toContain(`<loc>${privacyPage.seo.canonical}</loc>`)
   })
   it('keeps the product structure and the six-page offer layout', () => {
-    expect(workshop.workshopParts.map(part => part.name)).toEqual([
+    expect(workshopBlock('workshop-parts').parts.map(part => part.name)).toEqual([
       'CZŁOWIEK', 'SPRZEDAŻ', 'RELACJA', 'WASZA FIRMA',
     ])
-    expect(workshop.process.steps.map(step => step.label)).toEqual(['PRZED', 'W TRAKCIE', 'PO'])
+    expect(workshopBlock('workshop-process').steps.map(step => step.label)).toEqual(['PRZED', 'W TRAKCIE', 'PO'])
     expect(workshopOfferPages.map(page => page.page)).toEqual([1, 2, 3, 4, 5, 6])
     expect(workshop.regularPrice.amount).toBe(4900)
   })
 
   it('makes no numeric promises in outcomes', () => {
-    const outcomes = workshop.outcomes.items.flat().join(' ')
+    const outcomes = workshop.outcomes.items.flatMap(item => item.lines).join(' ')
     expect(outcomes).not.toMatch(/%|\d/)
   })
 
-  it('never ships the pilot price in public source', () => {
-    const dirs = ['app/content', 'app/components', 'app/pages', 'shared', 'offer-worker/src']
+  // Zablokowane frazy (np. cena pilotażowa) tylko z sekretu CMS_BLOCKED_TEXT: repo jest publiczne.
+  it.skipIf(!blockedPhrases().length)('never ships blocked phrases in public source', () => {
+    const blocked = blockedPhrases().map(squashText)
+    const dirs = ['app/content', 'app/components', 'app/pages', 'app/cms', 'cms', 'content', 'shared', 'offer-worker/src']
     for (const dir of dirs) {
       for (const file of readdirSync(resolve(process.cwd(), dir))) {
+        if (!statSync(resolve(process.cwd(), dir, file)).isFile()) continue
         const source = readFileSync(resolve(process.cwd(), dir, file), 'utf8')
-        expect(source, `${dir}/${file}`).not.toMatch(/2[\s\u00a0]?900/)
+        const text = squashText(source)
+        expect(blocked.filter(phrase => text.includes(phrase)), `${dir}/${file}`).toEqual([])
       }
     }
   })
@@ -91,21 +97,29 @@ describe('site content', () => {
   })
 
   it('keeps visible copy free of em-dash pauses', () => {
-    const { seo, ...visibleWorkshop } = workshop
-    const visible = JSON.stringify([siteContent, visibleWorkshop, privacy])
+    // Cała opublikowana treść; SEO strony głównej (opis z półpauzą) i warsztatu poza zakresem, jak wcześniej.
+    const { seo } = workshopPage
+    const pages = Object.entries(publishedContent.pages)
+      .map(([slug, { seo: pageSeo, ...page }]) => (slug === '' || slug === workshopPage.slug ? page : { ...page, seo: pageSeo }))
+    const visible = JSON.stringify([publishedContent.globals, publishedContent.components, pages])
     expect(seo.title).toBeTruthy()
+    expect(visible).toContain(siteContent.name)
+    expect(visible).toContain(privacy.title)
     expect(visible).not.toContain('—')
+    for (const file of readdirSync(resolve(process.cwd(), 'cms'))) {
+      expect(readFileSync(resolve(process.cwd(), 'cms', file), 'utf8'), `cms/${file}`).not.toContain('—')
+    }
   })
   it('ships the dedicated Open Graph image for the workshop', () => {
-    expect(workshop.seo.image).toBe('https://dobrolinski.pl/og-poznaj-czlowieka.png')
+    expect(workshopPage.seo.ogImage).toBe('https://dobrolinski.pl/og-poznaj-czlowieka.png')
     const png = readFileSync(resolve(process.cwd(), 'public/og-poznaj-czlowieka.png'))
     // Nagłówek IHDR: szerokość i wysokość jako 32-bit big-endian.
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630])
-    expect(workshop.seo.socialTitle).not.toContain('—')
+    expect(workshopPage.seo.ogTitle).not.toContain('—')
   })
   it('treats the workshop as the first project of a numbered series', () => {
     expect(projects[0]?.number).toBe('01')
-    expect(projectLabel(currentProject)).toBe(workshop.index)
+    expect(projectLabel(currentProject)).toBe(workshopIndex)
     expect(new Set(projects.map(project => project.number)).size).toBe(projects.length)
   })
   it('ships the homepage Open Graph image at 1200x630', () => {

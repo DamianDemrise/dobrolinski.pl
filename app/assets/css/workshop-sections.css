@@ -5,11 +5,8 @@
  */
 
 .workshop-content {
-  --workshop-measure: 66rem;
-  --workshop-narrow: 58rem;
+  /* Tokeny w tokens.css: --workshop-measure, --workshop-narrow, --workshop-number-col, --workshop-col-gap. */
   /* Druga oś kompozycji: początek kolumny opisów w programie. */
-  --workshop-number-col: clamp(2.5rem, 7%, 4.5rem);
-  --workshop-col-gap: clamp(1.5rem, 3vw, 3rem);
   --workshop-axis: calc(var(--workshop-number-col) + var(--workshop-col-gap) + 50% - var(--workshop-number-col) / 2);
   padding: 0 var(--workshop-x) clamp(3rem, 6vw, 5rem);
 }

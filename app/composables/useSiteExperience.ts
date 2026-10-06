@@ -1,19 +1,20 @@
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import type { AreaSlug } from '~/content/site'
-import { siteContent } from '~/content/site'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, toValue } from 'vue'
+import type { AreaItem } from '~~/cms/types'
 
-export function useSiteExperience() {
+export function useSiteExperience(areas: MaybeRefOrGetter<readonly AreaItem[]>, thoughts: MaybeRefOrGetter<readonly string[]>) {
   const thoughtIndex = ref(0)
-  const activeArea = ref<AreaSlug | null>(null)
-  const pinnedArea = ref<AreaSlug | null>(null)
+  const activeArea = ref<string | null>(null)
+  const pinnedArea = ref<string | null>(null)
   let rotationTimer: ReturnType<typeof setInterval> | undefined
 
   const thought = computed(() => {
-    const area = siteContent.areas.find(item => item.slug === activeArea.value)
-    return area?.thought ?? siteContent.thoughts[thoughtIndex.value] ?? siteContent.thoughts[0]
+    const area = toValue(areas).find(item => item.slug === activeArea.value)
+    const list = toValue(thoughts)
+    return area?.thought ?? list[thoughtIndex.value] ?? list[0] ?? ''
   })
 
-  const previewArea = (slug: AreaSlug) => {
+  const previewArea = (slug: string) => {
     activeArea.value = slug
   }
 
@@ -21,15 +22,16 @@ export function useSiteExperience() {
     activeArea.value = pinnedArea.value
   }
 
-  const toggleArea = (slug: AreaSlug) => {
+  const toggleArea = (slug: string) => {
     pinnedArea.value = pinnedArea.value === slug ? null : slug
     activeArea.value = pinnedArea.value
   }
 
   onMounted(() => {
     rotationTimer = setInterval(() => {
-      if (!activeArea.value && !document.hidden) {
-        thoughtIndex.value = (thoughtIndex.value + 1) % siteContent.thoughts.length
+      const count = toValue(thoughts).length
+      if (!activeArea.value && !document.hidden && count) {
+        thoughtIndex.value = (thoughtIndex.value + 1) % count
       }
     }, 7200)
   })

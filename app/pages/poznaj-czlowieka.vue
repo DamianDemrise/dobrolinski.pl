@@ -1,32 +1,12 @@
 <script setup lang="ts">
-import { workshop } from '~/content/workshop'
+import CmsPageView from '~/cms/CmsPageView'
+import { useCmsPage } from '~/cms/context'
+import { useCmsPageHead } from '~/cms/head'
 
-const { seo } = workshop
-
-useSeoMeta({
-  title: seo.title,
-  description: seo.description,
-  ogType: 'website',
-  ogTitle: seo.socialTitle,
-  ogDescription: seo.socialDescription,
-  ogUrl: seo.url,
-  ogImage: seo.image,
-  ogImageType: 'image/png',
-  ogImageWidth: 1200,
-  ogImageHeight: 630,
-  ogImageAlt: seo.imageAlt,
-  twitterCard: 'summary_large_image',
-  twitterTitle: seo.socialTitle,
-  twitterDescription: seo.socialDescription,
-  twitterImage: seo.image,
-  twitterImageAlt: seo.imageAlt,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: seo.url }],
-})
+const page = useCmsPage('poznaj-czlowieka')
+useCmsPageHead(page, 'website')
 </script>
 
 <template>
-  <WorkshopView />
+  <CmsPageView :page="page" />
 </template>
