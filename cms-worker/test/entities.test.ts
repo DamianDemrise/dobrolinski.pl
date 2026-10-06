@@ -155,8 +155,17 @@ describe('draft, konflikty, publikacja', () => {
     expect(h.db.raw.prepare('SELECT COUNT(*) AS n FROM audit_log WHERE action = \'publish\'').get()).toEqual({ n: 1 })
   })
 
-  it('z GITHUB_TOKEN publikacja wyzwala repository_dispatch', async () => {
+  it('z tokenem, ale bez REBUILD_ON_PUBLISH publikacja nie wypycha strony (wypchnięcie ręczne)', async () => {
     const h = setup({ github: true })
+    const cookie = await h.login('owner')
+    const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })
+    expect(await body(res)).toMatchObject({ rebuild: 'manual' })
+    expect(h.net.github()).toHaveLength(0)
+    expect(await body(await h.api('POST', '/api/rebuild', { cookie }))).toEqual({ rebuild: 'triggered' })
+  })
+
+  it('z GITHUB_TOKEN i REBUILD_ON_PUBLISH=1 publikacja wyzwala repository_dispatch', async () => {
+    const h = setup({ github: true, env: { REBUILD_ON_PUBLISH: '1' } })
     const cookie = await h.login('owner')
     const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })
     expect(await body(res)).toMatchObject({ rebuild: 'triggered' })
@@ -167,7 +176,7 @@ describe('draft, konflikty, publikacja', () => {
   })
 
   it('błąd GitHuba: rebuild = failed, publikacja zostaje', async () => {
-    const h = setup({ github: true, githubStatus: 500 })
+    const h = setup({ github: true, githubStatus: 500, env: { REBUILD_ON_PUBLISH: '1' } })
     const cookie = await h.login('owner')
     const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })
     expect(res.status).toBe(200)

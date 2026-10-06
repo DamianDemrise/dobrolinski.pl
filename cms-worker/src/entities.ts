@@ -8,7 +8,7 @@ import { auditStatement } from './audit'
 import { currentUser, nowIso, type Ctx } from './context'
 import { randomId } from './crypto'
 import { LIMITS } from './env'
-import { triggerRebuild } from './github'
+import { rebuildOnPublish, triggerRebuild } from './github'
 import { checkChange, requirePermission, validateOnly } from './guard'
 import { fail, json, readJson, readOptionalJson } from './http'
 import { toEntity, toSummary, type EntityRow } from './rows'
@@ -137,7 +137,8 @@ export async function publishEntity(ctx: Ctx): Promise<Response> {
     revisionStatement(ctx, row.id, 'publish', row.draft_json),
     auditStatement(ctx, 'publish', user.id, row.id, { rev: expectedRev }),
   ])
-  const response: PublishResponse = { publishedAt, rebuild: await triggerRebuild(ctx.env, ctx.deps.fetch) }
+  const rebuild = rebuildOnPublish(ctx.env) ? await triggerRebuild(ctx.env, ctx.deps.fetch) : 'manual'
+  const response: PublishResponse = { publishedAt, rebuild }
   return json(response)
 }
 

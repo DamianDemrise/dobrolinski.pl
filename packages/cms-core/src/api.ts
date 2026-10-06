@@ -90,4 +90,27 @@ export interface SettingsResponse {
   mailConfigured: boolean
 }
 
+/** Anonimowy licznik formularzy strony (bez adresów): ostatnie 7 i 30 dni oraz łącznie. */
+export interface FormCounts { days7: number, days30: number, total: number }
+export interface StatsResponse {
+  forms: { offer: FormCounts, ebook: FormCounts }
+}
+
+/** Stan wypchnięcia strony publicznej (GitHub Actions) i publikacje, których jeszcze na niej nie ma. */
+export interface DeployRun {
+  status: 'queued' | 'in_progress' | 'completed' | string
+  conclusion: 'success' | 'failure' | 'cancelled' | string | null
+  createdAt: string
+  url: string
+}
+export interface DeployResponse {
+  /** true, gdy Worker ma GITHUB_TOKEN i może sam uruchomić wypchnięcie. */
+  canTrigger: boolean
+  lastRun: DeployRun | null
+  lastSuccessAt: string | null
+  /** Encje opublikowane po starcie ostatniego udanego wypchnięcia (null: stan GitHub nieznany). */
+  pending: { id: string, kind: string, title: string, publishedAt: string }[] | null
+  actionsUrl: string | null
+}
+
 export type PublicSiteResponse = PublishedSite

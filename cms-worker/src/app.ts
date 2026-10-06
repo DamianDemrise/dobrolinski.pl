@@ -5,6 +5,7 @@
 import { logout, me, requestLink, verifyLink, verifyPage } from './auth'
 import type { Ctx } from './context'
 import { csrfOk, isMutating } from './csrf'
+import { getDeploy, getStats } from './dashboard'
 import { createEntity, deleteEntity, discardDraft, getEntity, listEntities, publishEntity, saveDraft } from './entities'
 import type { Deps, Env } from './env'
 import { HttpError, json, redirect, withSecurityHeaders } from './http'
@@ -46,6 +47,8 @@ export function buildRouter(): Router {
     .add('DELETE', '/api/users/:id', deleteUser)
     .add('GET', '/api/settings', getSettings)
     .add('POST', '/api/rebuild', rebuild)
+    .add('GET', '/api/stats', getStats)
+    .add('GET', '/api/deploy', getDeploy)
     .add('GET', '/api/public/site', publicSite, 'public')
     .add('GET', '/media/:id/:filename', serveMedia, 'public')
 }

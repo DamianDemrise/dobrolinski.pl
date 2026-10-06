@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import type { RebuildStatus } from '@demrise/cms-core'
 import { computed, ref } from 'vue'
+import { REBUILD_MESSAGES, rebuildTone } from '~/admin/deploy'
 import type { EntityDraft } from '~/admin/entity-draft'
 import { errorMessage, formatDate, STATUS_LABELS } from '~/admin/format'
 import { useAdminToast } from '~/admin/toast'
@@ -31,11 +32,6 @@ const emit = defineEmits<{ published: [rebuild: RebuildStatus] }>()
 const toast = useAdminToast()
 const state = props.draft.state
 const SAVE_LABELS = { saved: 'Zapisano', saving: 'Zapisywanie…', dirty: 'Niezapisane zmiany', error: 'Błąd zapisu', conflict: 'Błąd zapisu (konflikt)', offline: 'Offline: ponawiam…' } as const
-const REBUILD: Record<RebuildStatus, string> = {
-  triggered: 'Strona przebuduje się w ciągu ~1–2 min.',
-  manual: 'Automatyczna przebudowa nie jest skonfigurowana: uruchom ją w Ustawieniach albo w GitHub Actions (Run workflow).',
-  failed: 'Nie udało się uruchomić przebudowy. Uruchom ją w Ustawieniach albo w GitHub Actions.',
-}
 
 const status = computed(() => STATUS_LABELS[props.draft.status.value])
 const publishOpen = ref(false)
@@ -105,7 +101,7 @@ async function discard() {
       <div class="adm-stack">
         <p>Wersja robocza „{{ label || state.title }}” stanie się wersją publiczną.</p>
         <p v-if="publishNote" class="adm-muted">{{ publishNote }}</p>
-        <p v-if="rebuild" class="adm-alert" :class="rebuild === 'triggered' ? 'adm-alert--neutral' : 'adm-alert--warning'" role="status">{{ REBUILD[rebuild] }}</p>
+        <p v-if="rebuild" class="adm-alert" :class="rebuildTone(rebuild)" role="status">{{ REBUILD_MESSAGES[rebuild] }}</p>
       </div>
       <template #footer>
         <Button @click="publishOpen = false">{{ rebuild ? 'Zamknij' : 'Anuluj' }}</Button>

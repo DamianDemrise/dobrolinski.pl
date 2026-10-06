@@ -40,6 +40,8 @@ export interface Env {
   GITHUB_REPO?: string
   RESEND_API_KEY?: string
   GITHUB_TOKEN?: string
+  /** '1': publikacja od razu uruchamia przebudowę. Domyślnie wypychanie ręczne (przycisk w panelu). */
+  REBUILD_ON_PUBLISH?: string
   /** '1' tylko lokalnie: dopuszcza Origin http://localhost:8787 i http://127.0.0.1:8787. */
   DEV?: string
 }

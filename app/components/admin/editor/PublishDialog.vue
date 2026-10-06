@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import type { RebuildStatus } from '@demrise/cms-core'
 import { computed, ref, watch } from 'vue'
+import { REBUILD_MESSAGES, rebuildTone } from '~/admin/deploy'
 import type { EditorStore } from '~/admin/editor/store'
 import { schema } from '~/admin/editor/store'
 import { errorMessage } from '~/admin/format'
@@ -36,11 +37,6 @@ function toggle(id: string) {
   selected.value = next
 }
 
-const REBUILD: Record<RebuildStatus, string> = {
-  triggered: 'Strona przebuduje się w ciągu ~1–2 min.',
-  manual: 'Automatyczna przebudowa nie jest skonfigurowana: uruchom rebuild w Ustawieniach albo w GitHub Actions (Run workflow).',
-  failed: 'Nie udało się uruchomić przebudowy. Uruchom rebuild w Ustawieniach albo w GitHub Actions.',
-}
 
 async function publish() {
   busy.value = true
@@ -87,7 +83,7 @@ const done = computed(() => steps.value.length > 0 && steps.value.every(s => s.o
       <ul v-if="steps.length" style="margin: 0; padding-left: 18px" aria-live="polite">
         <li v-for="s in steps" :key="s.label" :style="{ color: s.ok ? 'var(--adm-success)' : 'var(--adm-danger)' }">{{ s.label }}: {{ s.message }}</li>
       </ul>
-      <p v-if="rebuild" class="adm-alert" :class="rebuild === 'triggered' ? 'adm-alert--neutral' : 'adm-alert--warning'" role="status">{{ REBUILD[rebuild] }}</p>
+      <p v-if="rebuild" class="adm-alert" :class="rebuildTone(rebuild)" role="status">{{ REBUILD_MESSAGES[rebuild] }}</p>
     </div>
     <template #footer>
       <Button @click="open = false">{{ done ? 'Zamknij' : 'Anuluj' }}</Button>

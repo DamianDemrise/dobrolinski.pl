@@ -28,8 +28,8 @@ const canManage = computed(() => session.can('SETTINGS_MANAGE'))
 const canRebuild = computed(() => session.can('CONTENT_PUBLISH'))
 
 const RESULT: Record<RebuildStatus, { tone: 'neutral' | 'warning' | 'danger', text: string }> = {
-  triggered: { tone: 'neutral', text: 'Przebudowa uruchomiona. Strona publiczna odświeży się w ciągu ~1–2 min.' },
-  manual: { tone: 'warning', text: 'Automatyczna przebudowa nie jest skonfigurowana (brak GITHUB_TOKEN). Uruchom workflow ręcznie w GitHub Actions: Actions → „Deploy Nuxt to GitHub Pages” → Run workflow.' },
+  triggered: { tone: 'neutral', text: 'Wypychanie uruchomione. Strona publiczna odświeży się w ciągu ~1–2 min.' },
+  manual: { tone: 'warning', text: 'Wypychanie z panelu nie jest skonfigurowane (brak GITHUB_TOKEN). Uruchom workflow w GitHub Actions: Actions → „Deploy Nuxt to GitHub Pages” → Run workflow.' },
   failed: { tone: 'danger', text: 'GitHub odrzucił wywołanie przebudowy. Sprawdź token (uprawnienia, ważność) albo uruchom workflow ręcznie w GitHub Actions.' },
 }
 
@@ -77,7 +77,7 @@ async function rebuild() {
         <dl class="adm-dl">
           <dt>Adres strony</dt>
           <dd><a :href="settings.siteUrl" target="_blank" rel="noopener">{{ settings.siteUrl }}<span class="adm-sr"> (nowa karta)</span></a></dd>
-          <dt>Przebudowa po publikacji</dt>
+          <dt>Wypychanie z panelu</dt>
           <dd>
             <Badge :tone="settings.rebuild.configured ? 'success' : 'warning'">{{ settings.rebuild.configured ? 'Skonfigurowana' : 'Nieskonfigurowana' }}</Badge>
             <span class="adm-muted"> Repozytorium: {{ settings.rebuild.repo ?? '—' }}</span>
@@ -89,9 +89,9 @@ async function rebuild() {
 
       <section class="adm-card adm-stack" aria-labelledby="set-rebuild">
         <h2 id="set-rebuild">Przebudowa strony</h2>
-        <p class="adm-muted">Strona publiczna jest statyczna: po publikacji buduje się od nowa z opublikowanej treści (GitHub Actions). Ręczna przebudowa przydaje się, gdy automatyczna się nie uruchomiła.</p>
+        <p class="adm-muted">Strona publiczna jest statyczna: publikacja zapisuje treść w CMS, a na stronę trafia po wypchnięciu (GitHub Actions buduje stronę z opublikowanej treści). Stan i listę niewypchniętych publikacji pokazuje Panel.</p>
         <div v-if="canRebuild">
-          <Button variant="primary" :loading="rebuilding" @click="rebuild">Przebuduj stronę teraz</Button>
+          <Button variant="primary" :loading="rebuilding" @click="rebuild">Wypchnij na stronę</Button>
         </div>
         <p v-else class="adm-muted">Przebudowę uruchamia osoba z uprawnieniem do publikacji.</p>
         <p v-if="result" class="adm-alert" :class="`adm-alert--${RESULT[result.status].tone}`" role="status">{{ RESULT[result.status].text }}</p>
@@ -99,14 +99,14 @@ async function rebuild() {
       </section>
 
       <section class="adm-card adm-stack" aria-labelledby="set-help">
-        <h2 id="set-help">Jak włączyć automatyczną przebudowę (GITHUB_TOKEN)</h2>
+        <h2 id="set-help">Jak włączyć wypychanie jednym przyciskiem (GITHUB_TOKEN)</h2>
         <ol class="adm-steps">
           <li>GitHub → Settings → Developer settings → Personal access tokens → <strong>Fine-grained tokens</strong> → Generate new token.</li>
           <li>Repository access: <strong>Only select repositories</strong> → <code>DamianDemrise/dobrolinski.pl</code>.</li>
           <li>Permissions → Repository permissions → <strong>Contents: Read and write</strong> (wymagane przez <code>repository_dispatch</code>). Nic więcej.</li>
           <li>W katalogu <code>cms-worker</code>: <code>npx wrangler secret put GITHUB_TOKEN</code> i wklej token. Token nie trafia do repozytorium.</li>
         </ol>
-        <p class="adm-muted">Bez tokenu publikacja zapisuje treść w CMS, ale strona publiczna nie przebuduje się sama: trzeba ręcznie uruchomić workflow w GitHub Actions (Actions → „Deploy Nuxt to GitHub Pages” → Run workflow).</p>
+        <p class="adm-muted">Bez tokenu przycisk w Panelu otwiera GitHub Actions, gdzie wypychasz stronę przyciskiem „Run workflow”. Publikacja nigdy nie wypycha strony sama.</p>
       </section>
     </template>
   </Shell>

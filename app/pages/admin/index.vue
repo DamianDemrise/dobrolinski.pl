@@ -4,6 +4,8 @@ import type { CmsUser, EntitySummary, MediaListResponse, Permission } from '@dem
 import { computed, onMounted, ref } from 'vue'
 import { cmsApi } from '~/admin/api'
 import { useCmsSession } from '~/admin/session'
+import DeployStatus from '~/components/admin/dashboard/DeployStatus.vue'
+import FormStats from '~/components/admin/dashboard/FormStats.vue'
 import Shell from '~/components/admin/shell/Shell.vue'
 
 definePageMeta({ middleware: [adminAuth] })
@@ -48,5 +50,7 @@ onMounted(async () => {
         <span>{{ tile.description }}</span>
       </NuxtLink>
     </div>
+    <DeployStatus />
+    <FormStats />
   </Shell>
 </template>
