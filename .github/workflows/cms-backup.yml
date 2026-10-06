@@ -1,0 +1,47 @@
+name: CMS backup (weekly snapshot)
+
+# Raz w tygodniu zapisuje opublikowaną treść CMS (content/published.json, tokeny, media) w repo.
+# Drugie, niezależne od Cloudflare źródło treści. Push tokenem GITHUB_TOKEN nie uruchamia
+# workflow Deploy, więc kopia niczego nie wypycha na stronę.
+on:
+  schedule:
+    - cron: '30 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cms-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Pull published CMS content
+        run: node scripts/cms-pull.mjs
+        env:
+          CMS_BLOCKED_TEXT: ${{ secrets.CMS_BLOCKED_TEXT }}
+
+      - name: Commit snapshot if content changed
+        run: |
+          # Sam znacznik czasu to nie zmiana treści.
+          if git diff --quiet -I '"generatedAt"' -- content/published.json; then git checkout -- content/published.json; fi
+          git add content/published.json app/assets/css/tokens.css public/media 2>/dev/null || git add content/published.json app/assets/css/tokens.css
+          if git diff --cached --quiet; then
+            echo "Kopia aktualna, bez zmian."
+            exit 0
+          fi
+          git config user.name "DEMRISE CMS"
+          git config user.email "cms@dobrolinski.pl"
+          git commit -m "CMS: cotygodniowa kopia opublikowanej tresci"
+          git push
