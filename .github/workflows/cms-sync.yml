@@ -1,0 +1,24 @@
+name: CMS sync (repo → panel)
+
+# Po zmianie treści w repo (np. commit w kodzie) panel CMS pobiera ją od razu.
+# Worker czyta plik z repo sam; request nie niesie treści, więc nie potrzebuje sekretu.
+# Commity z panelu („CMS: …”) są pomijane: panel już ma tę wersję.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - content/published.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pull:
+    if: ${{ !startsWith(github.event.head_commit.message, 'CMS:') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask CMS to import from repo
+        run: |
+          curl --fail-with-body -sS -X POST https://dobrolinski-cms.demrise.workers.dev/api/sync/pull

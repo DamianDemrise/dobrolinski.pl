@@ -3,6 +3,7 @@
  * od @cloudflare/workers-types (tak jak offer-worker).
  */
 import type { SiteSchema } from '../../packages/cms-core/src/index'
+import type { TokensCssMap } from '../../scripts/tokens-css.mjs'
 
 export interface D1Meta { changes: number, last_row_id: number }
 export interface D1Result<T = Record<string, unknown>> { results: T[], success: boolean, meta: D1Meta }
@@ -38,17 +39,28 @@ export interface Env {
   /** live: link logowania wysyłany mailem; dry: tylko w logu. */
   MAIL_MODE?: string
   GITHUB_REPO?: string
+  /** Gałąź repo strony, z której buduje się produkcja (domyślnie main). */
+  GITHUB_BRANCH?: string
   RESEND_API_KEY?: string
   GITHUB_TOKEN?: string
-  /** '1': publikacja od razu uruchamia przebudowę. Domyślnie wypychanie ręczne (przycisk w panelu). */
-  REBUILD_ON_PUBLISH?: string
   /** '1' tylko lokalnie: dopuszcza Origin http://localhost:8787 i http://127.0.0.1:8787. */
   DEV?: string
+}
+
+/** Pliki strony w repo, które wypchnięcie aktualizuje (konkretna strona podaje swoje). */
+export interface RepoLayout {
+  /** Snapshot opublikowanej treści, np. content/published.json. */
+  snapshotPath: string
+  /** Wygenerowany CSS tokenów i mapa tokenów na zmienne CSS (null: strona bez tokens.css). */
+  tokensCss: { path: string, map: TokensCssMap } | null
+  /** Katalog mediów w repo (pliki /media/<id>/<plik> trafiają do <mediaDir>/<id>/<plik>). */
+  mediaDir: string
 }
 
 /** Zależności wstrzykiwane: schemat strony, fetch (Resend, GitHub) i zegar. */
 export interface Deps {
   schema: SiteSchema
+  repo?: RepoLayout
   fetch: typeof fetch
   now: () => number
 }

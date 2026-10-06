@@ -9,37 +9,14 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { generateTokensCss } from './tokens-css.mjs'
+
+export { generateTokensCss }
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 export const TOKENS_CSS_PATH = resolve(ROOT, 'app/assets/css/tokens.css')
 const MAP_PATH = resolve(ROOT, 'cms/tokens-css.json')
 const PUBLISHED_PATH = resolve(ROOT, 'content/published.json')
-
-/** Ta sama reguła co isSafeTokenValue w @demrise/cms-core: wartość nie wychodzi poza deklarację. */
-const hasControlChars = value => [...value].some((ch) => {
-  const code = ch.charCodeAt(0)
-  return code < 32 || code === 127
-})
-const isSafeValue = value => typeof value === 'string' && value.trim() !== ''
-  && !hasControlChars(value) && !/[;{}<>\\]/.test(value) && !value.includes('/*')
-
-export function generateTokensCss(tokens, map) {
-  const out = ['/* Wygenerowane przez scripts/cms-tokens.mjs z tokenów CMS (content/published.json). Nie edytuj ręcznie. */']
-  for (const rule of map.rules) {
-    const decls = rule.vars.map(([group, name, cssVar]) => {
-      const value = tokens?.[group]?.[name]?.value
-      if (!isSafeValue(value)) throw new Error(`Brak albo niedozwolona wartość tokenu ${group}.${name}`)
-      return `${cssVar}: ${value.trim()};`
-    })
-    if (rule.media) {
-      out.push(`\n@media ${rule.media} {\n  ${rule.selector} {\n${decls.map(d => `    ${d}`).join('\n')}\n  }\n}`)
-    }
-    else {
-      out.push(`\n${rule.selector} {\n${decls.map(d => `  ${d}`).join('\n')}\n}`)
-    }
-  }
-  return `${out.join('\n')}\n`
-}
 
 export function tokensCssFromFiles(publishedPath = PUBLISHED_PATH) {
   const site = JSON.parse(readFileSync(publishedPath, 'utf8'))

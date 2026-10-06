@@ -7,14 +7,14 @@ Panel: `https://dobrolinski-cms.demrise.workers.dev/admin/` (Worker `cms-worker`
 | Ekran | Do czego |
 |---|---|
 | Pulpit | skróty, stan strony publicznej (co opublikowane, a jeszcze nie wypchnięte) z przyciskiem „Wypchnij na stronę”, licznik zapytań o ofertę i ebook (7 dni / 30 dni / łącznie) |
-| Strony | lista stron ze statusem (opublikowana / zmieniona / szkic), wejście do edytora |
+| Strony | lista stron ze statusem (opublikowana / zmieniona / szkic), wejście do edytora; **„Nowa strona”** (tytuł, adres, pusta w wybranym układzie albo kopia istniejącej) i usuwanie stron, które nigdy nie były opublikowane. Nowa strona po publikacji i wypchnięciu jest pod `dobrolinski.pl/<adres>` i w sitemap (chyba że ma noindex) |
 | Treści | encje globalne (`site`, `workshop`): dane wspólne dla wielu sekcji |
 | Komponenty | komponenty globalne (jedna treść w wielu miejscach) i wzorce (kopiowane układy bloków) |
 | Design | tokeny: kolory, typografia, odstępy, szerokości, promienie (tylko z uprawnieniem `DESIGN_EDIT`) |
 | Media | biblioteka obrazów: upload, opis alt, podmiana pliku, usuwanie z listą użyć |
 | SEO | przegląd tytułów i opisów wszystkich stron z licznikami długości |
 | Użytkownicy | zaproszenia, role, wyłączanie kont (`USERS_MANAGE`) |
-| Ustawienia | stan integracji (wysyłka maili, przebudowa po publikacji) |
+| Ustawienia | stan integracji (wysyłka maili, wypychanie do repo) |
 
 ## Edytor strony
 
@@ -30,9 +30,9 @@ Panel: `https://dobrolinski-cms.demrise.workers.dev/admin/` (Worker `cms-worker`
 2. **Konflikt:** gdy ktoś inny zapisał tę samą stronę, dialog daje wybór *Wczytaj aktualną wersję* albo *Nadpisz moją wersją*.
 3. **Cofnij / Ponów:** `Cmd/Ctrl+Z`, `Cmd/Ctrl+Shift+Z` (albo `Ctrl+Y`), do 100 kroków; pisanie w jednym polu łączy się w jeden krok.
 4. **Podgląd:** otwiera wersję roboczą w nowej karcie z banerem „Podgląd wersji roboczej — niepublikowane”. Publiczna strona się nie zmienia.
-5. **Publikuj:** dialog pokazuje różnice względem wersji opublikowanej. Publikacja zapisuje treść w CMS, **ale nie zmienia strony**: na dobrolinski.pl trafia po wypchnięciu. Pulpit pokazuje listę publikacji, których jeszcze nie ma na stronie, i przycisk **„Wypchnij na stronę”**: z `GITHUB_TOKEN` w Workerze uruchamia build od razu, bez tokenu otwiera GitHub Actions („Run workflow”). Strona odświeża się po 1–2 minutach. Automatyczne wypychanie po każdej publikacji można włączyć zmienną `REBUILD_ON_PUBLISH = "1"` w `cms-worker/wrangler.toml`.
+5. **Publikuj:** dialog pokazuje różnice względem wersji opublikowanej. Publikacja zapisuje treść w CMS, **ale nie zmienia strony**: na dobrolinski.pl trafia po wypchnięciu. Pulpit pokazuje, co opublikowane nie jest jeszcze na stronie, i przycisk **„Wypchnij na stronę”**: commit opublikowanej treści do repo strony, który uruchamia wdrożenie (strona odświeża się po 1–2 minutach). Wymaga `GITHUB_TOKEN` w Workerze.
 6. **Odrzuć zmiany:** przywraca wersję roboczą do opublikowanej.
-7. **Rewizje:** szuflada z historią (publikacje, punkty kontrolne, przywrócenia), podgląd różnic, *Przywróć* zapisuje starą wersję jako wersję roboczą (do opublikowania osobno).
+7. **Rewizje:** szuflada z historią (publikacje, punkty kontrolne, przywrócenia, zmiany z repo), podgląd różnic, *Przywróć* zapisuje starą wersję jako wersję roboczą (do opublikowania osobno).
 
 ## Komponenty globalne a wzorce
 
@@ -55,15 +55,21 @@ cp cms-worker/.dev.vars.example cms-worker/.dev.vars   # MAIL_MODE=dry: link log
 npm run cms:build             # panel do cms-worker/admin-dist
 npm run cms:migrate:local     # schemat + treść startowa w lokalnym D1
 npm run cms:dev               # http://localhost:8787/admin/
-CMS_API_URL=http://localhost:8787 node scripts/cms-pull.mjs && npx nuxt generate   # build publiczny z lokalnej treści
+CMS_API_URL=http://localhost:8787 node scripts/cms-pull.mjs && npx nuxt generate   # build z lokalnej treści (nie commituj wyniku)
 ```
 
 Po zmianach w panelu albo schemacie (`cms/`): `npm run cms:build`, a na produkcji `npx wrangler deploy` w `cms-worker/`. Po zmianie treści startowej w repo: `npm run cms:seed` (generuje `migrations/0002_seed.sql`).
 
+## Panel i kod strony: połączenie w obie strony
+
+- **Panel → kod:** „Wypchnij na stronę” zapisuje opublikowaną treść w repo (`content/published.json`, `tokens.css`, nowe zdjęcia) jednym commitem `CMS: … (osoba)`.
+- **Kod → panel:** zmiana `content/published.json` w repo (commit DEMRISE) po pushu trafia do panelu sama: jako publikacja z wpisem „Zmiana z repo” w historii. Szkic, nad którym ktoś pracuje, zostaje nietknięty.
+- **Konflikt:** ta sama rzecz zmieniona i w panelu, i w kodzie przed wypchnięciem. Pulpit pokazuje ją z wyborem *Zostaw z panelu* albo *Weź z kodu*; do tego czasu wypychanie jest wstrzymane.
+
 ## Kopia treści
 
 - Cloudflare D1 trzyma 30 dni historii bazy (Time Travel): `npx wrangler d1 time-travel restore dobrolinski-cms --timestamp=…` w `cms-worker`.
-- Co poniedziałek 3:30 UTC workflow **CMS backup** (`.github/workflows/cms-backup.yml`) zapisuje opublikowaną treść, tokeny i media w repo (commit tylko przy zmianie treści). Ręcznie: Actions → CMS backup → Run workflow. Kopia nie wypycha strony.
+- Repo strony ma zawsze to, co jest na stronie (każde wypchnięcie to commit z historią w git). Szkice, rewizje i użytkownicy są tylko w D1.
 
 ## Własna domena panelu (`cms.dobrolinski.pl`)
 

@@ -5,7 +5,7 @@
 import { logout, me, requestLink, verifyLink, verifyPage } from './auth'
 import type { Ctx } from './context'
 import { csrfOk, isMutating } from './csrf'
-import { getDeploy, getStats } from './dashboard'
+import { getStats } from './dashboard'
 import { createEntity, deleteEntity, discardDraft, getEntity, listEntities, publishEntity, saveDraft } from './entities'
 import type { Deps, Env } from './env'
 import { HttpError, json, redirect, withSecurityHeaders } from './http'
@@ -14,7 +14,8 @@ import { publicSite } from './public'
 import { getRevision, listRevisions, restoreRevision } from './revisions'
 import { Router } from './router'
 import { loadSession } from './sessions'
-import { getSettings, rebuild } from './settings'
+import { getSettings } from './settings'
+import { getDeploy, importFromRepo, push, resolveConflict, syncPull } from './sync'
 import { createUser, deleteUser, listUsers, patchUser } from './users'
 
 export function buildRouter(): Router {
@@ -46,7 +47,9 @@ export function buildRouter(): Router {
     .add('PATCH', '/api/users/:id', patchUser)
     .add('DELETE', '/api/users/:id', deleteUser)
     .add('GET', '/api/settings', getSettings)
-    .add('POST', '/api/rebuild', rebuild)
+    .add('POST', '/api/push', push)
+    .add('POST', '/api/sync/resolve', resolveConflict)
+    .add('POST', '/api/sync/pull', syncPull, 'public')
     .add('GET', '/api/stats', getStats)
     .add('GET', '/api/deploy', getDeploy)
     .add('GET', '/api/public/site', publicSite, 'public')
@@ -100,6 +103,16 @@ export function createApp(deps: Partial<Deps> & Pick<Deps, 'schema'>) {
         }
       }
       return withSecurityHeaders(response)
+    },
+    /** Cron (wrangler.toml [triggers]): import zmian z repo, gdyby ping z workflow nie dotarł. */
+    async scheduled(_event: unknown, env: Env): Promise<void> {
+      const request = new Request('https://cron.invalid/')
+      try {
+        await importFromRepo({ request, env, deps: full, url: new URL(request.url), params: {}, user: null })
+      }
+      catch (error) {
+        console.log(JSON.stringify({ event: 'cron_import', error: error instanceof Error ? error.message : 'unknown' }))
+      }
     },
   }
 }

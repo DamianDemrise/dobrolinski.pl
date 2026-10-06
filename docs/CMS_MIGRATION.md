@@ -28,11 +28,9 @@ Sekcje dostają dane przez prop `data` z bloku zamiast importować moduły treś
 
 ## Źródło treści przy buildzie
 
-1. GitHub Actions: `node scripts/cms-pull.mjs` pobiera `/api/public/site` z Workera (tylko opublikowane wersje) i media do `public/media/`. Przy każdym błędzie zostaje snapshot z repo (build się nie wywraca).
-2. `nuxt generate` renderuje statycznie z `content/published.json`.
-3. Workflow uruchamia się po pushu do `main`, ręcznie i po publikacji w CMS (`repository_dispatch: cms-publish`, wymaga `GITHUB_TOKEN` w Workerze).
-
-Snapshot w repo warto co jakiś czas odświeżyć commitem (`npm run cms:pull`), żeby repo odzwierciedlało produkcję.
+1. Repo jest źródłem opublikowanej treści: `content/published.json`, `app/assets/css/tokens.css`, `public/media/`. Panel aktualizuje je commitem przy „Wypchnij na stronę”.
+2. `nuxt generate` renderuje statycznie z `content/published.json` (workflow Deploy po każdym pushu do `main`).
+3. Zmiana treści w kodzie (commit w `content/published.json`) wraca do panelu sama: workflow `cms-sync` → `POST /api/sync/pull`. Szczegóły: `docs/CMS_ARCHITECTURE.md`.
 
 ## Dodanie nowego edytowalnego komponentu (instrukcja dla DEMRISE)
 

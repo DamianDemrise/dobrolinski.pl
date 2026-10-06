@@ -38,11 +38,21 @@ Wszystkie odpowiedzi Workera (API i panel): `Content-Security-Policy` (`default-
 
 ## Sekrety i logi
 
-Sekrety tylko jako sekrety Workera: `RESEND_API_KEY` (wysyłka linków), opcjonalnie `GITHUB_TOKEN` (rebuild po publikacji, fine-grained, uprawnienie *Contents: Read and write* (wymagane przez `repository_dispatch`) tylko do repo `DamianDemrise/dobrolinski.pl`). W repo tylko `.dev.vars.example`. Frazy, które nie mogą trafić na publiczną stronę (cena pilotażowa), są w sekrecie GitHub Actions `CMS_BLOCKED_TEXT` (jedna na linię): `cms-pull` odrzuca wtedy treść z CMS i zostaje snapshot z repo. Logi Workera bez logów wywołań (`invocation_logs = false`), błędy bez stack trace w odpowiedzi.
+Sekrety tylko jako sekrety Workera: `RESEND_API_KEY` (wysyłka linków), `GITHUB_TOKEN` (wypychanie: commit do repo; fine-grained, *Contents: Read and write*, tylko repo `DamianDemrise/dobrolinski.pl`). W repo tylko `.dev.vars.example`. Logi Workera bez logów wywołań (`invocation_logs = false`), błędy bez stack trace w odpowiedzi.
 
 ## Licznik formularzy
 
 `form_events` w D1 CMS: tylko rodzaj formularza i czas, bez adresu i IP (zapis z `offer-worker`, binding `STATS`). `GET /api/stats` i `GET /api/deploy` wymagają sesji (`CONTENT_EDIT`); wypchnięcie strony (`POST /api/rebuild`) wymaga `CONTENT_PUBLISH`. Binding D1 daje `offer-worker` technicznie dostęp do całej bazy CMS; kod Workera wykonuje wyłącznie jeden `INSERT` do `form_events` (test).
+
+## Nowe strony
+
+Tworzenie strony sprawdza uprawnienie do tworzenia (CONTENT_PUBLISH + MODE_ADVANCED), adres i poprawność dokumentu, ale nie poziomy pól: dokument nowej strony może zawierać wartości pól deweloperskich (tak działa „Kopia strony”, która przenosi je z istniejącej). Świadoma decyzja: tworzyć strony mogą tylko role zaufane (owner, editor, developer).
+
+## Synchronizacja z repo
+
+- Commit tylko z `POST /api/push` (CONTENT_PUBLISH, sesja, CSRF) i tylko plików z układu repo strony (snapshot, `tokens.css`, `public/media/<med_id>/<plik obrazu>`); ref przesuwany bez `force`, a snapshot musi być w wersji znanej z ostatniej synchronizacji, więc wypchnięcie nigdy nie nadpisze cudzego commita (409).
+- `POST /api/sync/pull` jest publiczne, ale nie przyjmuje danych: Worker czyta plik z repo przez API GitHuba. Najgorsze nadużycie to wywołanie importu, który i tak jest idempotentny (limit 20/15 min/IP).
+- Treść z repo przechodzi tę samą walidację co zapis w panelu (`validateEntityData`); błędna nie wchodzi do bazy.
 
 ## Audit
 

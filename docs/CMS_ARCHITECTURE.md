@@ -18,7 +18,8 @@ Strona to lista bloków `{ id, type, props }`. Typ bloku wskazuje istniejący ko
 | Media | Workers KV `CMS_MEDIA` (binaria) + metadane w D1 | R2 nie jest włączony na koncie (wymaga karty); KV do 25 MB na plik. V2: R2 |
 | Panel | ta sama aplikacja Nuxt zbudowana z `CMS_ADMIN=1`, serwowana jako static assets Workera | edytor renderuje prawdziwe komponenty strony (1:1), a cookie sesji jest first-party (ten sam origin co API) |
 | Auth | logowanie linkiem e-mail (Resend), sesja w D1, cookie `HttpOnly; Secure; SameSite=Strict` | bez haseł do haszowania (limit CPU darmowego Workera), brak bazy haseł do wycieku |
-| Publikacja | `POST publish` zapisuje wersję opublikowaną i wyzwala workflow GitHub Pages (`repository_dispatch`), jeśli jest skonfigurowany `GITHUB_TOKEN` | strona publiczna zostaje statyczna; bez tokenu rebuild uruchamia się ręcznie (Actions → Run workflow) |
+| Publikacja i wypchnięcie | `POST publish` zapisuje wersję opublikowaną w CMS; `POST /api/push` robi commit opublikowanej treści do repo (`content/published.json`, `tokens.css`, nowe media), co uruchamia wdrożenie GitHub Pages | repo = to, co jest na stronie; wypychanie ręczne, przyciskiem w panelu |
+| Synchronizacja repo → panel | po pushu zmieniającym `content/published.json` workflow `cms-sync` woła `POST /api/sync/pull`; Worker czyta plik z repo sam i scala trójstronnie (repo / baza z ostatniej synchronizacji / panel), zapas: cron co godzinę | zmiana w kodzie trafia do panelu jako publikacja (rewizja `import`); szkic w toku nie jest nadpisywany; zmiana po obu stronach = konflikt do rozstrzygnięcia na pulpicie |
 
 ## Układ repo (przyszłe pakiety)
 
@@ -75,22 +76,26 @@ Wszystkie trasy `/api/*` poza `/api/public/*` i `/api/auth/request|verify` wymag
 | `GET /api/entities?kind=` | sesja | lista: id, kind, slug, title, status, updatedAt, updatedBy, seoStatus |
 | `GET /api/entities/:id` | sesja | pełna encja |
 | `PUT /api/entities/:id/draft` `{baseRev, data}` | CONTENT_EDIT (+ poziomy pól) | 200 `{draftRev, updatedAt}` albo 409 `{error:'conflict', entity}` |
-| `POST /api/entities/:id/publish` `{expectedRev}` | CONTENT_PUBLISH | publikacja + rebuild |
+| `POST /api/entities/:id/publish` `{expectedRev}` | CONTENT_PUBLISH | publikacja w CMS (bez zmiany strony) |
 | `POST /api/entities/:id/discard` | CONTENT_EDIT | draft = published |
 | `GET /api/entities/:id/revisions` | sesja | lista rewizji |
 | `GET /api/revisions/:rid` | sesja | rewizja |
 | `POST /api/revisions/:rid/restore` | CONTENT_EDIT | przywrócenie do draftu |
-| `POST /api/entities` `{kind, slug, title, data}` | COMPONENT_EDIT (component, pattern) | tworzenie |
-| `DELETE /api/entities/:id` | COMPONENT_EDIT | tylko component/pattern, nieużywane |
+| `POST /api/entities` `{kind, slug, title, data}` | page: CONTENT_PUBLISH + MODE_ADVANCED; component, pattern: COMPONENT_EDIT | tworzenie (slug strony: jeden segment, bez adresów zarezerwowanych z `cms/pages.ts`) |
+| `DELETE /api/entities/:id` | jak tworzenie | strona tylko nigdy nieopublikowana; component/pattern tylko nieużywane |
 | `GET/POST /api/media`, `PATCH/DELETE /api/media/:id`, `POST /api/media/:id/replace`, `GET /api/media/:id/usage` | sesja / MEDIA_UPLOAD / MEDIA_DELETE | biblioteka mediów |
 | `GET /media/:id/:filename` | publiczne | plik |
 | `GET/POST/PATCH/DELETE /api/users` | USERS_MANAGE | użytkownicy i role |
-| `GET /api/settings`, `POST /api/rebuild` | SETTINGS_MANAGE / CONTENT_PUBLISH | status integracji i ręczny rebuild |
+| `GET /api/settings` | SETTINGS_MANAGE | status integracji |
+| `GET /api/deploy` | CONTENT_EDIT | zmiany do wypchnięcia, konflikty, ostatnie wdrożenie (przy okazji import z repo) |
+| `POST /api/push` | CONTENT_PUBLISH | wypchnięcie: commit do repo strony |
+| `POST /api/sync/resolve` `{key, choice: 'repo'\|'cms'}` | CONTENT_PUBLISH | rozstrzygnięcie konfliktu |
+| `POST /api/sync/pull` | publiczne, limit 20/15 min/IP | import z repo (treść czytana z GitHuba, nie z requestu) |
 | `GET /api/public/site` | publiczne, CORS `*` | opublikowana treść (`PublishedSite`) dla buildu |
 
 Typy żądań i odpowiedzi: `packages/cms-core/src/api.ts`.
 
 ## Build
 
-- Publiczny: `npm run generate` (bez `CMS_ADMIN`): strony `admin/**` są ignorowane, w bundlu nie ma edytora. GitHub Actions przed `generate` uruchamia `node scripts/cms-pull.mjs` (pobiera `/api/public/site` i media; przy błędzie zostaje snapshot z repo).
+- Publiczny: `npm run generate` (bez `CMS_ADMIN`): strony `admin/**` są ignorowane, w bundlu nie ma edytora. Build czyta treść wyłącznie z repo (`content/published.json`); GitHub Actions przed `generate` regeneruje `tokens.css` (`npm run cms:tokens`). `npm run cms:pull` (pobranie z API do plików) zostaje jako narzędzie lokalne.
 - Panel: `npm run cms:build` (`CMS_ADMIN=1 nuxt generate`) → `cms-worker/admin-dist` → `npx wrangler deploy` w `cms-worker/`.

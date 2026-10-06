@@ -44,7 +44,7 @@ export const schema: SiteSchema = {
       ],
     },
   },
-  layouts: { home: { label: 'Główna', regions: ['hero', 'main'] } },
+  layouts: { home: { label: 'Główna', regions: ['hero', 'main'] }, landing: { label: 'Landing', regions: ['main'] } },
   seoFields: [
     { key: 'title', label: 'Title', type: 'text', maxLength: 70 },
     { key: 'description', label: 'Description', type: 'textarea' },
@@ -88,7 +88,7 @@ export const USERS: Record<Role, string> = {
 
 export type Api = (method: string, path: string, options?: { body?: unknown, cookie?: string | null, headers?: Record<string, string>, raw?: BodyInit }) => Promise<Response>
 
-export function setup(options: { github?: boolean, githubStatus?: number, env?: Partial<Env>, actionsFetch?: typeof fetch } = {}) {
+export function setup(options: { github?: boolean, githubStatus?: number, env?: Partial<Env>, githubFetch?: typeof fetch } = {}) {
   let clock = Date.parse('2026-10-06T10:00:00Z')
   const db = createD1()
   const media = memoryKV()
@@ -106,10 +106,10 @@ export function setup(options: { github?: boolean, githubStatus?: number, env?: 
     ...(options.github ? { GITHUB_TOKEN: 'ghp_test' } : {}),
     ...options.env,
   }
-  // Odczyt uruchomień GitHub Actions (pulpit) może mieć własną odpowiedź; reszta przez fakeFetch.
+  // GitHub (repo strony) może być osobną atrapą (support/github.ts); reszta przez fakeFetch.
   const fetcher: typeof fetch = (input, init) =>
-    options.actionsFetch && String(input).includes('/actions/') ? options.actionsFetch(input, init) : net.fetch(input, init)
-  const app = createApp({ schema, fetch: fetcher, now: () => clock })
+    options.githubFetch && String(input).startsWith('https://api.github.com/') ? options.githubFetch(input, init) : net.fetch(input, init)
+  const app = createApp({ schema, fetch: fetcher, now: () => clock, repo: { snapshotPath: 'content/published.json', tokensCss: null, mediaDir: 'public/media' } })
 
   const iso = new Date(clock).toISOString()
   const insertUser = db.raw.prepare('INSERT INTO users (id, email, name, role, created_at, disabled) VALUES (?, ?, ?, ?, ?, 0)')

@@ -5,9 +5,8 @@
   <EntityBar :draft :can-edit :can-publish publish-note="…" @published="…" />
 -->
 <script setup lang="ts">
-import type { RebuildStatus } from '@demrise/cms-core'
 import { computed, ref } from 'vue'
-import { REBUILD_MESSAGES, rebuildTone } from '~/admin/deploy'
+import { PUBLISHED_MESSAGE } from '~/admin/deploy'
 import type { EntityDraft } from '~/admin/entity-draft'
 import { errorMessage, formatDate, STATUS_LABELS } from '~/admin/format'
 import { useAdminToast } from '~/admin/toast'
@@ -27,7 +26,7 @@ const props = withDefaults(defineProps<{
   /** Nazwa w dialogach (domyślnie tytuł encji z API). */
   label?: string
 }>(), { publishNote: '', publishBlocked: null, label: '' })
-const emit = defineEmits<{ published: [rebuild: RebuildStatus] }>()
+const emit = defineEmits<{ published: [] }>()
 
 const toast = useAdminToast()
 const state = props.draft.state
@@ -38,21 +37,21 @@ const publishOpen = ref(false)
 const discardOpen = ref(false)
 const historyOpen = ref(false)
 const busy = ref(false)
-const rebuild = ref<RebuildStatus | null>(null)
+const published = ref(false)
 const conflictOpen = computed({ get: () => state.conflict !== null, set: () => {} })
 
 function openPublish() {
-  rebuild.value = null
+  published.value = false
   publishOpen.value = true
 }
 
 async function publish() {
   busy.value = true
   try {
-    const result = await props.draft.publish()
-    rebuild.value = result.rebuild
+    await props.draft.publish()
+    published.value = true
     toast.show('Opublikowano', 'success')
-    emit('published', result.rebuild)
+    emit('published')
   }
   catch (error) {
     toast.show(`Nie opublikowano: ${errorMessage(error)}`, 'danger')
@@ -101,11 +100,11 @@ async function discard() {
       <div class="adm-stack">
         <p>Wersja robocza „{{ label || state.title }}” stanie się wersją publiczną.</p>
         <p v-if="publishNote" class="adm-muted">{{ publishNote }}</p>
-        <p v-if="rebuild" class="adm-alert" :class="rebuildTone(rebuild)" role="status">{{ REBUILD_MESSAGES[rebuild] }}</p>
+        <p v-if="published" class="adm-alert adm-alert--neutral" role="status">{{ PUBLISHED_MESSAGE }}</p>
       </div>
       <template #footer>
-        <Button @click="publishOpen = false">{{ rebuild ? 'Zamknij' : 'Anuluj' }}</Button>
-        <Button v-if="!rebuild" variant="primary" :loading="busy" @click="publish">Opublikuj</Button>
+        <Button @click="publishOpen = false">{{ published ? 'Zamknij' : 'Anuluj' }}</Button>
+        <Button v-if="!published" variant="primary" :loading="busy" @click="publish">Opublikuj</Button>
       </template>
     </Dialog>
 

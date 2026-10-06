@@ -183,17 +183,18 @@ describe('CSRF', () => {
   it('zły albo brakujący Origin: 403', async () => {
     const h = setup()
     const cookie = await h.login('owner')
-    expect((await h.api('POST', '/api/rebuild', { cookie, headers: { Origin: 'https://evil.example' } })).status).toBe(403)
-    const noOrigin = await h.app.fetch(new Request(`${ORIGIN}/api/rebuild`, { method: 'POST', headers: { 'Cookie': cookie, 'X-CMS-Request': '1' } }), h.env)
+    expect((await h.api('POST', '/api/sync/resolve', { cookie, body: {}, headers: { Origin: 'https://evil.example' } })).status).toBe(403)
+    const noOrigin = await h.app.fetch(new Request(`${ORIGIN}/api/sync/resolve`, { method: 'POST', headers: { 'Cookie': cookie, 'X-CMS-Request': '1' } }), h.env)
     expect(noOrigin.status).toBe(403)
-    expect((await h.api('POST', '/api/rebuild', { cookie, headers: { Origin: 'http://localhost:8787' } })).status).toBe(403)
+    expect((await h.api('POST', '/api/sync/resolve', { cookie, body: {}, headers: { Origin: 'http://localhost:8787' } })).status).toBe(403)
   })
 
   it('localhost:8787 tylko przy DEV=1', async () => {
     const h = setup({ env: { DEV: '1' } })
     const cookie = await h.login('owner')
-    expect((await h.api('POST', '/api/rebuild', { cookie, headers: { Origin: 'http://localhost:8787' } })).status).toBe(200)
-    expect((await h.api('POST', '/api/rebuild', { cookie, headers: { Origin: 'http://127.0.0.1:8787' } })).status).toBe(200)
-    expect((await h.api('POST', '/api/rebuild', { cookie, headers: { Origin: 'http://localhost:3000' } })).status).toBe(403)
+    // 400 = przeszło CSRF i dotarło do walidacji body.
+    expect((await h.api('POST', '/api/sync/resolve', { cookie, body: {}, headers: { Origin: 'http://localhost:8787' } })).status).toBe(400)
+    expect((await h.api('POST', '/api/sync/resolve', { cookie, body: {}, headers: { Origin: 'http://127.0.0.1:8787' } })).status).toBe(400)
+    expect((await h.api('POST', '/api/sync/resolve', { cookie, body: {}, headers: { Origin: 'http://localhost:3000' } })).status).toBe(403)
   })
 })
