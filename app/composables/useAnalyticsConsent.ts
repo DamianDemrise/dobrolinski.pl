@@ -51,6 +51,13 @@ const removeAnalyticsCookies = () => {
   }
 }
 
+/**
+ * Pomiar tylko z produkcji: localhost i podglądy buildu nie zaśmiecają GA4
+ * (sesje z hostName „localhost” w danych 05.10.2026).
+ */
+export const MEASURED_HOSTS = ['dobrolinski.pl', 'www.dobrolinski.pl']
+export const isMeasuredHost = (hostname: string) => MEASURED_HOSTS.includes(hostname.toLowerCase())
+
 export const useAnalyticsConsent = () => {
   const choice = useState<ConsentChoice | null>('consent-choice', () => null)
   const panelOpen = useState('consent-panel-open', () => false)
@@ -58,7 +65,7 @@ export const useAnalyticsConsent = () => {
   const { gtmId } = useRuntimeConfig().public
 
   const loadGtm = () => {
-    if (gtmLoaded.value || !gtmId) return
+    if (gtmLoaded.value || !gtmId || !isMeasuredHost(window.location.hostname)) return
     gtmLoaded.value = true
     window.dataLayer!.push({ 'gtm.start': Date.now(), 'event': 'gtm.js' })
     const script = document.createElement('script')

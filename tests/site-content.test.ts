@@ -6,6 +6,7 @@ import { workshop, workshopBlock, workshopIndex, workshopMailHref, workshopPage 
 import { workshopOfferPages } from '../app/content/workshop-offer'
 import { privacy, privacyPage } from '../app/content/privacy'
 import { currentProject, projectLabel, projects } from '../app/content/projects'
+import { isMeasuredHost } from '../app/composables/useAnalyticsConsent'
 import { blockedPhrases, squashText } from '../scripts/cms-pull.mjs'
 import { publicRoutes, sitemapXml } from '../cms/routes'
 
@@ -127,5 +128,14 @@ describe('site content', () => {
   it('ships the homepage Open Graph image at 1200x630', () => {
     const png = readFileSync(resolve(process.cwd(), 'public/og-home.png'))
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630])
+  })
+})
+
+describe('pomiar tylko z produkcji', () => {
+  it('GA4 nie zbiera danych z localhost ani z podglądów buildu', () => {
+    for (const host of ['dobrolinski.pl', 'www.dobrolinski.pl', 'DOBROLINSKI.PL']) expect(isMeasuredHost(host), host).toBe(true)
+    for (const host of ['localhost', '127.0.0.1', 'damiandemrise.github.io', 'dobrolinski.pl.evil.com', 'preview.dobrolinski.pl']) {
+      expect(isMeasuredHost(host), host).toBe(false)
+    }
   })
 })
