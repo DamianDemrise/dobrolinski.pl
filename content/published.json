@@ -209,7 +209,7 @@
         {
           "id": "document",
           "props": {
-            "effectiveDate": "5 października 2026 r.",
+            "effectiveDate": "6 października 2026 r.",
             "effectiveDateLabel": "Data obowiązywania:",
             "sections": [
               {
@@ -252,6 +252,7 @@
                     "_id": "podstawy-3",
                     "items": [
                       "w formularzu „Wyślij mi ofertę” na stronie /poznaj-czlowieka podaje wyłącznie adres e-mail,",
+                      "w formularzu „Wyślij mi ebook” na stronie /na-koncu-jest-czlowiek podaje wyłącznie adres e-mail,",
                       "pisząc wiadomość e-mail podaje adres e-mail, treść wiadomości i dane, które sam w niej umieści."
                     ],
                     "kind": "list"
@@ -264,7 +265,7 @@
                   {
                     "_id": "podstawy-5",
                     "kind": "text",
-                    "text": "2.4. Administrator nie podejmuje wobec Użytkowników decyzji opartych wyłącznie na zautomatyzowanym przetwarzaniu, które wywoływałyby skutki prawne lub w podobny sposób istotnie na nich wpływały, i nie profiluje Użytkowników. Automatyczne wysłanie oferty po wypełnieniu formularza jest wyłącznie realizacją prośby Użytkownika."
+                    "text": "2.4. Administrator nie podejmuje wobec Użytkowników decyzji opartych wyłącznie na zautomatyzowanym przetwarzaniu, które wywoływałyby skutki prawne lub w podobny sposób istotnie na nich wpływały, i nie profiluje Użytkowników. Automatyczne wysłanie oferty lub ebooka po wypełnieniu formularza jest wyłącznie realizacją prośby Użytkownika."
                   }
                 ],
                 "title": "2. Przetwarzanie danych osobowych: informacje podstawowe"
@@ -277,6 +278,7 @@
                     "_id": "cele-1",
                     "items": [
                       "Przesłanie zamówionej oferty warsztatu „Poznaj Człowieka”: art. 6 ust. 1 lit. b RODO (działania podejmowane na żądanie osoby, której dane dotyczą, przed zawarciem umowy), gdy prosisz o ofertę we własnym imieniu; gdy działasz w imieniu firmy lub organizacji, która może zawrzeć umowę, art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes Administratora polegający na odpowiedzi na prośbę o ofertę i kontakcie z przedstawicielem potencjalnego kontrahenta).",
+                      "Przesłanie zamówionego ebooka „Na końcu jest człowiek”: art. 6 ust. 1 lit. b RODO (dostarczenie na żądanie bezpłatnej treści cyfrowej).",
                       "Obsługa korespondencji, w tym odpowiedzi na ofertę: art. 6 ust. 1 lit. b RODO, gdy korespondencja dotyczy zawarcia lub wykonania umowy, a w pozostałym zakresie art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes Administratora polegający na prowadzeniu korespondencji).",
                       "Zapewnienie bezpieczeństwa Serwisu, w tym ochrona formularza przed nadużyciami i automatycznymi zgłoszeniami: art. 6 ust. 1 lit. f RODO.",
                       "Statystyka odwiedzin (Google Analytics 4): art. 6 ust. 1 lit. a RODO (zgoda wyrażona w banerze Serwisu).",
@@ -295,30 +297,35 @@
                   {
                     "_id": "formularz-1",
                     "kind": "text",
-                    "text": "4.1. Podając adres e-mail w formularzu, Użytkownik prosi o przesłanie oferty warsztatu „Poznaj Człowieka”. Na ten adres wysyłana jest automatycznie jedna wiadomość z ofertą w formacie PDF w załączniku oraz z linkiem do tej samej oferty w Serwisie."
+                    "text": "4.1. Podając adres e-mail w formularzu, Użytkownik prosi o przesłanie oferty warsztatu „Poznaj Człowieka” albo ebooka „Na końcu jest człowiek”. Na ten adres wysyłana jest automatycznie jedna wiadomość z zamówionym materiałem w formacie PDF w załączniku; wiadomość z ofertą zawiera także link do tej samej oferty w Serwisie."
                   },
                   {
                     "_id": "formularz-2",
                     "kind": "text",
-                    "text": "4.2. Podanie adresu e-mail jest dobrowolne, ale bez niego nie możemy wysłać oferty."
+                    "text": "4.2. Podanie adresu e-mail jest dobrowolne, ale bez niego nie możemy wysłać oferty ani ebooka."
                   },
                   {
                     "_id": "formularz-3",
                     "kind": "text",
-                    "text": "4.3. Podanie adresu e-mail nie zapisuje Użytkownika do newslettera, nie jest zgodą na otrzymywanie informacji marketingowych i nie powoduje dopisania adresu do żadnej listy marketingowej. Administrator nie wysyła na ten adres kolejnych wiadomości, chyba że Użytkownik sam odpowie na ofertę albo napisze."
+                    "text": "4.3. Podanie adresu e-mail nie zapisuje Użytkownika do newslettera, nie jest zgodą na otrzymywanie informacji marketingowych i nie powoduje dopisania adresu do żadnej listy marketingowej. Administrator nie wysyła na ten adres kolejnych wiadomości, chyba że Użytkownik sam odpowie na wiadomość albo napisze."
                   },
                   {
                     "_id": "formularz-4",
                     "kind": "text",
-                    "text": "4.4. Po wysłaniu oferty Damian Dobroliński otrzymuje wiadomość z informacją o prośbie: adres e-mail Użytkownika, datę oraz stronę i parametry kampanii (UTM), z których nastąpiło wejście, jeżeli były w adresie strony. Serwis nie prowadzi osobnej bazy adresów."
+                    "text": "4.4. Po wysłaniu oferty lub ebooka Damian Dobroliński otrzymuje wiadomość z informacją o prośbie: adres e-mail Użytkownika, datę oraz stronę i parametry kampanii (UTM), z których nastąpiło wejście, jeżeli były w adresie strony. Serwis nie prowadzi osobnej bazy adresów."
                   },
                   {
                     "_id": "formularz-5",
                     "kind": "text",
                     "text": "4.5. Aby chronić formularz przed nadużyciami, przy wysłaniu formularza przetwarzane są również dane techniczne, w tym adres IP. Służą one wyłącznie do ograniczania liczby zgłoszeń i blokowania automatycznych prób, są przechowywane w postaci skrótu kryptograficznego i usuwane automatycznie najpóźniej po upływie doby."
+                  },
+                  {
+                    "_id": "formularz-6",
+                    "kind": "text",
+                    "text": "4.6. Serwis zlicza wysłane wiadomości (rodzaj: oferta albo ebook, oraz czas wysłania) bez adresu e-mail i adresu IP, wyłącznie na potrzeby statystyki."
                   }
                 ],
-                "title": "4. Formularz „Wyślij mi ofertę”"
+                "title": "4. Formularze „Wyślij mi ofertę” i „Wyślij mi ebook”"
               },
               {
                 "_id": "odbiorcy",
@@ -333,8 +340,8 @@
                     "_id": "odbiorcy-2",
                     "items": [
                       "GitHub, Inc. (USA): hosting Serwisu w usłudze GitHub Pages; dane techniczne połączeń są przetwarzane na zasadach określonych w warunkach korzystania z usługi i polityce prywatności GitHub,",
-                      "Cloudflare, Inc. (USA): infrastruktura obsługująca formularz „Wyślij mi ofertę”, na podstawie umowy powierzenia przetwarzania danych,",
-                      "Plus Five Five, Inc., działająca jako Resend (USA): wysyłka wiadomości z ofertą i powiadomienia z serwerów zlokalizowanych w Irlandii, na podstawie umowy powierzenia przetwarzania danych,",
+                      "Cloudflare, Inc. (USA): infrastruktura obsługująca formularze „Wyślij mi ofertę” i „Wyślij mi ebook”, na podstawie umowy powierzenia przetwarzania danych,",
+                      "Plus Five Five, Inc., działająca jako Resend (USA): wysyłka wiadomości z ofertą lub ebookiem i powiadomienia z serwerów zlokalizowanych w Irlandii, na podstawie umowy powierzenia przetwarzania danych,",
                       "Google (Google Ireland Limited oraz Google LLC): obsługa poczty e-mail w domenie dobrolinski.pl (Google Workspace) oraz, po wyrażeniu zgody, statystyka Google Analytics 4."
                     ],
                     "kind": "list"
@@ -376,7 +383,7 @@
                   {
                     "_id": "ochrona-2",
                     "kind": "text",
-                    "text": "7.2. Formularz przyjmuje tylko adres e-mail i wysyła wyłącznie ustaloną wiadomość z ofertą. Zgłoszenia są weryfikowane, a ich liczba jest ograniczana."
+                    "text": "7.2. Formularze przyjmują tylko adres e-mail i wysyłają wyłącznie ustaloną wiadomość z zamówionym materiałem. Zgłoszenia są weryfikowane, a ich liczba jest ograniczana."
                   }
                 ],
                 "title": "7. Ochrona danych"
@@ -470,7 +477,7 @@
                   {
                     "_id": "cookies-3",
                     "kind": "text",
-                    "text": "11.3. Dopiero po wyrażeniu zgody Serwis ładuje Google Tag Manager i Google Analytics 4, które zapisują pliki cookies _ga oraz _ga_* (ważne do 2 lat) w celu rozróżniania odwiedzających i liczenia statystyk odwiedzin. Serwis przekazuje do Google Analytics informacje o odwiedzinach i kliknięciach w Serwisie, w tym o skorzystaniu z formularza oferty, ale nigdy adresu e-mail. Sygnały Google i inne funkcje reklamowe Google Analytics są wyłączone. Użytkownik może również skorzystać z dodatku blokującego Google Analytics: [[https://tools.google.com/dlpage/gaoptout|tools.google.com/dlpage/gaoptout]]."
+                    "text": "11.3. Dopiero po wyrażeniu zgody Serwis ładuje Google Tag Manager i Google Analytics 4, które zapisują pliki cookies _ga oraz _ga_* (ważne do 2 lat) w celu rozróżniania odwiedzających i liczenia statystyk odwiedzin. Serwis przekazuje do Google Analytics informacje o odwiedzinach i kliknięciach w Serwisie, w tym o skorzystaniu z formularzy oferty i ebooka, ale nigdy adresu e-mail. Sygnały Google i inne funkcje reklamowe Google Analytics są wyłączone. Użytkownik może również skorzystać z dodatku blokującego Google Analytics: [[https://tools.google.com/dlpage/gaoptout|tools.google.com/dlpage/gaoptout]]."
                   },
                   {
                     "_id": "cookies-4",
