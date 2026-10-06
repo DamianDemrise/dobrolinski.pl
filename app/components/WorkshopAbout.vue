@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WorkshopAboutProps } from '~~/cms/types'
-import { vCms } from '~/cms/directive'
+import { vCms } from '@demrise/cms-runtime/directive'
 
 defineProps<{ data: WorkshopAboutProps }>()
 </script>

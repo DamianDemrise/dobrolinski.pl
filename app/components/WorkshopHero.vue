@@ -2,8 +2,8 @@
 import { inject } from 'vue'
 import { mailHref, projectIndex } from '~~/cms/derive'
 import type { WorkshopHeroProps } from '~~/cms/types'
-import { useCmsGlobals } from '~/cms/context'
-import { vCms } from '~/cms/directive'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
+import { vCms } from '@demrise/cms-runtime/directive'
 import { WORKSHOP_SHOW_CONTENT } from '~/composables/useWorkshopNav'
 
 defineProps<{ data: WorkshopHeroProps }>()

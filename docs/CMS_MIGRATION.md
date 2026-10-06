@@ -22,7 +22,7 @@ Każda strona ma też pola SEO (title, description, canonical, OG, noindex) prze
 
 ## Komponenty
 
-Sekcje dostają dane przez prop `data` z bloku zamiast importować moduły treści. Pola edytowalne mają dyrektywę `v-cms="'ścieżka'"`, która w buildzie publicznym nie dodaje żadnego atrybutu, a w edytorze ustawia `data-cms-block` i `data-cms-field`. Rejestr typ → komponent: `app/cms/registry.ts`. Renderer: `app/cms/CmsPageView.ts` i `app/cms/CmsBlocks.ts`.
+Sekcje dostają dane przez prop `data` z bloku zamiast importować moduły treści. Pola edytowalne mają dyrektywę `v-cms="'ścieżka'"`, która w buildzie publicznym nie dodaje żadnego atrybutu, a w edytorze ustawia `data-cms-block` i `data-cms-field`. Rejestr typ → komponent: `app/cms/registry.ts`. Renderer: `app/cms/CmsPageView.ts` i `CmsBlocks` z DEMRISE CMS (`vendor/demrise-cms/runtime/CmsBlocks.ts`).
 
 `app/content/*.ts` zostały jako cienkie, tylko do odczytu widoki na `content/published.json` (dla testów i mapy oferty PDF), bez własnego tekstu.
 
@@ -43,4 +43,4 @@ Sekcje dostają dane przez prop `data` z bloku zamiast importować moduły treś
 
 ## Nowa strona klienta DEMRISE
 
-Rdzeń (`packages/cms-core`), Worker (`cms-worker`) i integracja Nuxt (`app/cms`, panel w `app/pages/admin`, `app/components/admin`, `app/admin`) są niezależne od dobrolinski.pl. Specyficzne dla strony są tylko: `cms/` (schemat, regiony, typy), rejestr komponentów, `content/published.json` i `wrangler.toml` (nazwa Workera, id D1 i KV, originy). Szczegóły: `docs/CMS_ARCHITECTURE.md`.
+CMS jest wydzielony do prywatnego repo `demrise-pl/demrise-cms` i podpięty tu jako submoduł `vendor/demrise-cms`: rdzeń (`core/`), Worker (`worker/`), runtime Nuxt (`runtime/`) i panel (warstwa `nuxt/`) są niezależne od dobrolinski.pl. Specyficzne dla strony są tylko: `cms/` (schemat, regiony, typy, trasy, adresy stron, mapa tokenów), `app/cms/` (rejestr komponentów, layouty, snapshot), komponenty bloków, `content/published.json`, `cms-worker/src/index.ts` i `wrangler.toml` (nazwa Workera, id D1 i KV, originy) oraz migracje z treścią startową. Jak podłączyć nową stronę: `vendor/demrise-cms/README.md`. Ta strona: `docs/CMS_ARCHITECTURE.md`.

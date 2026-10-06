@@ -34,9 +34,11 @@ not_found_handling = "single-page-application"
 # żeby dostały nagłówki bezpieczeństwa (CSP, X-Frame-Options, HSTS). Assety statyczne bez Workera ich nie mają.
 run_worker_first = true
 
-# cms/schema.ts importuje rdzeń przez alias pakietu.
+# cms/schema.ts importuje rdzeń przez alias pakietu; Worker DEMRISE CMS (vendor/demrise-cms)
+# czyta kontrakt strony przez `~~/cms/...` (korzeń strony).
 [alias]
-"@demrise/cms-core" = "../packages/cms-core/src/index.ts"
+"@demrise/cms-core" = "../vendor/demrise-cms/core/src/index.ts"
+"~~" = ".."
 
 [vars]
 SITE_URL = "https://dobrolinski.pl"

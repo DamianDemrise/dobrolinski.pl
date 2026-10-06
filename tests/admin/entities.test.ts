@@ -2,8 +2,8 @@
 import type { Entity, PageDocument, PublishedSite } from '@demrise/cms-core'
 import { describe, expect, it } from 'vitest'
 import published from '../../content/published.json'
-import { cleanExposed, countComponentUsages, entityEditPath, localStatus, slugError, slugify } from '../../app/admin/entities'
-import { plural } from '../../app/admin/format'
+import { cleanExposed, countComponentUsages, entityEditPath, localStatus, slugError, slugify } from '../../vendor/demrise-cms/nuxt/app/admin/entities'
+import { plural } from '../../vendor/demrise-cms/nuxt/app/admin/format'
 
 const site = published as unknown as PublishedSite
 

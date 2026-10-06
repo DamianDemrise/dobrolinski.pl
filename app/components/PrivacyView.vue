@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PageDocument } from '@demrise/cms-core'
 import { onBeforeUnmount, onMounted } from 'vue'
-import CmsBlocks from '~/cms/CmsBlocks'
+import CmsBlocks from '@demrise/cms-runtime/CmsBlocks'
 
 defineProps<{ page: PageDocument }>()
 

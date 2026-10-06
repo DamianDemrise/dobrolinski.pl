@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CmsPageView from '~/cms/CmsPageView'
-import { useCmsPage } from '~/cms/context'
-import { useCmsPageHead } from '~/cms/head'
+import { useCmsPage } from '@demrise/cms-runtime/context'
+import { useCmsPageHead } from '@demrise/cms-runtime/head'
 
 // Te same tagi są też w app.head (nuxt.config), żeby 404/200 miały head strony głównej.
 const page = useCmsPage('')

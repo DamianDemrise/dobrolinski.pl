@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { WorkshopOfferCopy } from '~~/cms/types'
-import { useCmsGlobals } from '~/cms/context'
-import { vCms } from '~/cms/directive'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
+import { vCms } from '@demrise/cms-runtime/directive'
 import type { OfferFormProduct } from '~/composables/useOfferForm'
 
 /** Teksty formularza; `note` opcjonalne, bo ebook podaje zgodę przez slot `note`. */

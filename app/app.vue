@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { personSchema } from '~~/cms/derive'
-import { useCmsGlobals } from '~/cms/context'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
 
 const { lightStyle, onPointerMove } = usePointerLight()
 const globals = useCmsGlobals()

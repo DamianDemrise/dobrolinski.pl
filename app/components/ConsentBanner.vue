@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCmsGlobals } from '~/cms/context'
+import { useCmsGlobals } from '@demrise/cms-runtime/context'
 
 const globals = useCmsGlobals()
 const consent = computed(() => globals.value.site.consent)

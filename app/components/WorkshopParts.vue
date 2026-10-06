@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WorkshopPartsProps } from '~~/cms/types'
-import { vCms } from '~/cms/directive'
+import { vCms } from '@demrise/cms-runtime/directive'
 
 // Dwa korzenie: klasy widoczności z CMS trafiają na oba.
 defineOptions({ inheritAttrs: false })
