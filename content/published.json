@@ -34,7 +34,7 @@
       }
     }
   },
-  "generatedAt": "2026-10-06T00:00:00.000Z",
+  "generatedAt": "2026-10-06T12:20:22.495Z",
   "globals": {
     "site": {
       "areas": [
@@ -76,7 +76,7 @@
         "privacyLabel": "Polityka prywatności"
       },
       "name": "Damian Dobroliński",
-      "phoneDisplay": "538 531 888",
+      "phoneDisplay": "tel. 538 531 888",
       "phoneHref": "tel:+48538531888",
       "telephone": "+48538531888",
       "thoughts": [
