@@ -6,11 +6,19 @@
 /** Minimalny interfejs Workers KV, bez zależności od @cloudflare/workers-types. */
 export interface KVStore {
   get(key: string): Promise<string | null>
+  get(key: string, type: 'arrayBuffer'): Promise<ArrayBuffer | null>
   put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>
+}
+
+/** Minimalny D1: tylko zapis anonimowego licznika (bez adresu, bez IP). */
+export interface StatsDB {
+  prepare(sql: string): { bind(...values: unknown[]): { run(): Promise<unknown> } }
 }
 
 export interface Env {
   OFFER_KV: KVStore
+  /** Baza CMS (tabela form_events): licznik wysłanych ofert i ebooków na pulpit panelu. */
+  STATS?: StatsDB
   RESEND_API_KEY?: string
   /** dry: nic nie wysyła; test: wszystko idzie na TEST_RECIPIENT; live: do odbiorcy. */
   MAIL_MODE?: string
@@ -32,6 +40,8 @@ export const DEFAULTS = {
   notification: 'damian@dobrolinski.pl',
   origins: 'https://dobrolinski.pl',
   pdfUrl: 'https://dobrolinski.pl/oferta/poznaj-czlowieka.pdf',
+  /** Klucz PDF ebooka w OFFER_KV (plik nie leży w publicznym repo). */
+  ebookKey: 'ebook:na-koncu-jest-czlowiek.pdf',
   /** Ofert na dobę; każda to 2 maile, a darmowy Resend ma 100 maili dziennie. */
   dailyLimit: 40,
 } as const

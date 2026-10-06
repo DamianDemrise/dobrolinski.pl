@@ -1,11 +1,12 @@
 /**
- * Endpoint oferty POZNAJ CZŁOWIEKA (Cloudflare Worker).
- * Przyjmuje tylko adres e-mail i wysyła na niego jeden stały szablon
+ * Endpoint oferty POZNAJ CZŁOWIEKA i ebooka (Cloudflare Worker).
+ * Przyjmuje tylko adres e-mail i rodzaj (`product`) i wysyła stały szablon
  * ze stałym PDF-em. Nie jest przekaźnikiem poczty: temat, treść, nadawca
  * i załącznik są ustalone tutaj, nie w requeście.
  */
-import { isValidEmail, normalizeEmail, sanitizeSource, type OfferErrorCode, type OfferResponse } from '../../shared/offer.ts'
-import { allowedOrigins, DEFAULTS, LIMITS, mailMode, type Env } from './config.ts'
+import { isValidEmail, normalizeEmail, parseProduct, sanitizeSource, type OfferErrorCode, type OfferProduct, type OfferResponse } from '../../shared/offer.ts'
+import { allowedOrigins, DEFAULTS, LIMITS, mailMode, type Env, type KVStore } from './config.ts'
+import { EBOOK_ATTACHMENT, EBOOK_NOTIFICATION_SUBJECT, EBOOK_SUBJECT, ebookHtml, ebookText } from './ebook-template.ts'
 import { allowIp, checkEmail, countDaily, rememberEmail, sha256, underDailyLimit } from './limits.ts'
 import { sendMail, type OutgoingMail } from './resend.ts'
 import { NOTIFICATION_SUBJECT, notificationText, OFFER_ATTACHMENT, OFFER_SUBJECT, offerHtml, offerText } from './templates.ts'
@@ -37,6 +38,29 @@ function reply(body: OfferResponse, status: number, cors: Record<string, string>
 
 const fail = (error: OfferErrorCode, status: number, cors: Record<string, string>) =>
   reply({ ok: false, error }, status, cors)
+
+function toBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer)
+  let binary = ''
+  for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+  return btoa(binary)
+}
+
+async function ebookPdf(kv: KVStore): Promise<string | null> {
+  const file = await kv.get(DEFAULTS.ebookKey, 'arrayBuffer')
+  return file && file.byteLength > 0 ? toBase64(file) : null
+}
+
+/** Anonimowy licznik do pulpitu CMS: tylko rodzaj i czas. Błąd bazy nie psuje wysyłki. */
+async function countEvent(env: Env, product: OfferProduct, now: number): Promise<void> {
+  if (!env.STATS) return
+  try {
+    await env.STATS.prepare('INSERT INTO form_events (form, created_at) VALUES (?, ?)').bind(product, new Date(now).toISOString()).run()
+  }
+  catch {
+    log('error', 'stats')
+  }
+}
 
 async function pdfAvailable(url: string, fetcher: typeof fetch): Promise<boolean> {
   try {
@@ -85,6 +109,7 @@ export async function handleRequest(request: Request, env: Env, fetcher: typeof 
   const email = normalizeEmail(body.email)
   if (!isValidEmail(email)) return fail('invalid_email', 400, cors)
 
+  const product = parseProduct(body.product)
   const kv = env.OFFER_KV
   const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown'
   if (!(await allowIp(kv, ip, now))) {
@@ -92,7 +117,8 @@ export async function handleRequest(request: Request, env: Env, fetcher: typeof 
     return fail('rate_limited', 429, cors)
   }
 
-  const emailHash = await sha256(email)
+  // Oferta zachowuje dotychczasowe klucze; ebook ma osobny limit na ten sam adres.
+  const emailHash = await sha256(product === 'offer' ? email : `${product}:${email}`)
   const emailCheck = await checkEmail(kv, emailHash, now)
   if (emailCheck === 'duplicate') {
     // Podwójne kliknięcie albo odświeżenie: oferta już wyszła, nie wysyłamy drugi raz.
@@ -111,8 +137,9 @@ export async function handleRequest(request: Request, env: Env, fetcher: typeof 
   }
 
   const pdfUrl = env.PDF_URL || DEFAULTS.pdfUrl
-  if (!(await pdfAvailable(pdfUrl, fetcher))) {
-    log('error', 'pdf_missing')
+  const ebook = product === 'ebook' ? await ebookPdf(kv) : null
+  if (product === 'ebook' ? !ebook : !(await pdfAvailable(pdfUrl, fetcher))) {
+    log('error', `pdf_missing:${product}`)
     return fail('unavailable', 503, cors)
   }
 
@@ -125,16 +152,15 @@ export async function handleRequest(request: Request, env: Env, fetcher: typeof 
 
   const testPrefix = mode === 'test' ? '[TEST] ' : ''
   const bucket = Math.floor(now / LIMITS.emailCooldownMs)
-  const offer: OutgoingMail = {
+  const common = {
     from: env.MAIL_FROM || DEFAULTS.from,
     to: mode === 'test' ? env.TEST_RECIPIENT! : email,
     replyTo: env.MAIL_REPLY_TO || DEFAULTS.replyTo,
-    subject: testPrefix + OFFER_SUBJECT,
-    text: offerText(pdfUrl),
-    html: offerHtml(pdfUrl),
-    attachment: { filename: OFFER_ATTACHMENT.filename, path: pdfUrl },
-    idempotencyKey: `offer-${emailHash}-${bucket}`,
+    idempotencyKey: `${product}-${emailHash}-${bucket}`,
   }
+  const offer: OutgoingMail = ebook
+    ? { ...common, subject: testPrefix + EBOOK_SUBJECT, text: ebookText(), html: ebookHtml(), attachment: { filename: EBOOK_ATTACHMENT.filename, content: ebook } }
+    : { ...common, subject: testPrefix + OFFER_SUBJECT, text: offerText(pdfUrl), html: offerHtml(pdfUrl), attachment: { filename: OFFER_ATTACHMENT.filename, path: pdfUrl } }
   const sent = await sendMail(env.RESEND_API_KEY, offer, fetcher)
   if (!sent.ok) {
     log('error', sent.status ? `${sent.kind}:${sent.status}` : sent.kind)
@@ -142,15 +168,16 @@ export async function handleRequest(request: Request, env: Env, fetcher: typeof 
   }
   await rememberEmail(kv, emailHash, now)
   await countDaily(kv, now)
-  log('sent', mode)
+  if (mode === 'live') await countEvent(env, product, now)
+  log('sent', `${mode}:${product}`)
 
   // Powiadomienie jest dodatkiem: jego błąd nie psuje odpowiedzi dla odbiorcy.
   const notification = await sendMail(env.RESEND_API_KEY, {
     from: env.MAIL_FROM || DEFAULTS.from,
     to: env.NOTIFICATION_EMAIL || DEFAULTS.notification,
     replyTo: email,
-    subject: testPrefix + NOTIFICATION_SUBJECT,
-    text: notificationText(email, new Date(now), sanitizeSource(body.source)),
+    subject: testPrefix + (product === 'ebook' ? EBOOK_NOTIFICATION_SUBJECT : NOTIFICATION_SUBJECT),
+    text: notificationText(email, new Date(now), sanitizeSource(body.source), product),
     idempotencyKey: `notify-${emailHash}-${bucket}`,
   }, fetcher)
   if (!notification.ok) log('error', `notification:${notification.kind}`)

@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import type { PublishedSite } from './packages/cms-core/src/types'
 import { seoMeta } from './app/cms/seo'
+import { publicRoutes, unpublishedRoutes } from './cms/routes'
 import published from './content/published.json'
 
 /** Build panelu CMS (`npm run cms:build`): SPA /admin, bez ponownego prerenderu stron publicznych. */
@@ -49,7 +50,10 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: !isAdminBuild,
-      routes: isAdminBuild ? ['/admin'] : ['/', '/poznaj-czlowieka', '/polityka-prywatnosci'],
+      // Strony z panelu (np. ebook) tylko po publikacji: cms/routes.ts czyta content/published.json.
+      // sitemap.xml generuje server/routes/sitemap.xml.ts z tej samej listy.
+      routes: isAdminBuild ? ['/admin'] : [...publicRoutes(published as unknown as PublishedSite), '/sitemap.xml'],
+      ignore: isAdminBuild ? [] : unpublishedRoutes(published as unknown as PublishedSite),
       // /poznaj-czlowieka.html zamiast /poznaj-czlowieka/index.html:
       // GitHub Pages serwuje wtedy adres bez ukośnika i bez przekierowania.
       autoSubfolderIndex: false,

@@ -40,6 +40,10 @@ Wszystkie odpowiedzi Workera (API i panel): `Content-Security-Policy` (`default-
 
 Sekrety tylko jako sekrety Workera: `RESEND_API_KEY` (wysyłka linków), opcjonalnie `GITHUB_TOKEN` (rebuild po publikacji, fine-grained, uprawnienie *Contents: Read and write* (wymagane przez `repository_dispatch`) tylko do repo `DamianDemrise/dobrolinski.pl`). W repo tylko `.dev.vars.example`. Frazy, które nie mogą trafić na publiczną stronę (cena pilotażowa), są w sekrecie GitHub Actions `CMS_BLOCKED_TEXT` (jedna na linię): `cms-pull` odrzuca wtedy treść z CMS i zostaje snapshot z repo. Logi Workera bez logów wywołań (`invocation_logs = false`), błędy bez stack trace w odpowiedzi.
 
+## Licznik formularzy
+
+`form_events` w D1 CMS: tylko rodzaj formularza i czas, bez adresu i IP (zapis z `offer-worker`, binding `STATS`). `GET /api/stats` i `GET /api/deploy` wymagają sesji (`CONTENT_EDIT`); wypchnięcie strony (`POST /api/rebuild`) wymaga `CONTENT_PUBLISH`. Binding D1 daje `offer-worker` technicznie dostęp do całej bazy CMS; kod Workera wykonuje wyłącznie jeden `INSERT` do `form_events` (test).
+
 ## Audit
 
 `audit_log`: logowanie, wylogowanie, publikacja, przywrócenie, odrzucenie zmian, zmiany użytkowników, tworzenie i usuwanie encji, usunięcie mediów.

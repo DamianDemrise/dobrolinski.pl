@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { createApp, createSSRApp, defineComponent, h, nextTick, provide, ref, withDirectives } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { layoutRegions } from '../cms/regions'
+import { publicRoutes, sitemapXml, unpublishedRoutes } from '../cms/routes'
 import { siteSchema } from '../cms/schema'
 import CmsBlocks from '../app/cms/CmsBlocks'
 import { CMS_BLOCK_SCOPE, CMS_EDIT_CONTEXT } from '../app/cms/context'
@@ -16,6 +17,7 @@ import { seoHead } from '../app/cms/seo'
 import { tokensCssFromFiles } from '../scripts/cms-tokens.mjs'
 import { localizeMedia, stableJson, validateSite } from '../scripts/cms-pull.mjs'
 import published from '../content/published.json'
+import ebookDraft from '../cms-worker/drafts/na-koncu-jest-czlowiek.json'
 
 const site = published as unknown as PublishedSite
 const root = (p: string) => resolve(process.cwd(), p)
@@ -213,5 +215,51 @@ describe('CMS: cms-pull', () => {
     const missing = structuredClone(site)
     delete (missing.pages as Record<string, unknown>)['polityka-prywatnosci']
     expect(validateSite(missing).join()).toContain('polityka-prywatnosci')
+  })
+})
+
+describe('CMS: ebook „Na końcu jest człowiek” (szkic, nieopublikowany)', () => {
+  const draft = ebookDraft as unknown as PageDocument
+
+  it('passes core validation as a page entity with the published components', () => {
+    expect(validatePage(draft, siteSchema, site.components)).toEqual([])
+    expect(validateEntityData('page', draft, siteSchema, { slug: 'na-koncu-jest-czlowiek', components: site.components })).toEqual([])
+    expect(draft.layout).toBe('ebook')
+    expect(draft.seo.canonical).toBe('https://dobrolinski.pl/na-koncu-jest-czlowiek')
+  })
+
+  it('renders every block in a region of the ebook layout', async () => {
+    let rendered = 0
+    for (const region of layoutRegions.ebook) {
+      const html = await renderRegion(draft, region)
+      rendered += html.split('block-stub').length - 1
+    }
+    expect(rendered).toBe(draft.blocks.length)
+  })
+
+  it('is not published: no prerender route and the sitemap stays as before', () => {
+    expect(Object.hasOwn(site.pages, 'na-koncu-jest-czlowiek')).toBe(false)
+    expect(publicRoutes(site)).toEqual(['/', '/poznaj-czlowieka', '/polityka-prywatnosci'])
+    expect(unpublishedRoutes(site)).toEqual(['/na-koncu-jest-czlowiek'])
+    expect(sitemapXml(publicRoutes(site))).toBe(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://dobrolinski.pl/</loc>
+  </url>
+  <url>
+    <loc>https://dobrolinski.pl/poznaj-czlowieka</loc>
+  </url>
+  <url>
+    <loc>https://dobrolinski.pl/polityka-prywatnosci</loc>
+  </url>
+</urlset>
+`)
+  })
+
+  it('gets a prerender route and a sitemap entry once published', () => {
+    const withEbook = { ...site, pages: { ...site.pages, 'na-koncu-jest-czlowiek': draft } }
+    expect(publicRoutes(withEbook)).toEqual(['/', '/poznaj-czlowieka', '/polityka-prywatnosci', '/na-koncu-jest-czlowiek'])
+    expect(unpublishedRoutes(withEbook)).toEqual([])
+    expect(sitemapXml(publicRoutes(withEbook))).toContain('<loc>https://dobrolinski.pl/na-koncu-jest-czlowiek</loc>')
   })
 })

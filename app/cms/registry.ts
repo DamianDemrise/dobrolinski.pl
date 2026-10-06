@@ -8,6 +8,9 @@ import type { BlockType } from '~~/cms/types'
 import BackLink from '~/components/BackLink.vue'
 import ContactLinks from '~/components/ContactLinks.vue'
 import CurrentProjectLink from '~/components/CurrentProjectLink.vue'
+import EbookContents from '~/components/EbookContents.vue'
+import EbookForm from '~/components/EbookForm.vue'
+import EbookHero from '~/components/EbookHero.vue'
 import HomeStage from '~/components/HomeStage.vue'
 import PrivacyDocument from '~/components/PrivacyDocument.vue'
 import SiteFooter from '~/components/SiteFooter.vue'
@@ -37,6 +40,9 @@ export const blockRegistry: Record<BlockType, Component> = {
   'workshop-process': WorkshopProcess,
   'workshop-closing': WorkshopClosing,
   'privacy-document': PrivacyDocument,
+  'ebook-hero': EbookHero,
+  'ebook-contents': EbookContents,
+  'ebook-form': EbookForm,
 }
 
 export const isBlockType = (type: string): type is BlockType => Object.hasOwn(blockRegistry, type)

@@ -193,6 +193,41 @@ export const blocks = {
       ]),
     ]),
   ], fixed),
+
+  'ebook-hero': block('ebook-hero', 'Ebook: tytuł i wstęp', [
+    text('eyebrow', 'Nadtytuł', { maxLength: 40 }),
+    lines('titleLines', 'Tytuł (linie)', { required: true, maxItems: 3, maxLength: 60 }),
+    lines('leadLines', 'Wstęp (linie)', { maxItems: 8, maxLength: 240 }),
+  ], fixed),
+
+  'ebook-contents': block('ebook-contents', 'Ebook: spis', [
+    text('eyebrow', 'Nadtytuł', { maxLength: 40 }),
+    list('items', 'Rozdziały', 'Rozdział', [
+      text('number', 'Numer', { level: 'advanced', maxLength: 4 }),
+      text('title', 'Tytuł', { maxLength: 80 }),
+    ], { minItems: 1, maxItems: 12 }),
+  ], section),
+
+  'ebook-form': block('ebook-form', 'Ebook: formularz wysyłki e-mailem', [
+    text('title', 'Nagłówek', { maxLength: 80 }),
+    lines('lines', 'Opis (linie)', { maxItems: 4, maxLength: 160 }),
+    text('label', 'Etykieta pola', { maxLength: 40 }),
+    text('placeholder', 'Podpowiedź w polu', { level: 'advanced', maxLength: 60 }),
+    text('submit', 'Przycisk', { maxLength: 40 }),
+    text('sending', 'Przycisk w trakcie wysyłki', { maxLength: 40 }),
+    area('consent', 'Informacja o danych', { help: 'Link: [[adres|etykieta]]', format: 'links', maxLength: 400 }),
+    group('success', 'Po wysłaniu', [
+      text('title', 'Nagłówek', { maxLength: 60 }),
+      text('text', 'Tekst', { maxLength: 160 }),
+      text('hint', 'Podpowiedź', { maxLength: 160 }),
+    ]),
+    group('errors', 'Błędy', [
+      text('empty', 'Puste pole', { maxLength: 120 }),
+      text('invalid', 'Zły adres', { maxLength: 120 }),
+      text('failed', 'Błąd wysyłki', { maxLength: 120 }),
+      text('failedHint', 'Podpowiedź przy błędzie', { maxLength: 120 }),
+    ]),
+  ], fixed),
 } satisfies Record<BlockType, ReturnType<typeof defineBlock>>
 
 export const globals: SiteSchema['globals'] = {
@@ -259,6 +294,7 @@ export const layouts: SiteSchema['layouts'] = {
   home: { label: 'Strona główna', regions: [...layoutRegions.home] },
   workshop: { label: 'Projekt (warsztat)', regions: [...layoutRegions.workshop] },
   document: { label: 'Dokument', regions: [...layoutRegions.document] },
+  ebook: { label: 'Ebook', regions: [...layoutRegions.ebook] },
 }
 
 export const seoFields: FieldDef[] = [

@@ -88,7 +88,7 @@ export const USERS: Record<Role, string> = {
 
 export type Api = (method: string, path: string, options?: { body?: unknown, cookie?: string | null, headers?: Record<string, string>, raw?: BodyInit }) => Promise<Response>
 
-export function setup(options: { github?: boolean, githubStatus?: number, env?: Partial<Env> } = {}) {
+export function setup(options: { github?: boolean, githubStatus?: number, env?: Partial<Env>, actionsFetch?: typeof fetch } = {}) {
   let clock = Date.parse('2026-10-06T10:00:00Z')
   const db = createD1()
   const media = memoryKV()
@@ -106,7 +106,10 @@ export function setup(options: { github?: boolean, githubStatus?: number, env?: 
     ...(options.github ? { GITHUB_TOKEN: 'ghp_test' } : {}),
     ...options.env,
   }
-  const app = createApp({ schema, fetch: net.fetch, now: () => clock })
+  // Odczyt uruchomień GitHub Actions (pulpit) może mieć własną odpowiedź; reszta przez fakeFetch.
+  const fetcher: typeof fetch = (input, init) =>
+    options.actionsFetch && String(input).includes('/actions/') ? options.actionsFetch(input, init) : net.fetch(input, init)
+  const app = createApp({ schema, fetch: fetcher, now: () => clock })
 
   const iso = new Date(clock).toISOString()
   const insertUser = db.raw.prepare('INSERT INTO users (id, email, name, role, created_at, disabled) VALUES (?, ?, ?, ?, ?, 0)')

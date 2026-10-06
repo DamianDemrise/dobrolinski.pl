@@ -37,3 +37,30 @@ describe.skipIf(!existsSync(seedFile) || !existsSync(publishedFile))('seed z con
     for (const key of ['pages', 'globals', 'components', 'tokens']) expect(site[key], key).toEqual(published[key])
   })
 })
+
+const draftFile = join(import.meta.dirname, '../migrations/0004_seed_ebook_page.sql')
+const draftSource = join(import.meta.dirname, '../drafts/na-koncu-jest-czlowiek.json')
+
+describe.skipIf(!existsSync(seedFile) || !existsSync(draftFile))('szkic strony ebooka (0004)', () => {
+  it('dodaje stronę jako nieopublikowany szkic zgodny ze źródłem, a /api/public/site się nie zmienia', async () => {
+    const db = createD1()
+    db.raw.exec(readFileSync(seedFile, 'utf8'))
+    db.raw.exec(readFileSync(draftFile, 'utf8'))
+    db.raw.exec(readFileSync(draftFile, 'utf8'))
+    const row = db.raw.prepare('SELECT slug, draft_json, draft_rev, published_json FROM entities WHERE id = ?').get('page_na-koncu-jest-czlowiek') as
+      { slug: string, draft_json: string, draft_rev: number, published_json: string | null }
+    expect(row.slug).toBe('na-koncu-jest-czlowiek')
+    expect(row.draft_rev).toBe(1)
+    expect(row.published_json).toBeNull()
+    expect(JSON.parse(row.draft_json)).toEqual(JSON.parse(readFileSync(draftSource, 'utf8')))
+    const components = Object.fromEntries((db.raw.prepare('SELECT id, draft_json FROM entities WHERE kind = \'component\'').all() as { id: string, draft_json: string }[])
+      .map(c => [c.id, JSON.parse(c.draft_json)]))
+    expect(validateEntityData('page', JSON.parse(row.draft_json), siteSchema, { slug: row.slug, components })).toEqual([])
+
+    const app = createApp({ schema: siteSchema })
+    const res = await app.fetch(new Request('https://cms.test/api/public/site'), { DB: db, MEDIA: memoryKV() })
+    const site = await res.json() as { pages: Record<string, unknown> }
+    const published = JSON.parse(readFileSync(publishedFile, 'utf8')) as { pages: Record<string, unknown> }
+    expect(site.pages).toEqual(published.pages)
+  })
+})

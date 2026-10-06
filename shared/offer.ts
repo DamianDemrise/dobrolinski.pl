@@ -13,6 +13,16 @@ export interface OfferRequest {
   elapsed?: number
   /** Ścieżka strony i UTM, tylko do powiadomienia dla Damiana. */
   source?: OfferSource
+  /** Co wysłać: oferta warsztatu (domyślnie) albo ebook. */
+  product?: OfferProduct
+}
+
+export type OfferProduct = 'offer' | 'ebook'
+export const OFFER_PRODUCTS: readonly OfferProduct[] = ['offer', 'ebook']
+
+/** Nieznana albo brakująca wartość = oferta (formularz oferty nie wysyła tego pola). */
+export function parseProduct(value: unknown): OfferProduct {
+  return value === 'ebook' ? 'ebook' : 'offer'
 }
 
 export interface OfferSource {

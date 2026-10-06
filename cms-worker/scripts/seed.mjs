@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Generuje migrations/0002_seed.sql z content/published.json (Node 22, bez zależności).
+ * Generuje migrations/0002_seed.sql z content/published.json (Node 22, bez zależności)
+ * oraz migracje stron-szkiców z cms-worker/drafts/*.json (DRAFT_PAGES niżej).
  * Uruchom: node cms-worker/scripts/seed.mjs
  * INSERT OR IGNORE: ponowne zastosowanie niczego nie nadpisuje.
  *
@@ -107,3 +108,31 @@ lines.push('')
 
 writeFileSync(target, lines.join('\n'))
 console.log(`Zapisano ${target}: ${users.length} użytkowników, ${entities.length} encji.`)
+
+/**
+ * Strony dodane jako szkic: draft = dokument z cms-worker/drafts, published_json NULL,
+ * bez rewizji. Publikuje je Damian w panelu; do tego czasu strona publicznie nie istnieje.
+ */
+const DRAFT_PAGES = [
+  { source: 'na-koncu-jest-czlowiek.json', migration: '0004_seed_ebook_page.sql', at: '2026-10-06T00:00:00.000Z' },
+]
+for (const draft of DRAFT_PAGES) {
+  const doc = JSON.parse(readFileSync(join(here, '../drafts', draft.source), 'utf8'))
+  const id = `page_${idPart(doc.slug)}`
+  // Po publikacji strona jest w published.json (0002); zastosowanej migracji szkicu nie ruszamy.
+  if (ids.has(id)) {
+    console.log(`Pominięto ${draft.migration}: strona ${id} jest już opublikowana.`)
+    continue
+  }
+  const out = join(here, '../migrations', draft.migration)
+  writeFileSync(out, [
+    `-- Wygenerowane przez cms-worker/scripts/seed.mjs z cms-worker/drafts/${draft.source}. Nie edytuj ręcznie.`,
+    '-- Strona jako szkic (nieopublikowana). INSERT OR IGNORE: nie nadpisuje zmian z panelu.',
+    '',
+    'INSERT OR IGNORE INTO entities (id, kind, slug, title, draft_json, draft_rev, published_json, published_at, published_by, updated_at, updated_by) VALUES ('
+    + [id, 'page', doc.slug, doc.title, JSON.stringify(doc)].map(sql).join(', ')
+    + `, 1, NULL, NULL, NULL, ${sql(draft.at)}, NULL);`,
+    '',
+  ].join('\n'))
+  console.log(`Zapisano ${out}: szkic strony ${id}.`)
+}
