@@ -1,0 +1,46 @@
+# DEMRISE CMS v1: API, logowanie, media i hosting panelu dla dobrolinski.pl.
+# Architektura: docs/CMS_ARCHITECTURE.md. Tu są tylko wartości jawne.
+# Sekrety (nigdy w repo): `npx wrangler secret put RESEND_API_KEY`, opcjonalnie `GITHUB_TOKEN`.
+name = "dobrolinski-cms"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[observability]
+enabled = true
+
+# Tylko nasze logi. Bez logów wywołań z metadanymi requestu (m.in. IP).
+[observability.logs]
+invocation_logs = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dobrolinski-cms"
+# Utworzone na koncie Cloudflare damian@demrise.pl.
+database_id = "afe02713-8094-4548-821e-c233c7b2a4ea"
+migrations_dir = "migrations"
+
+[[kv_namespaces]]
+binding = "MEDIA"
+id = "ae5547a3ad56448cbbf1337de05169a9"
+
+# Panel (Nuxt z CMS_ADMIN=1) budowany do admin-dist. API i media obsługuje Worker.
+[assets]
+directory = "./admin-dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# true zamiast listy ["/api/*", "/media/*", "/"]: assety panelu też przechodzą przez Worker,
+# żeby dostały nagłówki bezpieczeństwa (CSP, X-Frame-Options, HSTS). Assety statyczne bez Workera ich nie mają.
+run_worker_first = true
+
+# cms/schema.ts importuje rdzeń przez alias pakietu.
+[alias]
+"@demrise/cms-core" = "../packages/cms-core/src/index.ts"
+
+[vars]
+SITE_URL = "https://dobrolinski.pl"
+ADMIN_ORIGIN = "https://dobrolinski-cms.demrise.workers.dev"
+MAIL_FROM = "Damian Dobroliński CMS <cms@dobrolinski.pl>"
+# live: link logowania idzie mailem. dry: link tylko w logu (lokalnie).
+MAIL_MODE = "live"
+GITHUB_REPO = "DamianDemrise/dobrolinski.pl"

@@ -1,8 +1,23 @@
+import { fileURLToPath } from 'node:url'
+import type { PublishedSite } from './packages/cms-core/src/types'
+import { seoMeta } from './app/cms/seo'
+import published from './content/published.json'
+
+/** Build panelu CMS (`npm run cms:build`): SPA /admin, bez ponownego prerenderu stron publicznych. */
+const isAdminBuild = process.env.CMS_ADMIN === '1'
+const home = (published as unknown as PublishedSite).pages['']!
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-04',
   devtools: { enabled: false },
   modules: ['@nuxt/eslint'],
   css: ['~/assets/css/main.css'],
+  alias: {
+    '@demrise/cms-core': fileURLToPath(new URL('./packages/cms-core/src/index.ts', import.meta.url)),
+  },
+  // Publiczny build nie zawiera tras ani kodu panelu.
+  ignore: isAdminBuild ? [] : ['app/pages/admin/**', 'app/components/admin/**', 'app/admin/**'],
+  routeRules: isAdminBuild ? { '/admin/**': { ssr: false } } : {},
   runtimeConfig: {
     public: {
       // GTM ładuje się dopiero po zgodzie (app/plugins/analytics.client.ts).
@@ -17,35 +32,15 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'pl' },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
-      title: 'Damian Dobroliński | Ludzie · Sprzedaż · Marketing · Technologia',
+      // Strona główna z CMS (content/published.json). W app.head, bo z niego korzystają też 404/200.
+      title: home.seo.title,
       meta: [
-        {
-          name: 'description',
-          content: 'Damian Dobroliński — Ludzie · Sprzedaż · Marketing · Technologia',
-        },
         { name: 'theme-color', content: '#080808' },
-        { property: 'og:type', content: 'profile' },
         { property: 'og:locale', content: 'pl_PL' },
-        { property: 'og:title', content: 'Damian Dobroliński' },
-        {
-          property: 'og:description',
-          content: 'Ludzie · Sprzedaż · Marketing · Technologia',
-        },
-        { property: 'og:url', content: 'https://dobrolinski.pl/' },
-        { property: 'og:image', content: 'https://dobrolinski.pl/og-home.png' },
-        { property: 'og:image:type', content: 'image/png' },
-        { property: 'og:image:width', content: '1200' },
-        { property: 'og:image:height', content: '630' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Damian Dobroliński' },
-        {
-          name: 'twitter:description',
-          content: 'Ludzie · Sprzedaż · Marketing · Technologia',
-        },
-        { name: 'twitter:image', content: 'https://dobrolinski.pl/og-home.png' },
+        ...seoMeta(home.seo, 'profile'),
       ],
       link: [
-        { rel: 'canonical', href: 'https://dobrolinski.pl/' },
+        { rel: 'canonical', href: home.seo.canonical },
         { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
       ],
     },
@@ -53,8 +48,8 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'static',
     prerender: {
-      crawlLinks: true,
-      routes: ['/', '/poznaj-czlowieka', '/polityka-prywatnosci'],
+      crawlLinks: !isAdminBuild,
+      routes: isAdminBuild ? ['/admin'] : ['/', '/poznaj-czlowieka', '/polityka-prywatnosci'],
       // /poznaj-czlowieka.html zamiast /poznaj-czlowieka/index.html:
       // GitHub Pages serwuje wtedy adres bez ukośnika i bez przekierowania.
       autoSubfolderIndex: false,

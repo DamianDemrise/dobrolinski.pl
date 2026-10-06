@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { siteContent } from '~/content/site'
+import type { ContactLinksProps } from '~~/cms/types'
+import { useCmsGlobals } from '~/cms/context'
+import { vCms } from '~/cms/directive'
+
+defineProps<{ data: ContactLinksProps }>()
+
+const globals = useCmsGlobals()
+const site = computed(() => globals.value.site)
 </script>
 
 <template>
   <address class="contact">
-    <a :href="`mailto:${siteContent.email}`" data-track="email_click" data-track-place="home">{{ siteContent.email }}</a>
+    <a v-cms="'globals.site.email'" :href="`mailto:${site.email}`" data-track="email_click" :data-track-place="data.trackPlace">{{ site.email }}</a>
     <span class="contact__separator" aria-hidden="true">·</span>
-    <a :href="siteContent.phoneHref" data-track="phone_click" data-track-place="home">{{ siteContent.phoneDisplay }}</a>
+    <a v-cms="'globals.site.phoneDisplay'" :href="site.phoneHref" data-track="phone_click" :data-track-place="data.trackPlace">{{ site.phoneDisplay }}</a>
   </address>
 </template>

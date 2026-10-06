@@ -1,29 +1,10 @@
 /* Warsztat: kontener przewijania, pierwszy ekran i elementy wspólne sekcji. */
 
 .workshop-view {
-  --workshop-x: clamp(1.5rem, 7.4vw, 8rem);
-
   /*
-   * Skala typografii warsztatu: każdy tekst korzysta z jednego poziomu,
-   * body nie schodzi poniżej 16 px. Wyjątki są opisane przy regułach.
+   * Zmienne (margines, skala typografii, poziomy jasności tekstu) są tokenami CMS:
+   * definicje w tokens.css, generowane z content/published.json (npm run cms:tokens).
    */
-  --type-display-xl: clamp(2.8rem, 7vw, 7.4rem);
-  --type-display: clamp(2.4rem, 5vw, 5.6rem);
-  --type-display-s: clamp(2rem, 4.2vw, 4.4rem);
-  --type-heading-l: clamp(1.7rem, 2.9vw, 3rem);
-  --type-heading: clamp(1.5rem, 2.4vw, 2.5rem);
-  --type-lead: clamp(1.2rem, 1.8vw, 1.75rem);
-  --type-body-l: clamp(1.125rem, 1.4vw, 1.35rem);
-  --type-body: clamp(1.0625rem, 1.28vw, 1.25rem);
-  --type-body-s: clamp(1rem, 1.18vw, 1.125rem);
-  --type-small: clamp(0.9375rem, 1.05vw, 1.0625rem);
-  --type-eyebrow: 0.74rem;
-  --type-label: 0.7rem;
-
-  /* Trzy poziomy jasności tekstu: primary, secondary (czytany), muted (dekoracyjny). */
-  --ink-primary: rgba(255, 255, 255, 0.9);
-  --ink-secondary: rgba(255, 255, 255, 0.66);
-  --ink-muted: rgba(255, 255, 255, 0.46);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -354,12 +335,7 @@
 }
 
 @media (max-width: 640px) {
-  .workshop-view {
-    --workshop-x: 1.25rem;
-    /* Na telefonie czytany tekst jaśniejszy, a informacje (czas, forma, e-mail) min. 16 px. */
-    --ink-secondary: rgba(255, 255, 255, 0.7);
-    --type-small: 1rem;
-  }
+  /* Na telefonie czytany tekst jaśniejszy, a informacje min. 16 px: tokeny *-mobile w tokens.css. */
 
   .workshop-screen {
     padding:

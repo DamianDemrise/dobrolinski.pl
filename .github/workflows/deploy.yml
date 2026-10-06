@@ -5,6 +5,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+  repository_dispatch:
+    types: [cms-publish]
 
 permissions:
   contents: read
@@ -31,6 +33,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Pull published CMS content
+        run: node scripts/cms-pull.mjs
+        env:
+          CMS_BLOCKED_TEXT: ${{ secrets.CMS_BLOCKED_TEXT }}
 
       - name: Generate Nuxt site
         run: npm run generate

@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import { workshop } from '~/content/workshop'
+import type { WorkshopManifestProps } from '~~/cms/types'
+import { vCms } from '~/cms/directive'
 
-const { manifest, noScript } = workshop
+defineProps<{ data: WorkshopManifestProps }>()
 </script>
 
 <template>
   <section class="workshop-section workshop-manifest" aria-labelledby="workshop-manifest-title">
     <h2 id="workshop-manifest-title" class="workshop-manifest__title">
-      <span class="workshop-line workshop-manifest__quiet reveal">{{ manifest.quietLine }}</span>
-      <span class="workshop-line reveal">{{ manifest.strongLine }}</span>
+      <span v-cms="'quietLine'" class="workshop-line workshop-manifest__quiet reveal">{{ data.quietLine }}</span>
+      <span v-cms="'strongLine'" class="workshop-line reveal">{{ data.strongLine }}</span>
     </h2>
     <p class="workshop-manifest__follow reveal">
-      <template v-for="line in manifest.followLines" :key="line">
-        <span class="workshop-line">{{ line }}</span>{{ ' ' }}
+      <template v-for="(line, i) in data.followLines" :key="line">
+        <span v-cms="`followLines.${i}`" class="workshop-line">{{ line }}</span>{{ ' ' }}
       </template>
     </p>
 
     <div class="workshop-noscript">
-      <h3 class="workshop-heading reveal">{{ noScript.title }}</h3>
+      <h3 v-cms="'noScript.title'" class="workshop-heading reveal">{{ data.noScript.title }}</h3>
       <ul class="workshop-quiet-list workshop-noscript__lines reveal">
-        <li v-for="line in noScript.lines" :key="line">{{ line }}</li>
+        <li v-for="(line, i) in data.noScript.lines" :key="line" v-cms="`noScript.lines.${i}`">{{ line }}</li>
       </ul>
-      <p class="workshop-body-strong reveal">{{ noScript.reason }}</p>
-      <p class="workshop-statement reveal">{{ noScript.statement }}</p>
+      <p v-cms="'noScript.reason'" class="workshop-body-strong reveal">{{ data.noScript.reason }}</p>
+      <p v-cms="'noScript.statement'" class="workshop-statement reveal">{{ data.noScript.statement }}</p>
     </div>
   </section>
 </template>

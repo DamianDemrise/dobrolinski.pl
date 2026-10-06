@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { personSchema } from '~/content/site'
+import { personSchema } from '~~/cms/derive'
+import { useCmsGlobals } from '~/cms/context'
 
 const { lightStyle, onPointerMove } = usePointerLight()
+const globals = useCmsGlobals()
+// Panel CMS (tylko build CMS_ADMIN=1) renderuje własny układ, bez warstw strony publicznej.
+const currentRoute = useRouter().currentRoute
+const isAdmin = computed(() => /^\/admin(\/|$)/.test(currentRoute.value.path))
 
-useHead({
+useHead(() => isAdmin.value ? {} : ({
   script: [
     {
       type: 'application/ld+json',
-      textContent: JSON.stringify(personSchema),
+      textContent: JSON.stringify(personSchema(globals.value.site)),
     },
   ],
-})
+}))
 
 // Kaskada wejścia gra tylko przy pierwszym wejściu na stronę, nie przy powrocie z podstrony.
 const hasNavigated = ref(false)
@@ -24,7 +29,9 @@ const focusActiveView = () => {
 </script>
 
 <template>
+  <NuxtPage v-if="isAdmin" />
   <main
+    v-else
     class="site-stage"
     :class="{ 'has-navigated': hasNavigated }"
     :style="lightStyle"
