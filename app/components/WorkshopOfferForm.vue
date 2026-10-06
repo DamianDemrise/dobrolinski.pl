@@ -29,12 +29,12 @@ onMounted(() => {
   markShown()
   if (!root.value) return
   // Formularz montuje się po useReveal (ClientOnly), więc sam pokazuje się przy wejściu,
-  // a offer_form_view liczy raz, gdy jest widoczny co najmniej w połowie.
+  // a <produkt>_form_view (offer_form_view, ebook_form_view) liczy raz, gdy jest widoczny co najmniej w połowie.
   observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (entry.isIntersecting) root.value?.classList.add('is-visible')
       if (entry.intersectionRatio >= 0.5) {
-        trackOffer('offer_form_view', props.product)
+        trackOffer('view', props.product, props.product)
         observer?.disconnect()
       }
     }

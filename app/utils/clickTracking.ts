@@ -22,6 +22,15 @@ export function trackEventPayload(name: string, place: string): TrackPayload {
   return { event: TRACK_EVENT, track_name: name, track_place: place, link_url: '' }
 }
 
+export type OfferFormProduct = 'offer' | 'ebook'
+export type OfferFormStep = 'view' | 'submit' | 'success' | 'error'
+
+/**
+ * Zdarzenie formularza w GA4: `offer_form_<krok>` dla oferty, `ebook_form_<krok>` dla ebooka.
+ * Osobne nazwy, żeby pobrania ebooka nie liczyły się jako zapytania o warsztat.
+ */
+export const formEventName = (product: OfferFormProduct, step: OfferFormStep) => `${product}_form_${step}`
+
 export function trackPayloadFrom(target: EventTarget | null): TrackPayload | null {
   if (!(target instanceof Element)) return null
   const el = target.closest<HTMLElement>('[data-track]')
