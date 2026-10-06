@@ -26,6 +26,18 @@ CMS_API_URL=http://localhost:8787 node scripts/cms-pull.mjs && npx nuxt generate
 
 Po zmianach w panelu (`vendor/demrise-cms`) albo schemacie (`cms/`): `npm run cms:build`, a na produkcji `npx wrangler deploy` w `cms-worker/`. Po zmianie treści startowej w repo: `npm run cms:seed` (generuje `migrations/0002_seed.sql`).
 
+## Logowanie awaryjne (gdy nie przychodzi mail z linkiem)
+
+Przyczyny: wygasły albo usunięty klucz Resend, awaria Resend, limit maili. Link logowania można wtedy odczytać z logów Workera (widzi je tylko właściciel konta Cloudflare). W `cms-worker/`:
+
+1. Terminal 1, podgląd logów: `npx wrangler@4 tail dobrolinski-cms`
+2. Terminal 2, tymczasowo bez wysyłki maili: `npx wrangler@4 deploy --var MAIL_MODE:dry`
+3. Na stronie logowania panelu wpisz swój adres. W terminalu 1 pojawi się `[cms] login link (dry): https://…` — otwórz go i kliknij „Zaloguj”.
+4. Od razu przywróć wysyłkę: `npx wrangler@4 deploy` (wartości z `wrangler.toml`, `MAIL_MODE = "live"`).
+5. Napraw przyczynę: nowy klucz Resend (`npx wrangler@4 secret put RESEND_API_KEY`), sprawdź domenę w Resend.
+
+Link działa tylko dla istniejących, niewyłączonych kont, 15 minut i raz. Tryb `dry` trzymaj włączony tylko na czas logowania.
+
 ## Kopia treści
 
 - Cloudflare D1 trzyma 30 dni historii bazy (Time Travel): `npx wrangler d1 time-travel restore dobrolinski-cms --timestamp=…` w `cms-worker`.
