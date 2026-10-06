@@ -1,15 +1,16 @@
 import { isValidEmail, normalizeEmail, type OfferResponse, type OfferSource } from '#shared/offer'
-import { trackEventPayload } from '~/utils/clickTracking'
+import { formEventName, trackEventPayload, type OfferFormProduct, type OfferFormStep } from '~/utils/clickTracking'
 
 export type OfferFormState = 'idle' | 'sending' | 'sent' | 'error'
 export type OfferFieldError = 'empty' | 'invalid' | null
 /** Co wysyła formularz: oferta warsztatu (domyślnie) albo ebook. */
-export type OfferFormProduct = 'offer' | 'ebook'
+export type { OfferFormProduct }
 
 const REQUEST_TIMEOUT_MS = 15000
 
-/** Zdarzenia formularza do GA4: tylko nazwa i miejsce, nigdy adres. */
-export function trackOffer(name: 'offer_form_view' | 'offer_form_submit' | 'offer_form_success' | 'offer_form_error', place = 'offer') {
+/** Zdarzenie formularza do GA4 (nazwa: formEventName). Tylko nazwa i miejsce, nigdy adres. */
+export function trackOffer(step: OfferFormStep, place = 'offer', product: OfferFormProduct = 'offer') {
+  const name = formEventName(product, step)
   if (useAnalyticsConsent().choice.value !== 'granted') return
   window.dataLayer?.push(trackEventPayload(name, place))
 }
@@ -44,7 +45,7 @@ export const useOfferForm = (product: OfferFormProduct = 'offer') => {
 
   const fail = (suffix: string) => {
     state.value = 'error'
-    trackOffer('offer_form_error', place(suffix))
+    trackOffer('error', place(suffix), product)
   }
 
   const submit = async () => {
@@ -53,12 +54,12 @@ export const useOfferForm = (product: OfferFormProduct = 'offer') => {
     const address = normalizeEmail(email.value)
     fieldError.value = !address ? 'empty' : isValidEmail(address) ? null : 'invalid'
     if (fieldError.value) {
-      trackOffer('offer_form_error', place('validation'))
+      trackOffer('error', place('validation'), product)
       return
     }
 
     state.value = 'sending'
-    trackOffer('offer_form_submit', place())
+    trackOffer('submit', place(), product)
     try {
       const response = await fetch(offerEndpoint, {
         method: 'POST',
@@ -75,13 +76,13 @@ export const useOfferForm = (product: OfferFormProduct = 'offer') => {
       const result = await response.json().catch(() => null) as OfferResponse | null
       if (response.ok && result?.ok) {
         state.value = 'sent'
-        trackOffer('offer_form_success', place())
+        trackOffer('success', place(), product)
         return
       }
       if (result && !result.ok && result.error === 'invalid_email') {
         state.value = 'idle'
         fieldError.value = 'invalid'
-        trackOffer('offer_form_error', place('validation'))
+        trackOffer('error', place('validation'), product)
         return
       }
       fail(response.status === 429 ? 'limit' : 'server')
