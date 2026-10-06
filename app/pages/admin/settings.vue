@@ -1,17 +1,16 @@
 <!--
-  Ustawienia (SETTINGS_MANAGE): adres strony, integracja przebudowy (GitHub), poczta,
-  ręczna przebudowa strony publicznej (POST /api/rebuild, CONTENT_PUBLISH) i instrukcja GITHUB_TOKEN.
+  Ustawienia (SETTINGS_MANAGE): adres strony, wypychanie do repo (GitHub), poczta i instrukcja GITHUB_TOKEN.
+  Samo wypychanie i konflikty z kodem: Panel (DeployStatus).
 -->
 <script setup lang="ts">
 import { adminAuth } from '~/admin/auth-guard'
-import type { RebuildStatus, SettingsResponse } from '@demrise/cms-core'
+import type { SettingsResponse } from '@demrise/cms-core'
 import { computed, onMounted, ref } from 'vue'
 import { cmsApi } from '~/admin/api'
 import { errorMessage } from '~/admin/format'
 import { useCmsSession } from '~/admin/session'
 import Shell from '~/components/admin/shell/Shell.vue'
 import Badge from '~/components/admin/ui/Badge.vue'
-import Button from '~/components/admin/ui/Button.vue'
 
 definePageMeta({ middleware: [adminAuth] })
 useHead({ title: 'Ustawienia · DEMRISE CMS', meta: [{ name: 'robots', content: 'noindex' }] })
@@ -20,18 +19,8 @@ const session = useCmsSession()
 const settings = ref<SettingsResponse | null>(null)
 const loading = ref(true)
 const error = ref('')
-const rebuilding = ref(false)
-const result = ref<{ status: RebuildStatus, at: Date } | null>(null)
-const rebuildError = ref('')
 
 const canManage = computed(() => session.can('SETTINGS_MANAGE'))
-const canRebuild = computed(() => session.can('CONTENT_PUBLISH'))
-
-const RESULT: Record<RebuildStatus, { tone: 'neutral' | 'warning' | 'danger', text: string }> = {
-  triggered: { tone: 'neutral', text: 'Wypychanie uruchomione. Strona publiczna odświeży się w ciągu ~1–2 min.' },
-  manual: { tone: 'warning', text: 'Wypychanie z panelu nie jest skonfigurowane (brak GITHUB_TOKEN). Uruchom workflow w GitHub Actions: Actions → „Deploy Nuxt to GitHub Pages” → Run workflow.' },
-  failed: { tone: 'danger', text: 'GitHub odrzucił wywołanie przebudowy. Sprawdź token (uprawnienia, ważność) albo uruchom workflow ręcznie w GitHub Actions.' },
-}
 
 onMounted(async () => {
   if (!canManage.value) {
@@ -49,21 +38,6 @@ onMounted(async () => {
   }
 })
 
-async function rebuild() {
-  rebuilding.value = true
-  rebuildError.value = ''
-  result.value = null
-  try {
-    const response = await cmsApi.post<{ rebuild: RebuildStatus }>('/api/rebuild')
-    result.value = { status: response.rebuild, at: new Date() }
-  }
-  catch (e) {
-    rebuildError.value = errorMessage(e)
-  }
-  finally {
-    rebuilding.value = false
-  }
-}
 </script>
 
 <template>
@@ -77,36 +51,26 @@ async function rebuild() {
         <dl class="adm-dl">
           <dt>Adres strony</dt>
           <dd><a :href="settings.siteUrl" target="_blank" rel="noopener">{{ settings.siteUrl }}<span class="adm-sr"> (nowa karta)</span></a></dd>
-          <dt>Wypychanie z panelu</dt>
+          <dt>Wypychanie do repo</dt>
           <dd>
-            <Badge :tone="settings.rebuild.configured ? 'success' : 'warning'">{{ settings.rebuild.configured ? 'Skonfigurowana' : 'Nieskonfigurowana' }}</Badge>
-            <span class="adm-muted"> Repozytorium: {{ settings.rebuild.repo ?? '—' }}</span>
+            <Badge :tone="settings.push.configured ? 'success' : 'warning'">{{ settings.push.configured ? 'Skonfigurowana' : 'Nieskonfigurowana' }}</Badge>
+            <span class="adm-muted"> Repozytorium: {{ settings.push.repo ?? '—' }}</span>
           </dd>
           <dt>Poczta (linki logowania)</dt>
           <dd><Badge :tone="settings.mailConfigured ? 'success' : 'warning'">{{ settings.mailConfigured ? 'Skonfigurowana' : 'Nieskonfigurowana' }}</Badge></dd>
         </dl>
       </section>
 
-      <section class="adm-card adm-stack" aria-labelledby="set-rebuild">
-        <h2 id="set-rebuild">Przebudowa strony</h2>
-        <p class="adm-muted">Strona publiczna jest statyczna: publikacja zapisuje treść w CMS, a na stronę trafia po wypchnięciu (GitHub Actions buduje stronę z opublikowanej treści). Stan i listę niewypchniętych publikacji pokazuje Panel.</p>
-        <div v-if="canRebuild">
-          <Button variant="primary" :loading="rebuilding" @click="rebuild">Wypchnij na stronę</Button>
-        </div>
-        <p v-else class="adm-muted">Przebudowę uruchamia osoba z uprawnieniem do publikacji.</p>
-        <p v-if="result" class="adm-alert" :class="`adm-alert--${RESULT[result.status].tone}`" role="status">{{ RESULT[result.status].text }}</p>
-        <p v-if="rebuildError" class="adm-alert adm-alert--danger" role="alert">Nie uruchomiono przebudowy: {{ rebuildError }}</p>
-      </section>
 
       <section class="adm-card adm-stack" aria-labelledby="set-help">
-        <h2 id="set-help">Jak włączyć wypychanie jednym przyciskiem (GITHUB_TOKEN)</h2>
+        <h2 id="set-help">Jak włączyć wypychanie (GITHUB_TOKEN)</h2>
         <ol class="adm-steps">
           <li>GitHub → Settings → Developer settings → Personal access tokens → <strong>Fine-grained tokens</strong> → Generate new token.</li>
           <li>Repository access: <strong>Only select repositories</strong> → <code>DamianDemrise/dobrolinski.pl</code>.</li>
-          <li>Permissions → Repository permissions → <strong>Contents: Read and write</strong> (wymagane przez <code>repository_dispatch</code>). Nic więcej.</li>
+          <li>Permissions → Repository permissions → <strong>Contents: Read and write</strong> (commit treści do repo). Nic więcej.</li>
           <li>W katalogu <code>cms-worker</code>: <code>npx wrangler secret put GITHUB_TOKEN</code> i wklej token. Token nie trafia do repozytorium.</li>
         </ol>
-        <p class="adm-muted">Bez tokenu przycisk w Panelu otwiera GitHub Actions, gdzie wypychasz stronę przyciskiem „Run workflow”. Publikacja nigdy nie wypycha strony sama.</p>
+        <p class="adm-muted">Wypchnięcie robi commit opublikowanej treści do repo strony; commit uruchamia wdrożenie. Zmiany w kodzie wracają do panelu same (po pushu do repo).</p>
       </section>
     </template>
   </Shell>

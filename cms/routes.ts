@@ -1,24 +1,37 @@
 /**
  * Publiczne trasy strony: prerender (nuxt.config) i sitemap.xml (server/routes).
  * Strony stałe są zawsze; strony dodane w panelu dopiero, gdy są opublikowane
- * (są w content/published.json). Czysty TS, bez frameworka.
+ * (są w content/published.json), i renderuje je app/pages/[...slug].vue. Czysty TS, bez frameworka.
  */
 export const SITE_ORIGIN = 'https://dobrolinski.pl'
 
-/** Kolejność jak w sitemap.xml sprzed CMS. */
-const FIXED_ROUTES = ['/', '/poznaj-czlowieka', '/polityka-prywatnosci']
+/** Strony z własnym plikiem w app/pages, w kolejności jak w sitemap.xml sprzed CMS. */
+const FIXED_SLUGS = ['', 'poznaj-czlowieka', 'polityka-prywatnosci']
 
-/** Strony publiczne tylko po publikacji w panelu (slug). */
-export const PUBLISH_GATED_SLUGS = ['na-koncu-jest-czlowiek']
+/** Minimum dokumentu strony potrzebne trasom (bez zależności od rdzenia). */
+interface RoutedSite { pages: Record<string, { seo?: { noindex?: boolean } } | undefined> }
 
-export function publicRoutes(site: { pages: Record<string, unknown> }): string[] {
-  const gated = PUBLISH_GATED_SLUGS.filter(slug => Object.hasOwn(site.pages, slug)).map(slug => `/${slug}`)
-  return [...FIXED_ROUTES, ...gated]
+/** Stałe trasy, potem opublikowane strony z panelu alfabetycznie (stabilna kolejność). */
+export function publicRoutes(site: RoutedSite): string[] {
+  const added = Object.keys(site.pages).filter(slug => !FIXED_SLUGS.includes(slug)).sort()
+  return [...FIXED_SLUGS, ...added].map(slug => `/${slug}`)
 }
 
-/** Strony jeszcze nieopublikowane: Nuxt sam dopisuje statyczne strony do prerenderu, więc je pomijamy. */
-export function unpublishedRoutes(site: { pages: Record<string, unknown> }): string[] {
-  return PUBLISH_GATED_SLUGS.filter(slug => !Object.hasOwn(site.pages, slug)).map(slug => `/${slug}`)
+/** Trasy do sitemap.xml: publiczne bez stron z `seo.noindex`. */
+export function sitemapRoutes(site: RoutedSite): string[] {
+  return publicRoutes(site).filter(route => site.pages[route.slice(1)]?.seo?.noindex !== true)
+}
+
+/**
+ * Prerender: czy pominąć adres znaleziony przez crawlLinks. Pomijamy adresy stron (bez rozszerzenia),
+ * których nie ma wśród publicznych tras: catch-all dałby dla nich 404 i wywrócił build.
+ */
+export function isUnpublishedRoute(site: RoutedSite, path: string): boolean {
+  const clean = path.replace(/[?#].*$/, '')
+  const last = clean.split('/').pop() ?? ''
+  if (clean.startsWith('/_') || last.includes('.')) return false
+  const route = clean.length > 1 ? clean.replace(/\/+$/, '') : clean
+  return !publicRoutes(site).includes(route)
 }
 
 export function sitemapXml(routes: string[]): string {

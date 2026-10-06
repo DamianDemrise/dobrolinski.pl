@@ -1,6 +1,7 @@
 # DEMRISE CMS v1: API, logowanie, media i hosting panelu dla dobrolinski.pl.
 # Architektura: docs/CMS_ARCHITECTURE.md. Tu są tylko wartości jawne.
-# Sekrety (nigdy w repo): `npx wrangler secret put RESEND_API_KEY`, opcjonalnie `GITHUB_TOKEN`.
+# Sekrety (nigdy w repo): `npx wrangler secret put RESEND_API_KEY` i `GITHUB_TOKEN`
+# (fine-grained, tylko to repo, Contents: Read and write: wypychanie treści commitem do repo).
 name = "dobrolinski-cms"
 main = "src/index.ts"
 compatibility_date = "2026-10-01"
@@ -44,3 +45,8 @@ MAIL_FROM = "Damian Dobroliński CMS <cms@dobrolinski.pl>"
 # live: link logowania idzie mailem. dry: link tylko w logu (lokalnie).
 MAIL_MODE = "live"
 GITHUB_REPO = "DamianDemrise/dobrolinski.pl"
+GITHUB_BRANCH = "main"
+
+# Import zmian z repo co godzinę (zapas, gdyby ping z workflow cms-sync nie dotarł).
+[triggers]
+crons = ["17 * * * *"]

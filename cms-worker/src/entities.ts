@@ -1,21 +1,21 @@
 /**
  * Encje: lista, odczyt, zapis draftu (optimistic concurrency po draft_rev), publikacja,
- * odrzucenie zmian, tworzenie i usuwanie komponentów/wzorców.
- * Zapis draftu nigdy nie dotyka published_json i nigdy nie wyzwala rebuildu.
+ * odrzucenie zmian, tworzenie i usuwanie stron (tylko nigdy nieopublikowanych), komponentów i wzorców.
+ * Zapis draftu nigdy nie dotyka published_json. Publikacja nie zmienia strony: robi to wypchnięcie (sync.ts).
  */
 import type { EntityKind, Permission, PublishResponse, SaveDraftResponse, SiteSchema } from '../../packages/cms-core/src/index'
+import { pageSlugProblem } from '../../cms/pages'
 import { auditStatement } from './audit'
 import { currentUser, nowIso, type Ctx } from './context'
 import { randomId } from './crypto'
 import { LIMITS } from './env'
-import { rebuildOnPublish, triggerRebuild } from './github'
 import { checkChange, requirePermission, validateOnly } from './guard'
 import { fail, json, readJson, readOptionalJson } from './http'
 import { toEntity, toSummary, type EntityRow } from './rows'
 import { componentUsages } from './usage'
 
 export const ENTITY_KINDS: readonly EntityKind[] = ['page', 'global', 'component', 'pattern', 'tokens']
-const CREATABLE: readonly EntityKind[] = ['component', 'pattern']
+const CREATABLE: readonly EntityKind[] = ['page', 'component', 'pattern']
 const isKind = (value: unknown): value is EntityKind => typeof value === 'string' && (ENTITY_KINDS as readonly string[]).includes(value)
 
 export async function loadEntity(ctx: Ctx, id: string): Promise<EntityRow> {
@@ -137,8 +137,7 @@ export async function publishEntity(ctx: Ctx): Promise<Response> {
     revisionStatement(ctx, row.id, 'publish', row.draft_json),
     auditStatement(ctx, 'publish', user.id, row.id, { rev: expectedRev }),
   ])
-  const rebuild = rebuildOnPublish(ctx.env) ? await triggerRebuild(ctx.env, ctx.deps.fetch) : 'manual'
-  const response: PublishResponse = { publishedAt, rebuild }
+  const response: PublishResponse = { publishedAt }
   return json(response)
 }
 
@@ -168,17 +167,28 @@ export async function discardDraft(ctx: Ctx): Promise<Response> {
 
 const SLUG = /^[a-z0-9][a-z0-9-]{0,63}$/
 
+/**
+ * Tworzenie i usuwanie: strona to nowy publiczny adres, więc wymaga publikacji i trybu zaawansowanego;
+ * komponenty i wzorce (oraz każdy inny rodzaj, odrzucany dalej) wymagają COMPONENT_EDIT.
+ */
+const lifecyclePermissions = (kind: unknown): Permission[] => kind === 'page' ? ['CONTENT_PUBLISH', 'MODE_ADVANCED'] : ['COMPONENT_EDIT']
+
+/** Slug strony: jeden segment, poza adresami zarezerwowanymi (cms/pages.ts); komponentu i wzorca: SLUG. */
+const slugOk = (kind: EntityKind, slug: unknown): slug is string =>
+  typeof slug === 'string' && (kind === 'page' ? pageSlugProblem(slug) === null : SLUG.test(slug))
+
 export async function createEntity(ctx: Ctx): Promise<Response> {
-  requirePermission(ctx, 'COMPONENT_EDIT')
   const body = await readJson(ctx.request)
   const kind = body.kind
+  requirePermission(ctx, ...lifecyclePermissions(kind))
   if (!isKind(kind) || !CREATABLE.includes(kind)) throw fail(400, 'bad_request', { message: 'kind' })
   const slug = body.slug
-  if (typeof slug !== 'string' || !SLUG.test(slug)) throw fail(400, 'bad_request', { message: 'slug' })
+  if (!slugOk(kind, slug)) throw fail(400, 'bad_request', { message: 'slug' })
   if (body.title !== undefined && (typeof body.title !== 'string' || body.title.length > 200)) throw fail(400, 'bad_request', { message: 'title' })
+  // Strona: poprawny PageDocument (znany layout, slug dokumentu = slug encji, bloki w obszarach layoutu).
   await validateOnly(ctx, kind, slug, body.data)
 
-  const id = randomId(kind === 'component' ? 'cmp' : 'pat')
+  const id = kind === 'page' ? `page_${slug}` : randomId(kind === 'component' ? 'cmp' : 'pat')
   const now = nowIso(ctx)
   const user = currentUser(ctx)
   const title = (typeof body.title === 'string' && body.title.trim()) || titleFor(kind, slug, body.data, ctx.deps.schema)
@@ -192,9 +202,11 @@ export async function createEntity(ctx: Ctx): Promise<Response> {
 }
 
 export async function deleteEntity(ctx: Ctx): Promise<Response> {
-  requirePermission(ctx, 'COMPONENT_EDIT')
   const row = await loadEntity(ctx, ctx.params.id!)
+  requirePermission(ctx, ...lifecyclePermissions(row.kind))
   if (!CREATABLE.includes(row.kind)) throw fail(400, 'not_deletable')
+  // Opublikowana strona jest (albo była) na dobrolinski.pl: usunięcie zostawiłoby martwe linki.
+  if (row.kind === 'page' && row.published_json !== null) throw fail(409, 'published')
   if (row.kind === 'component') {
     const usages = await componentUsages(ctx, row)
     if (usages.length) throw fail(409, 'in_use', { usages })

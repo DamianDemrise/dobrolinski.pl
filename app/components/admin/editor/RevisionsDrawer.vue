@@ -30,6 +30,7 @@ const KIND: Record<Revision['kind'], { label: string, tone: 'success' | 'neutral
   publish: { label: 'Publikacja', tone: 'success' },
   checkpoint: { label: 'Autozapis', tone: 'neutral' },
   restore: { label: 'Przywrócenie', tone: 'warning' },
+  import: { label: 'Zmiana z repo', tone: 'neutral' },
 }
 
 const items = ref<RevisionSummary[]>([])

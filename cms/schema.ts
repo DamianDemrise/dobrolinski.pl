@@ -290,11 +290,12 @@ export const globals: SiteSchema['globals'] = {
   },
 }
 
+/** `starter`: stałe bloki układu dla nowej pustej strony (panel podstawia za nie komponent globalny, jeśli jest). */
 export const layouts: SiteSchema['layouts'] = {
-  home: { label: 'Strona główna', regions: [...layoutRegions.home] },
-  workshop: { label: 'Projekt (warsztat)', regions: [...layoutRegions.workshop] },
-  document: { label: 'Dokument', regions: [...layoutRegions.document] },
-  ebook: { label: 'Ebook', regions: [...layoutRegions.ebook] },
+  home: { label: 'Strona główna', regions: [...layoutRegions.home], starter: ['home-stage', 'site-footer'] },
+  workshop: { label: 'Projekt (warsztat)', regions: [...layoutRegions.workshop], starter: ['workshop-hero', 'workshop-closing', 'back-link'] },
+  document: { label: 'Dokument', regions: [...layoutRegions.document], starter: ['privacy-document', 'back-link'] },
+  ebook: { label: 'Ebook', regions: [...layoutRegions.ebook], starter: ['ebook-hero', 'ebook-form', 'back-link'] },
 }
 
 export const seoFields: FieldDef[] = [

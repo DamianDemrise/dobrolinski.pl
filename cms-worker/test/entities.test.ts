@@ -55,7 +55,7 @@ describe('uprawnienia na poziomie pól (bezpośrednio przez API)', () => {
     const cookie = await h.login('content_editor')
     const page = await entity(h, cookie, 'page_home')
     expect((await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: page.draftRev } })).status).toBe(403)
-    expect((await h.api('POST', '/api/rebuild', { cookie })).status).toBe(403)
+    expect((await h.api('POST', '/api/push', { cookie })).status).toBe(403)
     expect((await h.api('GET', '/api/users', { cookie })).status).toBe(403)
     expect((await h.api('POST', '/api/users', { cookie, body: { email: 'a@b.pl', name: 'A', role: 'owner' } })).status).toBe(403)
     expect((await h.api('GET', '/api/settings', { cookie })).status).toBe(403)
@@ -71,7 +71,7 @@ describe('uprawnienia na poziomie pól (bezpośrednio przez API)', () => {
     const owner = await h.login('owner')
     const settings = await h.api('GET', '/api/settings', { cookie: owner })
     expect(settings.status).toBe(200)
-    expect(await body(settings)).toEqual({ siteUrl: 'https://dobrolinski.pl', rebuild: { configured: false, repo: 'owner/repo' }, mailConfigured: true })
+    expect(await body(settings)).toEqual({ siteUrl: 'https://dobrolinski.pl', push: { configured: false, repo: 'owner/repo' }, mailConfigured: true })
   })
 })
 
@@ -141,47 +141,18 @@ describe('draft, konflikty, publikacja', () => {
     expect(huge.status).toBe(413)
   })
 
-  it('publikacja wymaga aktualnego expectedRev; bez GITHUB_TOKEN rebuild = manual', async () => {
+  it('publikacja wymaga aktualnego expectedRev i nie dotyka GitHuba (wypchnięcie osobno)', async () => {
     const h = setup()
     const cookie = await h.login('editor')
     await h.api('PUT', '/api/entities/page_home/draft', { cookie, body: { baseRev: 1, data: editPage(d => { heroProps(d).title = 'Nowy' }) } })
     expect((await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })).status).toBe(409)
     const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 2 } })
     expect(res.status).toBe(200)
-    expect(await body(res)).toMatchObject({ rebuild: 'manual' })
+    expect(Object.keys(await body(res))).toEqual(['publishedAt'])
     expect(h.net.github()).toHaveLength(0)
     const site = await body<{ pages: Record<string, PageDocument> }>(await h.api('GET', '/api/public/site'))
     expect(site.pages['']!.blocks[0]!.props.title).toBe('Nowy')
     expect(h.db.raw.prepare('SELECT COUNT(*) AS n FROM audit_log WHERE action = \'publish\'').get()).toEqual({ n: 1 })
-  })
-
-  it('z tokenem, ale bez REBUILD_ON_PUBLISH publikacja nie wypycha strony (wypchnięcie ręczne)', async () => {
-    const h = setup({ github: true })
-    const cookie = await h.login('owner')
-    const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })
-    expect(await body(res)).toMatchObject({ rebuild: 'manual' })
-    expect(h.net.github()).toHaveLength(0)
-    expect(await body(await h.api('POST', '/api/rebuild', { cookie }))).toEqual({ rebuild: 'triggered' })
-  })
-
-  it('z GITHUB_TOKEN i REBUILD_ON_PUBLISH=1 publikacja wyzwala repository_dispatch', async () => {
-    const h = setup({ github: true, env: { REBUILD_ON_PUBLISH: '1' } })
-    const cookie = await h.login('owner')
-    const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })
-    expect(await body(res)).toMatchObject({ rebuild: 'triggered' })
-    const [call] = h.net.github()
-    expect(call!.url).toBe('https://api.github.com/repos/owner/repo/dispatches')
-    expect(call!.body).toEqual({ event_type: 'cms-publish' })
-    expect(call!.init?.headers).toMatchObject({ 'Accept': 'application/vnd.github+json', 'User-Agent': 'demrise-cms', 'Authorization': 'Bearer ghp_test' })
-  })
-
-  it('błąd GitHuba: rebuild = failed, publikacja zostaje', async () => {
-    const h = setup({ github: true, githubStatus: 500, env: { REBUILD_ON_PUBLISH: '1' } })
-    const cookie = await h.login('owner')
-    const res = await h.api('POST', '/api/entities/page_home/publish', { cookie, body: { expectedRev: 1 } })
-    expect(res.status).toBe(200)
-    expect(await body(res)).toMatchObject({ rebuild: 'failed' })
-    expect(await body(await h.api('POST', '/api/rebuild', { cookie }))).toEqual({ rebuild: 'failed' })
   })
 
   it('discard przywraca draft do wersji opublikowanej', async () => {
@@ -259,14 +230,14 @@ describe('komponenty i wzorce', () => {
     const created = await body<Entity>(res)
     expect(created).toMatchObject({ kind: 'component', slug: 'notka', draftRev: 1, published: null })
     expect((await h.api('POST', '/api/entities', { cookie, body: { kind: 'component', slug: 'notka', data: component } })).status).toBe(409)
-    expect((await h.api('POST', '/api/entities', { cookie, body: { kind: 'page', slug: 'nowa', data: homePage() } })).status).toBe(400)
+    expect((await h.api('POST', '/api/entities', { cookie, body: { kind: 'global', slug: 'nowy', data: {} } })).status).toBe(400)
     expect((await h.api('POST', '/api/entities', { cookie, body: { kind: 'component', slug: '../x', data: component } })).status).toBe(400)
     expect((await h.api('POST', '/api/entities', { cookie, body: { kind: 'component', slug: 'zly', data: { ...component, blockType: 'nope' } } })).status).toBe(422)
     expect((await h.api('DELETE', `/api/entities/${created.id}`, { cookie })).status).toBe(200)
     expect((await h.api('GET', `/api/entities/${created.id}`, { cookie })).status).toBe(404)
   })
 
-  it('komponent użyty na stronie: 409 z listą użyć; strony, globale i tokeny nieusuwalne', async () => {
+  it('komponent użyty na stronie: 409 z listą użyć; globale i tokeny nieusuwalne, opublikowana strona też', async () => {
     const h = setup()
     const cookie = await h.login('developer')
     const res = await h.api('DELETE', '/api/entities/cmp_banner', { cookie })
@@ -277,7 +248,8 @@ describe('komponenty i wzorce', () => {
       expect.objectContaining({ entityId: 'page_home', path: 'draft.blocks.2' }),
       expect.objectContaining({ entityId: 'page_home', path: 'published.blocks.2' }),
     ]))
-    for (const id of ['page_home', 'global_site', 'tokens']) expect((await h.api('DELETE', `/api/entities/${id}`, { cookie })).status).toBe(400)
+    for (const id of ['global_site', 'tokens']) expect((await h.api('DELETE', `/api/entities/${id}`, { cookie })).status).toBe(400)
+    expect((await h.api('DELETE', '/api/entities/page_home', { cookie })).status).toBe(409)
   })
 
   it('publikacja tokenów i komponentów wymaga uprawnień do ich edycji', async () => {

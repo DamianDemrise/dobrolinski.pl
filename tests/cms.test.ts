@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { createApp, createSSRApp, defineComponent, h, nextTick, provide, ref, withDirectives } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { layoutRegions } from '../cms/regions'
-import { publicRoutes, sitemapXml, unpublishedRoutes } from '../cms/routes'
+import { isUnpublishedRoute, publicRoutes, sitemapRoutes, sitemapXml } from '../cms/routes'
 import { siteSchema } from '../cms/schema'
 import CmsBlocks from '../app/cms/CmsBlocks'
 import { CMS_BLOCK_SCOPE, CMS_EDIT_CONTEXT } from '../app/cms/context'
@@ -240,8 +240,8 @@ describe('CMS: ebook „Na końcu jest człowiek” (szkic, nieopublikowany)', (
   it('is not published: no prerender route and the sitemap stays as before', () => {
     expect(Object.hasOwn(site.pages, 'na-koncu-jest-czlowiek')).toBe(false)
     expect(publicRoutes(site)).toEqual(['/', '/poznaj-czlowieka', '/polityka-prywatnosci'])
-    expect(unpublishedRoutes(site)).toEqual(['/na-koncu-jest-czlowiek'])
-    expect(sitemapXml(publicRoutes(site))).toBe(`<?xml version="1.0" encoding="UTF-8"?>
+    expect(isUnpublishedRoute(site, '/na-koncu-jest-czlowiek')).toBe(true)
+    expect(sitemapXml(sitemapRoutes(site))).toBe(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dobrolinski.pl/</loc>
@@ -259,7 +259,38 @@ describe('CMS: ebook „Na końcu jest człowiek” (szkic, nieopublikowany)', (
   it('gets a prerender route and a sitemap entry once published', () => {
     const withEbook = { ...site, pages: { ...site.pages, 'na-koncu-jest-czlowiek': draft } }
     expect(publicRoutes(withEbook)).toEqual(['/', '/poznaj-czlowieka', '/polityka-prywatnosci', '/na-koncu-jest-czlowiek'])
-    expect(unpublishedRoutes(withEbook)).toEqual([])
-    expect(sitemapXml(publicRoutes(withEbook))).toContain('<loc>https://dobrolinski.pl/na-koncu-jest-czlowiek</loc>')
+    expect(isUnpublishedRoute(withEbook, '/na-koncu-jest-czlowiek')).toBe(false)
+    expect(sitemapXml(sitemapRoutes(withEbook))).toContain('<loc>https://dobrolinski.pl/na-koncu-jest-czlowiek</loc>')
+  })
+})
+
+describe('CMS: trasy stron dodanych w panelu (catch-all)', () => {
+  const page = (slug: string, noindex = false): PageDocument => ({ ...site.pages['polityka-prywatnosci']!, slug, seo: { ...site.pages['polityka-prywatnosci']!.seo, noindex } })
+  const withPages = { ...site, pages: { ...site.pages, zeta: page('zeta'), alfa: page('alfa'), ukryta: page('ukryta', true) } }
+
+  it('every published page gets a prerender route, after the fixed ones, sorted by slug', () => {
+    expect(publicRoutes(withPages)).toEqual(['/', '/poznaj-czlowieka', '/polityka-prywatnosci', '/alfa', '/ukryta', '/zeta'])
+  })
+
+  it('the sitemap lists published pages without the noindex ones', () => {
+    expect(sitemapRoutes(withPages)).toEqual(['/', '/poznaj-czlowieka', '/polityka-prywatnosci', '/alfa', '/zeta'])
+    const xml = sitemapXml(sitemapRoutes(withPages))
+    expect(xml).toContain('<loc>https://dobrolinski.pl/alfa</loc>')
+    expect(xml).not.toContain('ukryta')
+  })
+
+  it('prerender skips crawled links to unpublished pages, keeps files and published pages', () => {
+    for (const path of ['/nieznana', '/nieznana/', '/a/b', '/nieznana?x=1']) expect(isUnpublishedRoute(withPages, path), path).toBe(true)
+    for (const path of ['/', '/alfa', '/alfa/', '/alfa#x', '/poznaj-czlowieka', '/sitemap.xml', '/200.html', '/_nuxt/x.js', '/og-home.png']) {
+      expect(isUnpublishedRoute(withPages, path), path).toBe(false)
+    }
+  })
+
+  it('the catch-all page renders a single published slug and 404s otherwise', () => {
+    const source = readFileSync(root('app/pages/[...slug].vue'), 'utf8')
+    expect(source).toContain('parts.length === 1')
+    expect(source).toContain('hasPublishedPage(slug)')
+    expect(source).toContain('statusCode: 404')
+    expect(readdirSync(root('app/pages')).filter(f => f.endsWith('.vue')).sort()).toEqual(['[...slug].vue', 'index.vue', 'polityka-prywatnosci.vue', 'poznaj-czlowieka.vue'])
   })
 })

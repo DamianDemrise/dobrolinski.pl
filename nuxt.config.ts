@@ -1,12 +1,13 @@
 import { fileURLToPath } from 'node:url'
 import type { PublishedSite } from './packages/cms-core/src/types'
 import { seoMeta } from './app/cms/seo'
-import { publicRoutes, unpublishedRoutes } from './cms/routes'
+import { isUnpublishedRoute, publicRoutes } from './cms/routes'
 import published from './content/published.json'
 
 /** Build panelu CMS (`npm run cms:build`): SPA /admin, bez ponownego prerenderu stron publicznych. */
 const isAdminBuild = process.env.CMS_ADMIN === '1'
-const home = (published as unknown as PublishedSite).pages['']!
+const site = published as unknown as PublishedSite
+const home = site.pages['']!
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-04',
@@ -50,10 +51,11 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: !isAdminBuild,
-      // Strony z panelu (np. ebook) tylko po publikacji: cms/routes.ts czyta content/published.json.
+      // Strony z panelu tylko po publikacji: cms/routes.ts czyta content/published.json.
       // sitemap.xml generuje server/routes/sitemap.xml.ts z tej samej listy.
-      routes: isAdminBuild ? ['/admin'] : [...publicRoutes(published as unknown as PublishedSite), '/sitemap.xml'],
-      ignore: isAdminBuild ? [] : unpublishedRoutes(published as unknown as PublishedSite),
+      routes: isAdminBuild ? ['/admin'] : [...publicRoutes(site), '/sitemap.xml'],
+      // Linki do nieopublikowanych stron (crawlLinks) pomijamy: catch-all dałby 404.
+      ignore: isAdminBuild ? [] : [(path: string) => isUnpublishedRoute(site, path)],
       // /poznaj-czlowieka.html zamiast /poznaj-czlowieka/index.html:
       // GitHub Pages serwuje wtedy adres bez ukośnika i bez przekierowania.
       autoSubfolderIndex: false,

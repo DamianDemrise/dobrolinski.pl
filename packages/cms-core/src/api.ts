@@ -56,11 +56,9 @@ export interface PublishRequest {
   expectedRev: number
 }
 
-export type RebuildStatus = 'triggered' | 'manual' | 'failed'
-
+/** Publikacja zapisuje w CMS; na stronę trafia po wypchnięciu (POST /api/push). */
 export interface PublishResponse {
   publishedAt: string
-  rebuild: RebuildStatus
 }
 
 export interface RevisionSummary {
@@ -86,7 +84,8 @@ export interface MediaListResponse {
 
 export interface SettingsResponse {
   siteUrl: string
-  rebuild: { configured: boolean, repo: string | null }
+  /** Wypychanie = commit w repo (GITHUB_TOKEN). */
+  push: { configured: boolean, repo: string | null }
   mailConfigured: boolean
 }
 
@@ -96,21 +95,48 @@ export interface StatsResponse {
   forms: { offer: FormCounts, ebook: FormCounts }
 }
 
-/** Stan wypchnięcia strony publicznej (GitHub Actions) i publikacje, których jeszcze na niej nie ma. */
+/** Stan wypchnięcia strony publicznej (GitHub Actions). */
 export interface DeployRun {
   status: 'queued' | 'in_progress' | 'completed' | string
   conclusion: 'success' | 'failure' | 'cancelled' | string | null
   createdAt: string
   url: string
 }
-export interface DeployResponse {
-  /** true, gdy Worker ma GITHUB_TOKEN i może sam uruchomić wypchnięcie. */
-  canTrigger: boolean
-  lastRun: DeployRun | null
-  lastSuccessAt: string | null
-  /** Encje opublikowane po starcie ostatniego udanego wypchnięcia (null: stan GitHub nieznany). */
-  pending: { id: string, kind: string, title: string, publishedAt: string }[] | null
-  actionsUrl: string | null
+
+/** Klucz treści w snapshot: page:<slug>, global:<klucz>, component:<id>, tokens. */
+export type SyncKey = string
+
+/** Zmiana i w repo, i w panelu od ostatniej synchronizacji: rozstrzyga człowiek. */
+export interface SyncConflict {
+  key: SyncKey
+  title: string
+  detectedAt: string
 }
+
+export interface PendingChange {
+  key: SyncKey
+  title: string
+  /** added: nowa na stronie, changed: zmieniona, removed: zniknie ze strony. */
+  change: 'added' | 'changed' | 'removed'
+}
+
+export interface DeployResponse {
+  /** true, gdy Worker ma GITHUB_TOKEN i może zrobić commit (wypchnięcie). */
+  canPush: boolean
+  lastRun: DeployRun | null
+  /** Opublikowane w CMS, a jeszcze nie w repo (null: repo chwilowo nieosiągalne). */
+  pending: PendingChange[] | null
+  conflicts: SyncConflict[]
+  syncedAt: string | null
+  repoUrl: string | null
+}
+
+export type PushResponse =
+  | { status: 'pushed', commitUrl: string, changes: PendingChange[] }
+  | { status: 'up_to_date' }
+
+export type SyncPullResponse = { status: 'imported', applied: SyncKey[], conflicts: SyncKey[] } | { status: 'up_to_date' } | { status: 'initialized' }
+
+export type ResolveChoice = 'repo' | 'cms'
 
 export type PublicSiteResponse = PublishedSite
