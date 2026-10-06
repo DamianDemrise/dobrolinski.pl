@@ -1,0 +1,7 @@
+# Lokalnie: cp .dev.vars.example .dev.vars (plik .dev.vars jest w .gitignore).
+# dry: link logowania trafia do konsoli `wrangler dev`, nic nie jest wysyłane.
+MAIL_MODE=dry
+DEV=1
+ADMIN_ORIGIN=http://localhost:8787
+# RESEND_API_KEY=re_...
+# GITHUB_TOKEN=github_pat_...
