@@ -195,7 +195,7 @@ export interface Entity<K extends EntityKind = EntityKind> {
   updatedBy: string | null
 }
 
-export type RevisionKind = 'checkpoint' | 'publish' | 'restore'
+export type RevisionKind = 'checkpoint' | 'publish' | 'restore' | 'import'
 
 export interface Revision {
   id: string
@@ -220,7 +220,8 @@ export interface PublishedSite {
 export interface SiteSchema {
   blocks: Record<string, BlockDefinition>
   globals: Record<string, { label: string, fields: FieldDef[] }>
-  layouts: Record<string, { label: string, regions: string[] }>
+  /** `starter`: typy bloków nowej pustej strony w tym układzie (panel „Nowa strona”), w kolejności. */
+  layouts: Record<string, { label: string, regions: string[], starter?: string[] }>
   seoFields: FieldDef[]
 }
 
