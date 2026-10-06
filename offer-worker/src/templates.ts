@@ -3,25 +3,25 @@
  * tematu, treści, nadawcy ani załącznika. Adres odbiorcy nie trafia
  * do HTML-a oferty, więc nie ma czego wstrzyknąć.
  */
-import type { OfferSource } from '../../shared/offer.ts'
+import type { OfferProduct, OfferSource } from '../../shared/offer.ts'
 
 export const OFFER_SUBJECT = 'Poznaj Człowieka — oferta warsztatu'
 export const OFFER_PREHEADER = 'Program, sposób pracy, organizacja i cena.'
 export const NOTIFICATION_SUBJECT = 'Nowe pobranie — Poznaj Człowieka'
 
-const NAME = 'Damian Dobroliński'
-const AREAS = 'Ludzie · Sprzedaż · Marketing · Technologia'
-const SITE = 'dobrolinski.pl'
-const SITE_URL = 'https://dobrolinski.pl'
+export const NAME = 'Damian Dobroliński'
+export const AREAS = 'Ludzie · Sprzedaż · Marketing · Technologia'
+export const SITE = 'dobrolinski.pl'
+export const SITE_URL = 'https://dobrolinski.pl'
 
-const FONT = '\'Helvetica Neue\', Helvetica, Arial, sans-serif'
+export const FONT = '\'Helvetica Neue\', Helvetica, Arial, sans-serif'
 // Ciemny editorial jak dobrolinski.pl. Kolory także w bgcolor (Outlook).
-const PAPER = '#080808'
-const INK = '#f5f5f3'
-const BODY = '#e8e8e5'
-const GREY = '#888888'
-const DIM = '#777777'
-const LINE = '#262626'
+export const PAPER = '#080808'
+export const INK = '#f5f5f3'
+export const BODY = '#e8e8e5'
+export const GREY = '#888888'
+export const DIM = '#777777'
+export const LINE = '#262626'
 const BUTTON = '#f2f2ef'
 const BUTTON_INK = '#0a0a0a'
 
@@ -51,13 +51,13 @@ export function offerText(pdfUrl: string): string {
   ].join('\n')
 }
 
-const text = (content: string, style: string) =>
+export const text = (content: string, style: string) =>
   `<p style="margin:0;font-family:${FONT};${style}">${content}</p>`
 
-const divider = (space: string, cls: string, extra = '') =>
+export const divider = (space: string, cls: string, extra = '') =>
   `<table class="${cls}" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:${space};${extra}"><tr><td style="border-top:1px solid ${LINE};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr></table>`
 
-const body = (content: string, bottom = 20, color = BODY) =>
+export const body = (content: string, bottom = 20, color = BODY) =>
   text(content, `font-size:18px;line-height:28px;color:${color};margin:0 0 ${bottom}px;`)
 
 export function offerHtml(pdfUrl: string): string {
@@ -154,20 +154,20 @@ export function offerHtml(pdfUrl: string): string {
 }
 
 /** Powiadomienie dla Damiana: zwykły tekst, adres wyłącznie w treści tekstowej. */
-export function notificationText(email: string, date: Date, source: OfferSource): string {
+export function notificationText(email: string, date: Date, source: OfferSource, product: OfferProduct = 'offer'): string {
   const when = new Intl.DateTimeFormat('pl-PL', {
     dateStyle: 'long',
     timeStyle: 'short',
     timeZone: 'Europe/Warsaw',
   }).format(date)
   const origin = [
-    source.page ?? '/poznaj-czlowieka',
+    source.page ?? (product === 'ebook' ? '/na-koncu-jest-czlowiek' : '/poznaj-czlowieka'),
     ...(['utm_source', 'utm_medium', 'utm_campaign'] as const)
       .filter(key => source[key])
       .map(key => `${key}=${source[key]}`),
   ].join(', ')
   return [
-    'Ktoś poprosił o ofertę warsztatu.',
+    product === 'ebook' ? 'Ktoś poprosił o ebook „Na końcu jest człowiek”.' : 'Ktoś poprosił o ofertę warsztatu.',
     '',
     'Email:',
     email,

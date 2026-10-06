@@ -129,6 +129,21 @@ Adres z `wrangler deploy` (`https://dobrolinski-oferta.<konto>.workers.dev`) wpi
 
 Podmień `public/oferta/poznaj-czlowieka.pdf` (ta sama nazwa i ścieżka), PR, merge. Adres się nie zmienia. GitHub Pages trzyma pliki w cache ok. 10 minut, więc nowa wersja dociera w tym czasie, bez query stringów. Przed commitem sprawdź, że PDF nie zawiera ceny pilotażowej (repo jest publiczne). Pod `/poznaj-czlowieka/` nie wolno tworzyć katalogu: przesłoniłby stronę warsztatu na GitHub Pages (pilnuje test).
 
+## Ebook „Na końcu jest człowiek”
+
+Ten sam endpoint, pole `product: "ebook"` (formularz na `/na-koncu-jest-czlowiek`). Bez pola albo z inną wartością = oferta, więc formularz oferty działa bez zmian.
+
+- PDF **nie leży w repo** (repo jest publiczne): jest w `OFFER_KV` pod kluczem `ebook:na-koncu-jest-czlowiek.pdf` i idzie wyłącznie jako załącznik (base64), bez linku. Brak pliku w KV → 503, nic nie wychodzi.
+- Wgranie albo podmiana PDF (z katalogu `offer-worker`):
+  `npx wrangler kv key put --binding OFFER_KV --remote "ebook:na-koncu-jest-czlowiek.pdf" --path ../../dobrolinski-ebook/na-koncu-jest-czlowiek.pdf`
+  Przy zmianie liczby stron popraw `EBOOK_ATTACHMENT.pages` w `offer-worker/src/ebook-template.ts`.
+- Limity i duplikaty liczone osobno dla oferty i ebooka (ten sam adres może dostać jedno i drugie); limit dzienny wspólny (pula Resend).
+- Treść maila: `offer-worker/src/ebook-template.ts`. Powiadomienie dla Damiana: temat „Nowe pobranie — ebook Na końcu jest człowiek”.
+
+## Licznik na pulpicie CMS
+
+Po udanej wysyłce w trybie `live` Worker dopisuje do bazy CMS (binding `STATS`, tabela `form_events`) tylko rodzaj (`offer`/`ebook`) i czas. Bez adresu, bez IP. Błąd bazy nie wpływa na wysyłkę. Pulpit panelu pokazuje 7 dni, 30 dni i łącznie. Liczenie zaczyna się od wdrożenia tej wersji (wcześniejsze wysyłki nie są w bazie).
+
 ## Zmiana treści maila
 
 `offer-worker/src/templates.ts` → `npm run offer:preview` → akceptacja → `npx wrangler deploy`. Zmiana copy formularza: `app/content/workshop.ts` (`offer`).

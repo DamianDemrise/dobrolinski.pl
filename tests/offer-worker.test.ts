@@ -205,3 +205,63 @@ describe('offer endpoint', () => {
     expect(offerText(PDF)).toContain('Damian Dobroliński')
   })
 })
+
+describe('ebook', () => {
+  const ebookBody = { ...valid, product: 'ebook', source: { page: '/na-koncu-jest-czlowiek' } }
+  const withEbook = (options: Parameters<typeof setup>[0] = {}) => {
+    const t = setup(options)
+    ;(t.env.OFFER_KV as ReturnType<typeof memoryKV>).putBinary('ebook:na-koncu-jest-czlowiek.pdf', new TextEncoder().encode('%PDF-1.7 ebook'))
+    return t
+  }
+
+  it('sends the ebook from KV as a base64 attachment, never as a public link', async () => {
+    const t = withEbook()
+    expect((await t.post(ebookBody)).status).toBe(200)
+    const mail = t.sentBody(0)
+    expect(mail.subject).toBe('Na końcu jest człowiek — ebook')
+    expect(mail.attachments).toEqual([{ filename: 'na-koncu-jest-czlowiek.pdf', content: btoa('%PDF-1.7 ebook') }])
+    expect(mail.html).not.toContain('.pdf"')
+    expect(t.sentBody(1).subject).toBe('Nowe pobranie — ebook Na końcu jest człowiek')
+    expect(t.sentBody(1).text).toContain('/na-koncu-jest-czlowiek')
+  })
+
+  it('answers 503 and sends nothing when the ebook file is missing in KV', async () => {
+    const t = setup()
+    expect((await t.post(ebookBody)).status).toBe(503)
+    expect(t.sends()).toHaveLength(0)
+  })
+
+  it('keeps separate duplicate guards for offer and ebook', async () => {
+    const t = withEbook()
+    await t.post(valid)
+    await t.post(ebookBody)
+    expect(t.sends()).toHaveLength(4)
+  })
+
+  it('treats unknown products as the offer', async () => {
+    const t = withEbook()
+    await t.post({ ...valid, product: 'cokolwiek' })
+    expect(t.sentBody(0).subject).toBe(OFFER_SUBJECT)
+  })
+
+  it('counts sent mails anonymously (form + time only) in live mode', async () => {
+    const rows: unknown[][] = []
+    const t = withEbook()
+    t.env.STATS = { prepare: (sql: string) => ({ bind: (...values: unknown[]) => ({ run: async () => { rows.push([sql, ...values]) } }) }) }
+    await t.post(valid)
+    await t.post(ebookBody)
+    expect(rows.map(r => r[1])).toEqual(['offer', 'ebook'])
+    expect(JSON.stringify(rows)).not.toContain('anna')
+  })
+
+  it('does not count in test mode and survives a broken stats database', async () => {
+    const rows: unknown[] = []
+    const test = withEbook({ mode: 'test' })
+    test.env.STATS = { prepare: () => ({ bind: () => ({ run: async () => { rows.push(1) } }) }) }
+    await test.post(ebookBody)
+    expect(rows).toHaveLength(0)
+    const broken = withEbook()
+    broken.env.STATS = { prepare: () => ({ bind: () => ({ run: async () => { throw new Error('db down') } }) }) }
+    expect((await broken.post(ebookBody)).status).toBe(200)
+  })
+})

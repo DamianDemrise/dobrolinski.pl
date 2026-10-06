@@ -8,7 +8,8 @@ export interface OutgoingMail {
   subject: string
   text: string
   html?: string
-  attachment?: { filename: string, path: string }
+  /** path: Resend pobiera plik z adresu; content: plik w base64 (np. z KV). */
+  attachment?: { filename: string, path: string } | { filename: string, content: string }
   idempotencyKey: string
 }
 

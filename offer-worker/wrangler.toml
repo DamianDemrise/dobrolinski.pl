@@ -17,6 +17,15 @@ binding = "OFFER_KV"
 # Utworzone 2026-10-05 na koncie Cloudflare damian@demrise.pl.
 id = "6c1831c374e24dd3af93f0c009b1c0c0"
 
+# Baza CMS: tylko INSERT do form_events (rodzaj + czas, bez adresu i IP) dla licznika na pulpicie panelu.
+[[d1_databases]]
+binding = "STATS"
+database_name = "dobrolinski-cms"
+database_id = "afe02713-8094-4548-821e-c233c7b2a4ea"
+
+# PDF ebooka leży w OFFER_KV pod kluczem ebook:na-koncu-jest-czlowiek.pdf (nie w publicznym repo):
+# npx wrangler kv key put --binding OFFER_KV --remote "ebook:na-koncu-jest-czlowiek.pdf" --path ../../dobrolinski-ebook/na-koncu-jest-czlowiek.pdf
+
 [vars]
 # live: oferta idzie na adres z formularza. Do testów: MAIL_MODE = "test" + TEST_RECIPIENT.
 MAIL_MODE = "live"
